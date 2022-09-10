@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import themes from "./themes";
 import { slideDown, slideUp } from "./helpers";
 import { addEvent, removeEvent } from "./events";
@@ -8,7 +8,7 @@ import Footer from "./components/Footer";
 
 export interface LinkItem {
   text: string;
-  url: string;
+  selector: string;
 }
 
 const MENU_ID = "menu";
@@ -20,32 +20,34 @@ const CONTACT_SECTION_ID = "contact";
 const MAX_MENU_WIDTH = 920;
 
 function App() {
-  const appLinks = [
-    {
-      text: "Welcome",
-      url: `#${TOP_SECTION_ID}`,
-    },
-    {
-      text: "About",
-      url: `#${ABOUT_SECTION_ID}`,
-    },
-    {
-      text: "Skills",
-      url: `#${SKILLS_SECTION_ID}`,
-    },
-    {
-      text: "Projects",
-      url: `#${PROJECTS_SECTION_ID}`,
-    },
-    {
-      text: "Contact",
-      url: `#${CONTACT_SECTION_ID}`,
-    },
-  ];
-
   let theme = themes.dark;
 
-  const [currentLink, setCurrentLink] = useState(appLinks[0].url);
+  const appLinks = useMemo(() => {
+    return [
+      {
+        text: "Welcome",
+        selector: `#${TOP_SECTION_ID}`,
+      },
+      {
+        text: "About",
+        selector: `#${ABOUT_SECTION_ID}`,
+      },
+      {
+        text: "Skills",
+        selector: `#${SKILLS_SECTION_ID}`,
+      },
+      {
+        text: "Projects",
+        selector: `#${PROJECTS_SECTION_ID}`,
+      },
+      {
+        text: "Contact",
+        selector: `#${CONTACT_SECTION_ID}`,
+      },
+    ];
+  }, []);
+
+  const [currentSection, setCurrentSection] = useState(appLinks[0].selector);
   const [menuVisible, setMenuVisible] = useState(false);
 
   const onWindowResize = useCallback(() => {
@@ -60,6 +62,18 @@ function App() {
       hamburger.style.backgroundColor = "inherit";
     }
   }, []);
+
+  const observerCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        const section = entry.target;
+        if (entry.isIntersecting) {
+          setCurrentSection(`#${section.id}`);
+        }
+      });
+    },
+    []
+  );
 
   const onHamburgerClick = useCallback(
     (event: CustomEvent) => {
@@ -92,8 +106,8 @@ function App() {
         slideUp(menu, 5, () => {
           const section = document.querySelector(sectionId);
           if (section) {
-            setCurrentLink(sectionId);
-            section.scrollIntoView({ block: "start", behavior: "smooth" });
+            setCurrentSection(sectionId);
+            section.scrollIntoView({ behavior: "smooth" });
           }
         });
         setMenuVisible(false);
@@ -101,8 +115,8 @@ function App() {
       } else {
         const section = document.querySelector(sectionId);
         if (section) {
-          setCurrentLink(sectionId);
-          section.scrollIntoView({ block: "start", behavior: "smooth" });
+          setCurrentSection(sectionId);
+          section.scrollIntoView({ behavior: "smooth" });
         }
       }
     },
@@ -110,34 +124,92 @@ function App() {
   );
 
   useEffect(() => {
+    const observer = new IntersectionObserver(observerCallback);
+    const sections = document.querySelectorAll("section");
+    sections.forEach((section) => {
+      observer.observe(section);
+    });
     addEvent(window, "resize", onWindowResize);
     addEvent(document, "hamburger:click", onHamburgerClick);
     addEvent(document, "nav-link:click", onNavLinkClick);
     return () => {
+      sections.forEach((section) => {
+        observer.unobserve(section);
+      });
       removeEvent(window, "resize", onWindowResize);
       removeEvent(document, "hamburger:click", onHamburgerClick);
       removeEvent(document, "nav-link:click", onNavLinkClick);
     };
-  }, [menuVisible, theme, onWindowResize, onHamburgerClick, onNavLinkClick]);
+  }, [
+    menuVisible,
+    theme,
+    observerCallback,
+    onWindowResize,
+    onHamburgerClick,
+    onNavLinkClick,
+  ]);
+
+  const pStyles = {
+    color: theme.bgAccent,
+    fontSize: "1em",
+  };
 
   const buildTopSection = () => {
-    return <Section id={TOP_SECTION_ID} heading={"Welcome!"} />;
+    return (
+      <Section
+        id={TOP_SECTION_ID}
+        heading={"👋 Hi!"}
+        children={
+          <p style={pStyles}>
+            My name is Robbie. I'm a junior JavaScript and TypeScript developer,
+            and this is my portfolio site!
+          </p>
+        }
+      />
+    );
   };
 
   const buildAboutSection = () => {
-    return <Section id={ABOUT_SECTION_ID} heading={"About Me"} />;
+    return (
+      <Section
+        id={ABOUT_SECTION_ID}
+        heading={"📖 About Me"}
+        children={[
+          <p key={1} style={pStyles}>
+            I was born in Australia, and grew up in rural Queensland. I
+            discovered programming after I finished highschool, and completed
+            half a Bachelor of IT at The University of Southern Queensland,
+            before enrolling in a Web development bootcamp at Coder Academy. I'm
+            due to finish in November, 2022, and can't wait to kickstart my
+            career in the industry!
+          </p>,
+          <img
+            key={2}
+            src={"/images/country-road.jpg"}
+            alt=""
+            style={{ width: "100%", maxWidth: "250px" }}
+          ></img>,
+        ]}
+      />
+    );
   };
 
   const buildSkillsSection = () => {
-    return <Section id={SKILLS_SECTION_ID} heading={"My Skills"} />;
+    return (
+      <Section
+        id={SKILLS_SECTION_ID}
+        heading={"🧰 My Skills"}
+        children={[<p key={1} style={pStyles}></p>]}
+      />
+    );
   };
 
   const buildProjectsSection = () => {
-    return <Section id={PROJECTS_SECTION_ID} heading={"Current Projects"} />;
+    return <Section id={PROJECTS_SECTION_ID} heading={"🛠️ Projects"} />;
   };
 
   const buildContactSection = () => {
-    return <Section id={CONTACT_SECTION_ID} heading={"Contact"} />;
+    return <Section id={CONTACT_SECTION_ID} heading={"📥 Contact"} />;
   };
 
   return (
@@ -152,16 +224,16 @@ function App() {
       }}
     >
       <Header
+        key={currentSection}
         title={"R-Neville"}
         linkItems={appLinks}
-        currentLink={currentLink}
+        currentLink={currentSection}
       />
       <main
         style={{
           flexGrow: 1,
           display: "flex",
           flexDirection: "column",
-          padding: "1em",
         }}
       >
         {buildTopSection()}

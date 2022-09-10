@@ -14,11 +14,11 @@ function Menu(props: { id: string; linkItems: LinkItem[], currentLink: string })
   }
 
   const linkEls = props.linkItems.map((li, index) => {
-    const active = li.url === props.currentLink;
+    const active = li.selector === props.currentLink;
     return (
       <NavLink
         key={index}
-        href={li.url}
+        href={li.selector}
         text={li.text}
         color={theme.fgPrimary}
         active={active}

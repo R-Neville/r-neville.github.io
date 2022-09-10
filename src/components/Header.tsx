@@ -16,11 +16,11 @@ function Header(props: { title: string; linkItems: LinkItem[]; currentLink: stri
   }
 
   const linkEls = props.linkItems.map((li, index) => {
-    const active = li.url === props.currentLink;
+    const active = li.selector === props.currentLink;
     return (
       <NavLink
         key={index}
-        href={li.url}
+        href={li.selector}
         text={li.text}
         color={theme.fgPrimary}
         active={active}
@@ -34,8 +34,10 @@ function Header(props: { title: string; linkItems: LinkItem[]; currentLink: stri
       style={{
         display: "flex",
         flexDirection: "column",
-        position: "sticky",
+        position: "fixed",
         top: 0,
+        left: 0,
+        right: 0,
         padding: "1em",
         backgroundColor: theme.bgAccent,
         userSelect: "none",

@@ -17,7 +17,7 @@ function Footer(props: { linkItems: LinkItem[] }) {
     return (
       <NavLink
         key={index}
-        href={li.url}
+        href={li.selector}
         text={li.text}
         color={theme.fgSecondary}
         active={false}
