@@ -13,13 +13,13 @@ function Section(props: { id: string; heading: string, children?: JSX.Element | 
         height: "500px",
         margin: "0 auto",
         marginBottom: "1em",
-        backgroundColor: theme.bgPrimary
+        backgroundColor: theme.fgPrimary
       }}
     >
       <h2
         style={{
-          borderBottom: `1px solid ${theme.fgPrimary}`,
-          color: theme.fgPrimary,
+          borderBottom: `2px solid ${theme.bgPrimary}`,
+          color: theme.bgPrimary,
         }}
       >
         {props.heading}
