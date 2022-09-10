@@ -1,21 +1,23 @@
 import { MouseEvent } from "react";
-import themes from "../themes";
 
 function NavLink(props: {
   href: string;
   text: string;
+  color: string;
   active: boolean;
+  activeBg: string,
   customStyles?: { [prop: string]: string };
+  onClick: (event: MouseEvent<HTMLAnchorElement>) => void;
 }) {
   let backgroundColor = "inherit";
   if (props.active) {
-    backgroundColor = themes.dark.bgAccent;
+    backgroundColor = props.activeBg;
   }
 
   function onMouseEnter(event: MouseEvent<HTMLAnchorElement>) {
     const navLink = event.target as HTMLElement;
     if (!props.active) {
-      navLink.style.backgroundColor = themes.dark.bgAccent;
+      navLink.style.backgroundColor = props.activeBg;
     }
   }
 
@@ -32,12 +34,13 @@ function NavLink(props: {
         padding: "0.5em 1em",
         textDecoration: "none",
         backgroundColor,
-        color: themes.dark.fgPrimary,
+        color: props.color,
         ...(props.customStyles && props.customStyles)
       }}
       href={props.href}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onClick={props.onClick}
     >
       {props.text}
     </a>

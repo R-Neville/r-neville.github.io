@@ -43,7 +43,11 @@ export function slideDown(
   }, MIN_INTERVAL_DURATION);
 }
 
-export function slideUp(element: HTMLElement, durationFactor: number) {
+export function slideUp(
+  element: HTMLElement,
+  durationFactor: number,
+  callback?: () => void
+) {
   if (element.style.display === "none") {
     // The element is already not displayed.
     // Abort transition.
@@ -61,6 +65,9 @@ export function slideUp(element: HTMLElement, durationFactor: number) {
       element.style.display = "none";
       element.style.height = "auto";
       clearInterval(intervalID);
+      if (callback) {
+        callback();
+      }
     }
   }, MIN_INTERVAL_DURATION);
 }

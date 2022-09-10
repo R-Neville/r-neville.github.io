@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import themes from "./themes";
-import Header from "./components/Header";
 import { slideDown, slideUp } from "./helpers";
+import { addEvent, removeEvent } from "./events";
+import Header from "./components/Header";
+import Section from "./components/Section";
+import Footer from "./components/Footer";
 
 export interface LinkItem {
   text: string;
   url: string;
-  active: boolean;
 }
 
 const MENU_ID = "menu";
@@ -22,49 +24,46 @@ function App() {
     {
       text: "Welcome",
       url: `#${TOP_SECTION_ID}`,
-      active: true,
     },
     {
       text: "About",
       url: `#${ABOUT_SECTION_ID}`,
-      active: false,
     },
     {
       text: "Skills",
       url: `#${SKILLS_SECTION_ID}`,
-      active: false,
     },
     {
       text: "Projects",
       url: `#${PROJECTS_SECTION_ID}`,
-      active: false,
     },
     {
       text: "Contact",
       url: `#${CONTACT_SECTION_ID}`,
-      active: false,
     },
   ];
 
+  let theme = themes.dark;
+
+  const [currentLink, setCurrentLink] = useState(appLinks[0].url);
   const [menuVisible, setMenuVisible] = useState(false);
 
-  useEffect(() => {
-    const onWindowResize = () => {
-      const hamburger = document.querySelector(
-        "header .hamburger"
-      ) as HTMLElement;
-      const menu = document.getElementById(MENU_ID);
-      if (!menu) return;
-      if (window.innerWidth >= MAX_MENU_WIDTH) {
-        slideUp(menu, 5);
-        setMenuVisible(false);
-        hamburger.style.backgroundColor = "inherit";
-      }
-    };
-    const onHamburgerClick = () => {
-      const hamburger = document.querySelector(
-        "header .hamburger"
-      ) as HTMLElement;
+  const onWindowResize = useCallback(() => {
+    const hamburger = document.querySelector(
+      "header .hamburger"
+    ) as HTMLElement;
+    const menu = document.getElementById(MENU_ID);
+    if (!menu) return;
+    if (window.innerWidth >= MAX_MENU_WIDTH) {
+      slideUp(menu, 5);
+      setMenuVisible(false);
+      hamburger.style.backgroundColor = "inherit";
+    }
+  }, []);
+
+  const onHamburgerClick = useCallback(
+    (event: CustomEvent) => {
+      const hamburger = event.target as HTMLElement;
       const menu = document.getElementById(MENU_ID);
       if (!menu) return;
       if (menuVisible) {
@@ -74,18 +73,72 @@ function App() {
       } else {
         slideDown(menu, "flex", 5);
         setMenuVisible(true);
-        hamburger.style.backgroundColor = themes.dark.bgAccent;
+        hamburger.style.backgroundColor = theme.bgPrimary;
       }
-    };
-    
-    
-    window.addEventListener("resize", onWindowResize);
-    document.addEventListener("hamburger:click", onHamburgerClick);
+    },
+    [menuVisible, theme]
+  );
+
+  const onNavLinkClick = useCallback(
+    (event: CustomEvent) => {
+      const navLink = event.target as HTMLAnchorElement;
+      const sectionId = navLink.href.split("/").reverse()[0];
+      const menu = document.getElementById(MENU_ID);
+      if (!menu) return;
+      const hamburger = document.querySelector(
+        "header .hamburger"
+      ) as HTMLElement;
+      if (menuVisible) {
+        slideUp(menu, 5, () => {
+          const section = document.querySelector(sectionId);
+          if (section) {
+            setCurrentLink(sectionId);
+            section.scrollIntoView({ block: "start", behavior: "smooth" });
+          }
+        });
+        setMenuVisible(false);
+        hamburger.style.backgroundColor = "inherit";
+      } else {
+        const section = document.querySelector(sectionId);
+        if (section) {
+          setCurrentLink(sectionId);
+          section.scrollIntoView({ block: "start", behavior: "smooth" });
+        }
+      }
+    },
+    [menuVisible]
+  );
+
+  useEffect(() => {
+    addEvent(window, "resize", onWindowResize);
+    addEvent(document, "hamburger:click", onHamburgerClick);
+    addEvent(document, "nav-link:click", onNavLinkClick);
     return () => {
-      window.removeEventListener("resize", onWindowResize);
-      document.removeEventListener("hamburger:click", onHamburgerClick);
+      removeEvent(window, "resize", onWindowResize);
+      removeEvent(document, "hamburger:click", onHamburgerClick);
+      removeEvent(document, "nav-link:click", onNavLinkClick);
     };
-  }, [menuVisible]);
+  }, [menuVisible, theme, onWindowResize, onHamburgerClick, onNavLinkClick]);
+
+  const buildTopSection = () => {
+    return <Section id={TOP_SECTION_ID} heading={"Welcome!"} />;
+  };
+
+  const buildAboutSection = () => {
+    return <Section id={ABOUT_SECTION_ID} heading={"About Me"} />;
+  };
+
+  const buildSkillsSection = () => {
+    return <Section id={SKILLS_SECTION_ID} heading={"My Skills"} />;
+  };
+
+  const buildProjectsSection = () => {
+    return <Section id={PROJECTS_SECTION_ID} heading={"Current Projects"} />;
+  };
+
+  const buildContactSection = () => {
+    return <Section id={CONTACT_SECTION_ID} heading={"Contact"} />;
+  };
 
   return (
     <div
@@ -95,11 +148,29 @@ function App() {
         display: "flex",
         flexDirection: "column",
         width: "100%",
-        backgroundColor: themes.dark.bgHighlight,
+        backgroundColor: theme.bgSecondary,
       }}
     >
-      <Header title={"R-Neville"} linkItems={appLinks} />
-      <main style={{ flexGrow: 1, display: "flex" }}></main>
+      <Header
+        title={"R-Neville"}
+        linkItems={appLinks}
+        currentLink={currentLink}
+      />
+      <main
+        style={{
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+          padding: "1em",
+        }}
+      >
+        {buildTopSection()}
+        {buildAboutSection()}
+        {buildSkillsSection()}
+        {buildProjectsSection()}
+        {buildContactSection()}
+      </main>
+      <Footer linkItems={appLinks} />
     </div>
   );
 }

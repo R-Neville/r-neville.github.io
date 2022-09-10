@@ -2,14 +2,16 @@ import { MouseEvent } from "react";
 import themes from "../themes";
 
 function Hamburger() {
+  const theme = themes.dark;
+
   const lineStyles = {
     height: "6px",
     width: "30px",
-    backgroundColor: themes.dark.fgPrimary,
+    backgroundColor: theme.fgPrimary,
   };
 
   function onClick(event: MouseEvent<HTMLDivElement>) {
-    const hamburger = event.target as HTMLElement;
+    const hamburger = event.currentTarget as HTMLElement;
     const customEvent = new CustomEvent("hamburger:click", {
       bubbles: true,
     });

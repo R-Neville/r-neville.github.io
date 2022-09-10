@@ -27,7 +27,7 @@ body,
     display: flex !important;
   }
 
-  header {
-    justify-content: space-evenly;
+  header div {
+    justify-content: space-evenly !important;
   }
 }

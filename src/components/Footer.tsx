@@ -1,10 +1,10 @@
 import { MouseEvent } from "react";
-import themes from "../themes";
 import { LinkItem } from "../App";
 import { dispatch } from "../events";
+import themes from "../themes";
 import NavLink from "./NavLink";
 
-function Menu(props: { id: string; linkItems: LinkItem[], currentLink: string }) {
+function Footer(props: { linkItems: LinkItem[] }) {
   const theme = themes.dark;
 
   function onLinkElClick(event: MouseEvent<HTMLAnchorElement>) {
@@ -14,34 +14,34 @@ function Menu(props: { id: string; linkItems: LinkItem[], currentLink: string })
   }
 
   const linkEls = props.linkItems.map((li, index) => {
-    const active = li.url === props.currentLink;
     return (
       <NavLink
         key={index}
         href={li.url}
         text={li.text}
-        color={theme.fgPrimary}
-        active={active}
+        color={theme.fgSecondary}
+        active={false}
         activeBg={theme.bgPrimary}
         onClick={onLinkElClick}
-        customStyles={{ textAlign: "right" }}
+        customStyles={{ textAlign: "center" }}
       />
     );
   });
 
   return (
-    <div
-      id={props.id}
+    <footer
       style={{
-        display: "none",
+        display: "flex",
         flexDirection: "column",
-        padding: "1em 0",
-        backgroundColor: "inherit",
+        alignItems: "center",
+        padding: "1em",
+        color: theme.fgSecondary,
       }}
     >
-      <nav style={{ display: "flex", flexDirection: "column" }}>{linkEls}</nav>
-    </div>
+      <nav style={{display: "flex", flexDirection: "column"}}>{linkEls}</nav>
+      <p>&copy; Robbie Neville 2022</p>
+    </footer>
   );
 }
 
-export default Menu;
+export default Footer;
