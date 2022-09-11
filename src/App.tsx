@@ -403,23 +403,21 @@ function App() {
   const buildContactSection = () => {
     const anchorStyles = {
       padding: "0.5em 1em",
-      border: `1px solid ${theme.bgAccent}`,
       margin: "0.5em",
+      backgroundColor: theme.bgPrimary,
       fontSize: "1em",
-      color: theme.bgAccent,
+      color: theme.fgPrimary,
       textDecoration: "none",
     };
 
     function onAnchorMouseEnter(event: MouseEvent<HTMLAnchorElement>) {
       const anchor = event.target as HTMLElement;
       anchor.style.backgroundColor = theme.bgAccent;
-      anchor.style.color = theme.fgPrimary;
     }
 
     function onAnchorMouseLeave(event: MouseEvent<HTMLAnchorElement>) {
       const anchor = event.target as HTMLElement;
-      anchor.style.backgroundColor = "inherit";
-      anchor.style.color = theme.bgAccent;
+      anchor.style.backgroundColor = theme.bgPrimary;
     }
 
     return (
@@ -430,7 +428,7 @@ function App() {
         children={[
           <p key={1} style={pStyles}>
             If you would like to contact me about work or collaboration, please
-            don't hesitate to connect with me on LinkedIn!
+            don't hesitate to connect on LinkedIn!
           </p>,
           <a
             key={2}
