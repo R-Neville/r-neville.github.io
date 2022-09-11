@@ -61,15 +61,11 @@ const skills = [
     competency: 5,
   },
   {
-    name: "python",
+    name: "Python",
     competency: 4,
   },
   {
     name: "C++",
-    competency: 4,
-  },
-  {
-    name: "Qt5",
     competency: 4,
   },
 ] as SkillInfo[];
@@ -197,10 +193,18 @@ function App() {
   );
 
   const onChangeThemeButtonClick = useCallback(() => {
+    const hamburger = document.querySelector("header .hamburger") as HTMLElement;
+    const menu = document.getElementById(MENU_ID);
+    if (!menu) return;
+    if (menuVisible) {
+      slideUp(menu, 5);
+      setMenuVisible(false);
+      hamburger.style.backgroundColor = "inherit";
+    }
     themeManager.changeTheme();
     const newTheme = themeManager.current;
     setTheme(newTheme);
-  }, [themeManager]);
+  }, [menuVisible, themeManager]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(observerCallback, {
