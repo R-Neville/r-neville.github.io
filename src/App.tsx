@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo, MouseEvent } from "react";
+import { useEffect, useState, useCallback, MouseEvent } from "react";
 import themes from "./themes";
 import { slideDown, slideUp } from "./helpers";
 import { addEvent, removeEvent } from "./events";
@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import Section from "./components/Section";
 import Footer from "./components/Footer";
 import Expander from "./components/Expander";
+import CompetencyGraph, { SkillInfo } from "./components/CompetencyGraph";
 
 export interface LinkItem {
   text: string;
@@ -20,39 +21,90 @@ const PROJECTS_SECTION_ID = "projects";
 const CONTACT_SECTION_ID = "contact";
 const MAX_MENU_WIDTH = 920;
 const HEADER_HEIGHT = 75;
-// const MY_GITHUB = "https://github.com/R-Neville";
 const MY_LINKEDIN = "https://linkedin.com/in/r-neville";
+
+const skills = [
+  {
+    name: "CSS",
+    competency: 10,
+  },
+  {
+    name: "JavaScript",
+    competency: 9,
+  },
+  {
+    name: "TypeScript",
+    competency: 7,
+  },
+  {
+    name: "React.js",
+    competency: 7,
+  },
+  {
+    name: "Ruby",
+    competency: 7,
+  },
+  {
+    name: "Node.js",
+    competency: 6,
+  },
+  {
+    name: "Electron.js",
+    competency: 6,
+  },
+  {
+    name: "Ruby on Rails",
+    competency: 6,
+  },
+  {
+    name: "Express.js",
+    competency: 5,
+  },
+  {
+    name: "python",
+    competency: 4,
+  },
+  {
+    name: "C++",
+    competency: 4,
+  },
+  {
+    name: "Qt5",
+    competency: 4,
+  },
+] as SkillInfo[];
+
+const appLinks = [
+  {
+    text: "Welcome",
+    selector: `#${TOP_SECTION_ID}`,
+  },
+  {
+    text: "About",
+    selector: `#${ABOUT_SECTION_ID}`,
+  },
+  {
+    text: "Skills",
+    selector: `#${SKILLS_SECTION_ID}`,
+  },
+  {
+    text: "Projects",
+    selector: `#${PROJECTS_SECTION_ID}`,
+  },
+  {
+    text: "Contact",
+    selector: `#${CONTACT_SECTION_ID}`,
+  },
+] as LinkItem[];
 
 function App() {
   let theme = themes.dark;
 
-  const appLinks = useMemo(() => {
-    return [
-      {
-        text: "Welcome",
-        selector: `#${TOP_SECTION_ID}`,
-      },
-      {
-        text: "About",
-        selector: `#${ABOUT_SECTION_ID}`,
-      },
-      {
-        text: "Skills",
-        selector: `#${SKILLS_SECTION_ID}`,
-      },
-      {
-        text: "Projects",
-        selector: `#${PROJECTS_SECTION_ID}`,
-      },
-      {
-        text: "Contact",
-        selector: `#${CONTACT_SECTION_ID}`,
-      },
-    ];
-  }, []);
+  const initialSkill = {} as SkillInfo;
 
   const [currentSection, setCurrentSection] = useState(appLinks[0].selector);
   const [menuVisible, setMenuVisible] = useState(false);
+  const [currentSkill, setCurrentSkill] = useState(initialSkill);
 
   const onWindowResize = useCallback(() => {
     const hamburger = document.querySelector(
@@ -126,7 +178,6 @@ function App() {
         slideUp(menu, 5, () => {
           const section = document.querySelector(sectionId);
           if (section) {
-            setCurrentSection(sectionId);
             (section.previousElementSibling as HTMLElement).scrollIntoView({
               behavior: "smooth",
             });
@@ -137,7 +188,6 @@ function App() {
       } else {
         const section = document.querySelector(sectionId);
         if (section) {
-          setCurrentSection(sectionId);
           (section.previousElementSibling as HTMLElement).scrollIntoView({
             behavior: "smooth",
           });
@@ -199,6 +249,7 @@ function App() {
           </p>,
           <Expander
             key={2}
+            showText={"Show More"}
             children={[
               <p key={1} style={{ display: "none", ...pStyles }}>
                 I'm a passionate programmer and I've use numerous languages in
@@ -232,6 +283,7 @@ function App() {
           </p>,
           <Expander
             key={2}
+            showText={"Show More"}
             children={[
               <p key={1} style={{ display: "none", ...pStyles }}>
                 I'm a quick learner and transitioning to new languages or
@@ -248,11 +300,79 @@ function App() {
   };
 
   const buildSkillsSection = () => {
+    const skillDivs = skills.map((skill, index) => {
+      function onMouseEnter(event: MouseEvent<HTMLDivElement>) {
+        const skillDiv = event.target as HTMLElement;
+        skillDiv.style.backgroundColor = theme.bgAccent;
+        setCurrentSkill(skill);
+      }
+
+      function onMouseLeave(event: MouseEvent<HTMLDivElement>) {
+        const skillDiv = event.target as HTMLElement;
+        const bars = document.querySelectorAll(".comp-graph .bar");
+        skillDiv.style.backgroundColor = theme.bgPrimary;
+        bars.forEach((bar) => {
+          (bar as HTMLElement).style.backgroundColor = "inherit";
+        });
+        setCurrentSkill(initialSkill);
+      }
+
+      return (
+        <div
+          key={index}
+          className="skill"
+          style={{
+            padding: "0.5em 1em",
+            margin: "0.5em",
+            backgroundColor: theme.bgPrimary,
+            color: theme.fgPrimary,
+            cursor: "pointer",
+          }}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+        >
+          {skill.name}
+        </div>
+      );
+    });
+
     return (
       <Section
         id={SKILLS_SECTION_ID}
         heading={"🧰 My Skills"}
-        children={[<p key={1} style={pStyles}></p>]}
+        children={[
+          <p key={1} style={pStyles}>
+            These are some of the languages and frameworks that I have
+            experience with. Hover over or click one to see how I rate* myself!
+          </p>,
+          <div
+            key={2}
+            className={"skills"}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            {skillDivs}
+          </div>,
+          <CompetencyGraph key={3} skill={currentSkill} />,
+          <p
+            key={4}
+            style={{
+              fontSize: "0.7em",
+              color: theme.bgPrimary,
+              textAlign: "center",
+            }}
+          >
+            * Ratings are out of 15, with the following competency ranges:
+            Beginner (1-3), Familiar (4-6), Proficient (7-9), Advanced (10-12),
+            and Expert (13-15). I have been at least highly familiar with all of
+            these technologies at some point - the ratings reflect my current
+            working knowledge.
+          </p>,
+        ]}
       />
     );
   };
