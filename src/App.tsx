@@ -267,8 +267,8 @@ function App() {
             children={[
               <p key={1} style={{ display: "none", ...pStyles }}>
                 I'm a passionate programmer and I've use numerous languages in
-                the past, including C, C++, and Python, but I am particularly
-                drawn to Web development.
+                the past, including C++ and Python, but I am particularly drawn
+                to Web development.
               </p>,
               <p key={2} style={{ display: "none", ...pStyles }}>
                 I'm familiar with Node.js - I've worked on a handful of personal
