@@ -4,7 +4,7 @@ import themes from "../themes";
 
 const ANIMATION_DURATION_FACTOR = 10;
 
-function Expander(props: { children: JSX.Element | JSX.Element[] }) {
+function Expander(props: { children: JSX.Element | JSX.Element[], showText: string }) {
   const theme = themes.dark;
 
   const btnStyles = {
@@ -98,7 +98,7 @@ function Expander(props: { children: JSX.Element | JSX.Element[] }) {
         onMouseEnter={onBtnMouseEnter}
         onMouseLeave={onBtnMouseLeave}
       >
-        Show More
+        {props.showText}
       </button>
       <button
         className="hide"

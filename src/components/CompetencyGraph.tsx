@@ -6,7 +6,81 @@ export interface SkillInfo {
   competency: number;
 }
 
-const COMPETENCIES = 15;
+const COMPETENCY_MAX = 15;
+
+interface CompetencyLevel {
+  category: string;
+  detail: string;
+}
+
+const BEGINNER = "Beginner";
+const FAMILIAR = "Familiar";
+const PROFICIENT = "Proficient";
+const ADVANCED = "ADVANCED";
+const EXPERT = "EXPERT";
+
+const COMPETENCIES = [
+  {
+    category: BEGINNER,
+    detail: "1",
+  },
+  {
+    category: BEGINNER,
+    detail: "2",
+  },
+  {
+    category: BEGINNER,
+    detail: "3",
+  },
+  {
+    category: FAMILIAR,
+    detail: "4",
+  },
+  {
+    category: FAMILIAR,
+    detail: "5",
+  },
+  {
+    category: FAMILIAR,
+    detail: "6",
+  },
+  {
+    category: PROFICIENT,
+    detail: "7",
+  },
+  {
+    category: PROFICIENT,
+    detail: "8",
+  },
+  {
+    category: PROFICIENT,
+    detail: "9",
+  },
+  {
+    category: ADVANCED,
+    detail: "10",
+  },
+  {
+    category: ADVANCED,
+    detail: "11",
+  },
+  {
+    category: ADVANCED,
+    detail: "12",
+  },
+  {
+    category: EXPERT,
+    detail: "13",
+  },
+  {
+    category: EXPERT,
+    detail: "14",
+  },
+  {
+    category: EXPERT,
+    detail: "15",
+  },
+] as CompetencyLevel[];
 
 function CompetencyGraph(props: { skill: SkillInfo }) {
   const theme = themes.dark;
@@ -21,9 +95,16 @@ function CompetencyGraph(props: { skill: SkillInfo }) {
         }, (index + 1) * 100);
       }
     });
+    const detail = document.querySelector(".comp-graph .description");
+    const competency = COMPETENCIES[props.skill.competency - 1];
+    if (detail) {
+      setTimeout(() => {
+        detail.textContent = `${competency.category} - ${competency.detail}`;
+      });
+    }
   }, [props.skill, theme]);
 
-  const bars = Array(COMPETENCIES)
+  const bars = Array(COMPETENCY_MAX)
     .fill(0)
     .map((_item, index) => {
       return (
@@ -37,9 +118,12 @@ function CompetencyGraph(props: { skill: SkillInfo }) {
             height: "30px",
             width: "100%",
             border: `1px solid ${theme.bgPrimary}`,
+            fontSize: "10px",
             color: theme.bgPrimary,
           }}
-        >{index + 1}</div>
+        >
+          {index + 1}
+        </div>
       );
     });
 
@@ -63,7 +147,10 @@ function CompetencyGraph(props: { skill: SkillInfo }) {
             height: "30px",
             backgroundColor: theme.bgSecondary,
           }}
-        >{bars}</div>
+        >
+          {bars}
+        </div>
+        <p className="description" style={{ color: theme.bgAccent, fontSize: "1em" }}></p>
       </div>
     );
   }

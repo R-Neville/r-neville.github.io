@@ -223,6 +223,7 @@ function App() {
           </p>,
           <Expander
             key={2}
+            showText={"Show More"}
             children={[
               <p key={1} style={{ display: "none", ...pStyles }}>
                 I'm a passionate programmer and I've use numerous languages in
@@ -256,6 +257,7 @@ function App() {
           </p>,
           <Expander
             key={2}
+            showText={"Show More"}
             children={[
               <p key={1} style={{ display: "none", ...pStyles }}>
                 I'm a quick learner and transitioning to new languages or
@@ -314,7 +316,7 @@ function App() {
         children={[
           <p key={1} style={pStyles}>
             These are some of the languages and frameworks that I have used.
-            Hover over or click to see competency ratings!
+            Hover over or click to see how I rate myself!
           </p>,
           <div
             key={2}
@@ -329,6 +331,7 @@ function App() {
             {skillDivs}
           </div>,
           <CompetencyGraph key={3} skill={currentSkill} />,
+          // <Expander showText={"View "}/>
         ]}
       />
     );
