@@ -9,6 +9,6 @@ const dark = {
   fgSecondary: "#EBEDEF",
 } as Theme;
 
-export default {
-  dark
-};
+const themes = { dark };
+
+export default themes;
