@@ -1,5 +1,7 @@
 import Theme from "../Theme";
 
+const HEADER_HEIGHT = 75;
+
 function Section(props: {
   theme: Theme,
   id: string;
@@ -15,10 +17,10 @@ function Section(props: {
         flexDirection: "column",
         alignItems: "center",
         padding: "1em",
+        paddingTop: HEADER_HEIGHT + "px",
         width: "100%",
         minHeight: "100vh",
         margin: "0 auto",
-        marginBottom: "1em",
         backgroundColor: theme.fgPrimary,
       }}
     >

@@ -20,7 +20,6 @@ const SKILLS_SECTION_ID = "skills";
 const PROJECTS_SECTION_ID = "projects";
 const CONTACT_SECTION_ID = "contact";
 const MAX_MENU_WIDTH = 920;
-const HEADER_HEIGHT = 75;
 const MY_LINKEDIN = "https://linkedin.com/in/r-neville";
 
 const skills = [
@@ -173,7 +172,7 @@ function App() {
         slideUp(menu, 5, () => {
           const section = document.querySelector(sectionId);
           if (section) {
-            (section.previousElementSibling as HTMLElement).scrollIntoView({
+            (section as HTMLElement).scrollIntoView({
               behavior: "smooth",
             });
           }
@@ -183,7 +182,7 @@ function App() {
       } else {
         const section = document.querySelector(sectionId);
         if (section) {
-          (section.previousElementSibling as HTMLElement).scrollIntoView({
+          (section as HTMLElement).scrollIntoView({
             behavior: "smooth",
           });
         }
@@ -243,10 +242,6 @@ function App() {
     onNavLinkClick,
     onChangeThemeButtonClick,
   ]);
-
-  function spacerDiv() {
-    return <div style={{ width: "100%", height: HEADER_HEIGHT + "px" }}></div>;
-  }
 
   const pStyles = {
     color: theme.bgAccent,
@@ -474,15 +469,10 @@ function App() {
           flexDirection: "column",
         }}
       >
-        {spacerDiv()}
         {buildTopSection()}
-        {spacerDiv()}
         {buildAboutSection()}
-        {spacerDiv()}
         {buildSkillsSection()}
-        {spacerDiv()}
         {buildProjectsSection()}
-        {spacerDiv()}
         {buildContactSection()}
       </main>
       <Footer theme={theme} linkItems={appLinks} />
