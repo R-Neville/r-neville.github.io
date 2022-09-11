@@ -150,7 +150,7 @@ function App() {
         slideUp(menu, 5, () => {
           const section = document.querySelector(sectionId);
           if (section) {
-            setCurrentSection(sectionId);
+            // setCurrentSection(sectionId);
             (section.previousElementSibling as HTMLElement).scrollIntoView({
               behavior: "smooth",
             });
@@ -161,7 +161,7 @@ function App() {
       } else {
         const section = document.querySelector(sectionId);
         if (section) {
-          setCurrentSection(sectionId);
+          // setCurrentSection(sectionId);
           (section.previousElementSibling as HTMLElement).scrollIntoView({
             behavior: "smooth",
           });
