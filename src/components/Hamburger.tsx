@@ -1,13 +1,11 @@
 import { MouseEvent } from "react";
-import themes from "../themes";
 
-function Hamburger() {
-  const theme = themes.dark;
+function Hamburger(props: { lineColor: string }) {
 
   const lineStyles = {
     height: "6px",
     width: "30px",
-    backgroundColor: theme.fgPrimary,
+    backgroundColor: props.lineColor,
   };
 
   function onClick(event: MouseEvent<HTMLDivElement>) {

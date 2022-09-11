@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import themes from "../themes";
+import Theme from "../Theme";
 
 export interface SkillInfo {
   name: string;
@@ -82,8 +82,8 @@ const COMPETENCIES = [
   },
 ] as CompetencyLevel[];
 
-function CompetencyGraph(props: { skill: SkillInfo }) {
-  const theme = themes.dark;
+function CompetencyGraph(props: { theme: Theme, skill: SkillInfo }) {
+  const theme = props.theme;
 
   useEffect(() => {
     const bars = document.querySelectorAll(".comp-graph .bar");

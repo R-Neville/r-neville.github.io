@@ -1,13 +1,19 @@
 import { MouseEvent } from "react";
 import { LinkItem } from "../App";
 import { dispatch } from "../events";
+import Theme from "../Theme";
 import NavLink from "./NavLink";
-import themes from "../themes";
 import Hamburger from "./Hamburger";
 import Menu from "./Menu";
+import PaletteIcon from "./PaletteIcon";
 
-function Header(props: { title: string; linkItems: LinkItem[]; currentLink: string }) {
-  const theme = themes.dark;
+function Header(props: {
+  theme: Theme;
+  title: string;
+  linkItems: LinkItem[];
+  currentLink: string;
+}) {
+  const theme = props.theme;
 
   function onLinkElClick(event: MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
@@ -44,19 +50,43 @@ function Header(props: { title: string; linkItems: LinkItem[]; currentLink: stri
       }}
     >
       <div
+        className="header"
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
         }}
       >
-        <h1 style={{ margin: 0, color: theme.fgPrimary }}>
-          {props.title}
-        </h1>
-        <nav style={{ display: "none" }}>{linkEls}</nav>
-        <Hamburger />
+        <h1 style={{ margin: 0, color: theme.fgPrimary }}>{props.title}</h1>
+        <nav style={{ display: "none" }}>
+          {linkEls}{" "}
+          <button
+            className="change-theme"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "40px",
+              height: "40px",
+              border: "none",
+              borderRadius: "50%",
+              marginLeft: "1em",
+              backgroundColor: theme.fgPrimary,
+              cursor: "pointer",
+            }}
+          >
+            <PaletteIcon width={25} height={25} color={theme.bgAccent} />
+          </button>
+        </nav>
+
+        <Hamburger lineColor={theme.fgPrimary} />
       </div>
-      <Menu id={"menu"} linkItems={props.linkItems} currentLink={props.currentLink}/>
+      <Menu
+        theme={theme}
+        id={"menu"}
+        linkItems={props.linkItems}
+        currentLink={props.currentLink}
+      />
     </header>
   );
 }

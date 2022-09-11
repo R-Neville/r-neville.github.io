@@ -1,5 +1,4 @@
 import { useEffect, useState, useCallback, MouseEvent } from "react";
-import themes from "./themes";
 import { slideDown, slideUp } from "./helpers";
 import { addEvent, removeEvent } from "./events";
 import Header from "./components/Header";
@@ -7,6 +6,7 @@ import Section from "./components/Section";
 import Footer from "./components/Footer";
 import Expander from "./components/Expander";
 import CompetencyGraph, { SkillInfo } from "./components/CompetencyGraph";
+import ThemeManager from "./ThemeManager";
 
 export interface LinkItem {
   text: string;
@@ -98,10 +98,9 @@ const appLinks = [
 ] as LinkItem[];
 
 function App() {
-  let theme = themes.dark;
-
+  const themeManager = new ThemeManager();
   const initialSkill = {} as SkillInfo;
-
+  const [theme, setTheme] = useState(themeManager.current);
   const [currentSection, setCurrentSection] = useState(appLinks[0].selector);
   const [menuVisible, setMenuVisible] = useState(false);
   const [currentSkill, setCurrentSkill] = useState(initialSkill);
@@ -240,6 +239,7 @@ function App() {
   const buildTopSection = () => {
     return (
       <Section
+        theme={theme}
         id={TOP_SECTION_ID}
         heading={"👋 Hi!"}
         children={[
@@ -248,6 +248,7 @@ function App() {
             and this is my portfolio site!
           </p>,
           <Expander
+            theme={theme}
             key={2}
             showText={"Show More"}
             children={[
@@ -273,6 +274,7 @@ function App() {
   const buildAboutSection = () => {
     return (
       <Section
+        theme={theme}
         id={ABOUT_SECTION_ID}
         heading={"📖 About Me"}
         children={[
@@ -283,6 +285,7 @@ function App() {
           </p>,
           <Expander
             key={2}
+            theme={theme}
             showText={"Show More"}
             children={[
               <p key={1} style={{ display: "none", ...pStyles }}>
@@ -338,6 +341,7 @@ function App() {
 
     return (
       <Section
+        theme={theme}
         id={SKILLS_SECTION_ID}
         heading={"🧰 My Skills"}
         children={[
@@ -357,7 +361,7 @@ function App() {
           >
             {skillDivs}
           </div>,
-          <CompetencyGraph key={3} skill={currentSkill} />,
+          <CompetencyGraph key={3} theme={theme} skill={currentSkill} />,
           <p
             key={4}
             style={{
@@ -378,7 +382,9 @@ function App() {
   };
 
   const buildProjectsSection = () => {
-    return <Section id={PROJECTS_SECTION_ID} heading={"🛠️ Projects"} />;
+    return (
+      <Section theme={theme} id={PROJECTS_SECTION_ID} heading={"🛠️ Projects"} />
+    );
   };
 
   const buildContactSection = () => {
@@ -405,6 +411,7 @@ function App() {
 
     return (
       <Section
+        theme={theme}
         id={CONTACT_SECTION_ID}
         heading={"📥 Contact"}
         children={[
@@ -435,9 +442,11 @@ function App() {
         flexDirection: "column",
         width: "100%",
         backgroundColor: theme.bgSecondary,
+        userSelect: "none",
       }}
     >
       <Header
+        theme={theme}
         key={currentSection}
         title={"R-Neville"}
         linkItems={appLinks}
@@ -461,7 +470,7 @@ function App() {
         {spacerDiv()}
         {buildContactSection()}
       </main>
-      <Footer linkItems={appLinks} />
+      <Footer theme={theme} linkItems={appLinks} />
     </div>
   );
 }

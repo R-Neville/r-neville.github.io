@@ -1,11 +1,12 @@
 import { MouseEvent } from "react";
-import themes from "../themes";
+import Theme from "../Theme";
 import { LinkItem } from "../App";
 import { dispatch } from "../events";
 import NavLink from "./NavLink";
+import PaletteIcon from "./PaletteIcon";
 
-function Menu(props: { id: string; linkItems: LinkItem[], currentLink: string }) {
-  const theme = themes.dark;
+function Menu(props: { theme: Theme, id: string; linkItems: LinkItem[], currentLink: string }) {
+  const theme = props.theme;
 
   function onLinkElClick(event: MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
@@ -24,7 +25,7 @@ function Menu(props: { id: string; linkItems: LinkItem[], currentLink: string })
         active={active}
         activeBg={theme.bgPrimary}
         onClick={onLinkElClick}
-        customStyles={{ textAlign: "right" }}
+        customStyles={{ textAlign: "center" }}
       />
     );
   });
@@ -40,6 +41,23 @@ function Menu(props: { id: string; linkItems: LinkItem[], currentLink: string })
       }}
     >
       <nav style={{ display: "flex", flexDirection: "column" }}>{linkEls}</nav>
+      <button
+          className="change-theme"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "50px",
+            height: "50px",
+            border: "none",
+            borderRadius: "50%",
+            margin: "1em auto",
+            backgroundColor: theme.fgPrimary,
+            cursor: "pointer",
+          }}
+        >
+          <PaletteIcon width={30} height={30}color={theme.bgAccent}/>
+        </button>
     </div>
   );
 }
