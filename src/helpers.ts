@@ -37,7 +37,7 @@ export function slideDown(
     currentHeight += HEIGHT_INCREMENT;
     element.style.height = currentHeight + "px";
     if (durationFactor === 0) {
-      element.style.height = targetHeight + "px";
+      element.style.height = "auto";
       clearInterval(intervalID);
     }
   }, MIN_INTERVAL_DURATION);

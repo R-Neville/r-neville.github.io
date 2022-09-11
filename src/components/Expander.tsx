@@ -57,7 +57,7 @@ function Expander(props: { children: JSX.Element | JSX.Element[] }) {
           Array.from(expandables.children).forEach((e) => {
             (e as HTMLElement).style.display = "none";
           });
-          expandables.style.display = "block";
+          expandables.style.display = "flex";
           const showMoreButton = parent.querySelector(
             ".show-more"
           ) as HTMLElement;
@@ -85,7 +85,12 @@ function Expander(props: { children: JSX.Element | JSX.Element[] }) {
       className="expander"
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      <div className="expandables">{props.children}</div>
+      <div
+        className="expandables"
+        style={{ display: "flex", flexDirection: "column" }}
+      >
+        {props.children}
+      </div>
       <button
         className="show-more"
         style={btnStyles}
