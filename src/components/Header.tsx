@@ -21,6 +21,11 @@ function Header(props: {
     dispatch("nav-link:click", navLink, {});
   }
 
+  function onChangeThemeButtonClick(event: MouseEvent<HTMLButtonElement>) {
+    const button = event.target as HTMLElement;
+    dispatch("change-theme-button:click", button, {});
+  }
+
   const linkEls = props.linkItems.map((li, index) => {
     const active = li.selector === props.currentLink;
     return (
@@ -74,6 +79,7 @@ function Header(props: {
               backgroundColor: theme.fgPrimary,
               cursor: "pointer",
             }}
+            onClick={onChangeThemeButtonClick}
           >
             <PaletteIcon width={25} height={25} color={theme.bgAccent} />
           </button>

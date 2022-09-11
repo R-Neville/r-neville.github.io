@@ -10,6 +10,16 @@ const light = {
   fgSecondary: "#EBEDEF",
 } as Theme;
 
-const themes = [ light ];
+const dark = {
+  name: "dark",
+  bgPrimary: "#D6DBDF",
+  bgSecondary: "#AEB6BF",
+  bgHighlight: "#85929E",
+  bgAccent: "#EBEDEF",
+  fgPrimary: "#2E4053",
+  fgSecondary: "#283747",
+} as Theme;
+
+const themes = [light, dark];
 
 export default themes;

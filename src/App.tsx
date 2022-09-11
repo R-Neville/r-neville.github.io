@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, MouseEvent } from "react";
+import { useMemo, useEffect, useState, useCallback, MouseEvent } from "react";
 import { slideDown, slideUp } from "./helpers";
 import { addEvent, removeEvent } from "./events";
 import Header from "./components/Header";
@@ -98,7 +98,7 @@ const appLinks = [
 ] as LinkItem[];
 
 function App() {
-  const themeManager = new ThemeManager();
+  const themeManager = useMemo(() => new ThemeManager(), []);
   const initialSkill = {} as SkillInfo;
   const [theme, setTheme] = useState(themeManager.current);
   const [currentSection, setCurrentSection] = useState(appLinks[0].selector);
@@ -196,6 +196,12 @@ function App() {
     [menuVisible]
   );
 
+  const onChangeThemeButtonClick = useCallback(() => {
+    themeManager.changeTheme();
+    const newTheme = themeManager.current;
+    setTheme(newTheme);
+  }, [themeManager]);
+
   useEffect(() => {
     const observer = new IntersectionObserver(observerCallback, {
       threshold: 0.5,
@@ -208,6 +214,7 @@ function App() {
     addEvent(window, "scroll", onWindowScroll);
     addEvent(document, "hamburger:click", onHamburgerClick);
     addEvent(document, "nav-link:click", onNavLinkClick);
+    addEvent(document, "change-theme-button:click", onChangeThemeButtonClick);
     return () => {
       sections.forEach((section) => {
         observer.unobserve(section);
@@ -216,6 +223,11 @@ function App() {
       removeEvent(window, "scroll", onWindowScroll);
       removeEvent(document, "hamburger:click", onHamburgerClick);
       removeEvent(document, "nav-link:click", onNavLinkClick);
+      removeEvent(
+        document,
+        "change-theme-button:click",
+        onChangeThemeButtonClick
+      );
     };
   }, [
     menuVisible,
@@ -225,6 +237,7 @@ function App() {
     onWindowScroll,
     onHamburgerClick,
     onNavLinkClick,
+    onChangeThemeButtonClick,
   ]);
 
   function spacerDiv() {

@@ -21,7 +21,19 @@ class ThemeManager {
     return this._current;
   }
 
-  setTheme(index: number) {
+  changeTheme() {
+    let newThemeIndex = this.getCurrentIndex() + 1;
+    if (newThemeIndex < themes.length) {
+      this._current = themes[newThemeIndex];
+      this.setTheme(newThemeIndex);
+    } else {
+      this._current = themes[0];
+      this.setTheme(0);
+    }
+    
+  }
+
+  private setTheme(index: number) {
     if (index < themes.length) {
       window.localStorage.setItem(THEME_KEY, index.toString());
     }
