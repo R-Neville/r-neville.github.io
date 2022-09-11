@@ -95,11 +95,11 @@ function CompetencyGraph(props: { skill: SkillInfo }) {
         }, (index + 1) * 100);
       }
     });
-    const detail = document.querySelector(".comp-graph .description");
+    const description = document.querySelector(".comp-graph .description");
     const competency = COMPETENCIES[props.skill.competency - 1];
-    if (detail) {
+    if (description) {
       setTimeout(() => {
-        detail.textContent = `${competency.category} - ${competency.detail}`;
+        description.textContent = `${competency.category} - ${competency.detail}`;
       });
     }
   }, [props.skill, theme]);
@@ -117,9 +117,9 @@ function CompetencyGraph(props: { skill: SkillInfo }) {
             alignItems: "center",
             height: "30px",
             width: "100%",
-            border: `1px solid ${theme.bgPrimary}`,
+            border: `1px solid ${theme.bgSecondary}`,
             fontSize: "10px",
-            color: theme.bgPrimary,
+            color: theme.bgSecondary,
           }}
         >
           {index + 1}

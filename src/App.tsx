@@ -25,24 +25,52 @@ const MY_LINKEDIN = "https://linkedin.com/in/r-neville";
 
 const skills = [
   {
+    name: "CSS",
+    competency: 10,
+  },
+  {
     name: "JavaScript",
-    competency: 8,
+    competency: 9,
   },
   {
     name: "TypeScript",
     competency: 7,
   },
   {
+    name: "React.js",
+    competency: 7,
+  },
+  {
     name: "Ruby",
+    competency: 7,
+  },
+  {
+    name: "Node.js",
+    competency: 6,
+  },
+  {
+    name: "Electron.js",
+    competency: 6,
+  },
+  {
+    name: "Ruby on Rails",
+    competency: 6,
+  },
+  {
+    name: "Express.js",
     competency: 5,
   },
   {
     name: "python",
-    competency: 3,
+    competency: 4,
   },
   {
     name: "C++",
-    competency: 3,
+    competency: 4,
+  },
+  {
+    name: "Qt5",
+    competency: 4,
   },
 ] as SkillInfo[];
 
@@ -150,7 +178,6 @@ function App() {
         slideUp(menu, 5, () => {
           const section = document.querySelector(sectionId);
           if (section) {
-            // setCurrentSection(sectionId);
             (section.previousElementSibling as HTMLElement).scrollIntoView({
               behavior: "smooth",
             });
@@ -161,7 +188,6 @@ function App() {
       } else {
         const section = document.querySelector(sectionId);
         if (section) {
-          // setCurrentSection(sectionId);
           (section.previousElementSibling as HTMLElement).scrollIntoView({
             behavior: "smooth",
           });
@@ -274,7 +300,7 @@ function App() {
   };
 
   const buildSkillsSection = () => {
-    const skillDivs = skills.map((skill) => {
+    const skillDivs = skills.map((skill, index) => {
       function onMouseEnter(event: MouseEvent<HTMLDivElement>) {
         const skillDiv = event.target as HTMLElement;
         skillDiv.style.backgroundColor = theme.bgAccent;
@@ -293,6 +319,7 @@ function App() {
 
       return (
         <div
+          key={index}
           className="skill"
           style={{
             padding: "0.5em 1em",
@@ -315,15 +342,15 @@ function App() {
         heading={"🧰 My Skills"}
         children={[
           <p key={1} style={pStyles}>
-            These are some of the languages and frameworks that I have used.
-            Hover over or click to see how I rate myself!
+            These are some of the languages and frameworks that I have
+            experience with. Hover over or click one to see how I rate* myself!
           </p>,
           <div
             key={2}
             className={"skills"}
             style={{
               display: "flex",
-              justifyContent: "space-evenly",
+              justifyContent: "center",
               alignItems: "center",
               flexWrap: "wrap",
             }}
@@ -331,7 +358,20 @@ function App() {
             {skillDivs}
           </div>,
           <CompetencyGraph key={3} skill={currentSkill} />,
-          // <Expander showText={"View "}/>
+          <p
+            key={4}
+            style={{
+              fontSize: "0.7em",
+              color: theme.bgPrimary,
+              textAlign: "center",
+            }}
+          >
+            * Ratings are out of 15, with the following competency ranges:
+            Beginner (1-3), Familiar (4-6), Proficient (7-9), Advanced (10-12),
+            and Expert (13-15). I have been at least highly familiar with all of
+            these technologies at some point - the ratings reflect my current
+            working knowledge.
+          </p>,
         ]}
       />
     );
