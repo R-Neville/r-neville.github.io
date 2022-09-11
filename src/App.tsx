@@ -226,12 +226,9 @@ function App() {
         heading={"📖 About Me"}
         children={[
           <p key={1} style={pStyles}>
-            I was born in Australia, and grew up in rural Queensland. I
-            discovered programming after I finished highschool, and studied IT
-            at the University of Southern Queensland for two years before
-            enrolling in a Web development bootcamp at Coder Academy. I'm due to
-            finish in November, 2022, and can't wait to kickstart my career in
-            the industry!
+            I was born and raised in Queensland, Australia. I discovered
+            programming after finishing highschool and I'm due to finish a Web
+            dev bootcamp through Coder Academy in November, 2022.
           </p>,
           <Expander
             key={2}
