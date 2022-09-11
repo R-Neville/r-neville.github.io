@@ -1,11 +1,11 @@
 import { MouseEvent, useCallback, useState } from "react";
 import { slideDown, slideUp } from "../helpers";
-import themes from "../themes";
+import Theme from "../Theme";
 
 const ANIMATION_DURATION_FACTOR = 10;
 
-function Expander(props: { children: JSX.Element | JSX.Element[], showText: string }) {
-  const theme = themes.dark;
+function Expander(props: { theme: Theme, children: JSX.Element | JSX.Element[], showText: string }) {
+  const theme = props.theme;
 
   const btnStyles = {
     padding: "0.5em 1em",

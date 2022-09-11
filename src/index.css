@@ -19,15 +19,15 @@ body,
 }
 
 @media screen and (min-width: 920px) {
-  header .hamburger {
+  header .header .hamburger {
     display: none !important;
   }
 
-  header nav {
+  header .header nav {
     display: flex !important;
   }
 
-  header div {
+  header .header {
     justify-content: space-evenly !important;
   }
 }

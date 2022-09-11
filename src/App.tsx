@@ -1,5 +1,4 @@
-import { useEffect, useState, useCallback, MouseEvent } from "react";
-import themes from "./themes";
+import { useMemo, useEffect, useState, useCallback, MouseEvent } from "react";
 import { slideDown, slideUp } from "./helpers";
 import { addEvent, removeEvent } from "./events";
 import Header from "./components/Header";
@@ -7,6 +6,7 @@ import Section from "./components/Section";
 import Footer from "./components/Footer";
 import Expander from "./components/Expander";
 import CompetencyGraph, { SkillInfo } from "./components/CompetencyGraph";
+import ThemeManager from "./ThemeManager";
 
 export interface LinkItem {
   text: string;
@@ -98,10 +98,9 @@ const appLinks = [
 ] as LinkItem[];
 
 function App() {
-  let theme = themes.dark;
-
+  const themeManager = useMemo(() => new ThemeManager(), []);
   const initialSkill = {} as SkillInfo;
-
+  const [theme, setTheme] = useState(themeManager.current);
   const [currentSection, setCurrentSection] = useState(appLinks[0].selector);
   const [menuVisible, setMenuVisible] = useState(false);
   const [currentSkill, setCurrentSkill] = useState(initialSkill);
@@ -197,6 +196,12 @@ function App() {
     [menuVisible]
   );
 
+  const onChangeThemeButtonClick = useCallback(() => {
+    themeManager.changeTheme();
+    const newTheme = themeManager.current;
+    setTheme(newTheme);
+  }, [themeManager]);
+
   useEffect(() => {
     const observer = new IntersectionObserver(observerCallback, {
       threshold: 0.5,
@@ -209,6 +214,7 @@ function App() {
     addEvent(window, "scroll", onWindowScroll);
     addEvent(document, "hamburger:click", onHamburgerClick);
     addEvent(document, "nav-link:click", onNavLinkClick);
+    addEvent(document, "change-theme-button:click", onChangeThemeButtonClick);
     return () => {
       sections.forEach((section) => {
         observer.unobserve(section);
@@ -217,6 +223,11 @@ function App() {
       removeEvent(window, "scroll", onWindowScroll);
       removeEvent(document, "hamburger:click", onHamburgerClick);
       removeEvent(document, "nav-link:click", onNavLinkClick);
+      removeEvent(
+        document,
+        "change-theme-button:click",
+        onChangeThemeButtonClick
+      );
     };
   }, [
     menuVisible,
@@ -226,6 +237,7 @@ function App() {
     onWindowScroll,
     onHamburgerClick,
     onNavLinkClick,
+    onChangeThemeButtonClick,
   ]);
 
   function spacerDiv() {
@@ -240,6 +252,7 @@ function App() {
   const buildTopSection = () => {
     return (
       <Section
+        theme={theme}
         id={TOP_SECTION_ID}
         heading={"👋 Hi!"}
         children={[
@@ -248,13 +261,14 @@ function App() {
             and this is my portfolio site!
           </p>,
           <Expander
+            theme={theme}
             key={2}
             showText={"Show More"}
             children={[
               <p key={1} style={{ display: "none", ...pStyles }}>
                 I'm a passionate programmer and I've use numerous languages in
-                the past, including C, C++, and Python, but I am particularly
-                drawn to Web development.
+                the past, including C++ and Python, but I am particularly drawn
+                to Web development.
               </p>,
               <p key={2} style={{ display: "none", ...pStyles }}>
                 I'm familiar with Node.js - I've worked on a handful of personal
@@ -273,6 +287,7 @@ function App() {
   const buildAboutSection = () => {
     return (
       <Section
+        theme={theme}
         id={ABOUT_SECTION_ID}
         heading={"📖 About Me"}
         children={[
@@ -283,6 +298,7 @@ function App() {
           </p>,
           <Expander
             key={2}
+            theme={theme}
             showText={"Show More"}
             children={[
               <p key={1} style={{ display: "none", ...pStyles }}>
@@ -338,6 +354,7 @@ function App() {
 
     return (
       <Section
+        theme={theme}
         id={SKILLS_SECTION_ID}
         heading={"🧰 My Skills"}
         children={[
@@ -357,7 +374,7 @@ function App() {
           >
             {skillDivs}
           </div>,
-          <CompetencyGraph key={3} skill={currentSkill} />,
+          <CompetencyGraph key={3} theme={theme} skill={currentSkill} />,
           <p
             key={4}
             style={{
@@ -378,39 +395,40 @@ function App() {
   };
 
   const buildProjectsSection = () => {
-    return <Section id={PROJECTS_SECTION_ID} heading={"🛠️ Projects"} />;
+    return (
+      <Section theme={theme} id={PROJECTS_SECTION_ID} heading={"🛠️ Projects"} />
+    );
   };
 
   const buildContactSection = () => {
     const anchorStyles = {
       padding: "0.5em 1em",
-      border: `1px solid ${theme.bgAccent}`,
       margin: "0.5em",
+      backgroundColor: theme.bgPrimary,
       fontSize: "1em",
-      color: theme.bgAccent,
+      color: theme.fgPrimary,
       textDecoration: "none",
     };
 
     function onAnchorMouseEnter(event: MouseEvent<HTMLAnchorElement>) {
       const anchor = event.target as HTMLElement;
       anchor.style.backgroundColor = theme.bgAccent;
-      anchor.style.color = theme.fgPrimary;
     }
 
     function onAnchorMouseLeave(event: MouseEvent<HTMLAnchorElement>) {
       const anchor = event.target as HTMLElement;
-      anchor.style.backgroundColor = "inherit";
-      anchor.style.color = theme.bgAccent;
+      anchor.style.backgroundColor = theme.bgPrimary;
     }
 
     return (
       <Section
+        theme={theme}
         id={CONTACT_SECTION_ID}
         heading={"📥 Contact"}
         children={[
           <p key={1} style={pStyles}>
             If you would like to contact me about work or collaboration, please
-            don't hesitate to connect with me on LinkedIn!
+            don't hesitate to connect on LinkedIn!
           </p>,
           <a
             key={2}
@@ -435,9 +453,11 @@ function App() {
         flexDirection: "column",
         width: "100%",
         backgroundColor: theme.bgSecondary,
+        userSelect: "none",
       }}
     >
       <Header
+        theme={theme}
         key={currentSection}
         title={"R-Neville"}
         linkItems={appLinks}
@@ -461,7 +481,7 @@ function App() {
         {spacerDiv()}
         {buildContactSection()}
       </main>
-      <Footer linkItems={appLinks} />
+      <Footer theme={theme} linkItems={appLinks} />
     </div>
   );
 }

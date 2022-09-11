@@ -1,18 +1,20 @@
-import themes from "../themes";
+import Theme from "../Theme";
 
 function Section(props: {
+  theme: Theme,
   id: string;
   heading: string;
   children?: JSX.Element | JSX.Element[];
 }) {
-  const theme = themes.dark;
-
+  const theme = props.theme;
   return (
     <section
       id={props.id}
       style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
         padding: "1em",
-        // paddingTop: HEADER_HEIGHT + "px",
         width: "100%",
         minHeight: "100vh",
         margin: "0 auto",
@@ -22,12 +24,13 @@ function Section(props: {
     >
       <div
         style={{
+          flexGrow: 1,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           width: "100%",
+          height: "100%",
           maxWidth: "650px",
-          margin: "0 auto",
         }}
       >
         <h2

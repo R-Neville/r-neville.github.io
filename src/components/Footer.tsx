@@ -1,11 +1,11 @@
 import { MouseEvent } from "react";
 import { LinkItem } from "../App";
 import { dispatch } from "../events";
-import themes from "../themes";
+import Theme from "../Theme";
 import NavLink from "./NavLink";
 
-function Footer(props: { linkItems: LinkItem[] }) {
-  const theme = themes.dark;
+function Footer(props: { theme: Theme, linkItems: LinkItem[] }) {
+  const theme = props.theme;
 
   function onLinkElClick(event: MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
