@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo, MouseEvent } from "react";
+import { useEffect, useState, useCallback, MouseEvent } from "react";
 import themes from "./themes";
 import { slideDown, slideUp } from "./helpers";
 import { addEvent, removeEvent } from "./events";
@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import Section from "./components/Section";
 import Footer from "./components/Footer";
 import Expander from "./components/Expander";
+import CompetencyGraph, { SkillInfo } from "./components/CompetencyGraph";
 
 export interface LinkItem {
   text: string;
@@ -20,39 +21,62 @@ const PROJECTS_SECTION_ID = "projects";
 const CONTACT_SECTION_ID = "contact";
 const MAX_MENU_WIDTH = 920;
 const HEADER_HEIGHT = 75;
-// const MY_GITHUB = "https://github.com/R-Neville";
 const MY_LINKEDIN = "https://linkedin.com/in/r-neville";
+
+const skills = [
+  {
+    name: "JavaScript",
+    competency: 8,
+  },
+  {
+    name: "TypeScript",
+    competency: 7,
+  },
+  {
+    name: "Ruby",
+    competency: 5,
+  },
+  {
+    name: "python",
+    competency: 3,
+  },
+  {
+    name: "C++",
+    competency: 3,
+  },
+] as SkillInfo[];
+
+const appLinks = [
+  {
+    text: "Welcome",
+    selector: `#${TOP_SECTION_ID}`,
+  },
+  {
+    text: "About",
+    selector: `#${ABOUT_SECTION_ID}`,
+  },
+  {
+    text: "Skills",
+    selector: `#${SKILLS_SECTION_ID}`,
+  },
+  {
+    text: "Projects",
+    selector: `#${PROJECTS_SECTION_ID}`,
+  },
+  {
+    text: "Contact",
+    selector: `#${CONTACT_SECTION_ID}`,
+  },
+] as LinkItem[];
 
 function App() {
   let theme = themes.dark;
 
-  const appLinks = useMemo(() => {
-    return [
-      {
-        text: "Welcome",
-        selector: `#${TOP_SECTION_ID}`,
-      },
-      {
-        text: "About",
-        selector: `#${ABOUT_SECTION_ID}`,
-      },
-      {
-        text: "Skills",
-        selector: `#${SKILLS_SECTION_ID}`,
-      },
-      {
-        text: "Projects",
-        selector: `#${PROJECTS_SECTION_ID}`,
-      },
-      {
-        text: "Contact",
-        selector: `#${CONTACT_SECTION_ID}`,
-      },
-    ];
-  }, []);
+  const initialSkill = {} as SkillInfo;
 
   const [currentSection, setCurrentSection] = useState(appLinks[0].selector);
   const [menuVisible, setMenuVisible] = useState(false);
+  const [currentSkill, setCurrentSkill] = useState(initialSkill);
 
   const onWindowResize = useCallback(() => {
     const hamburger = document.querySelector(
@@ -248,11 +272,64 @@ function App() {
   };
 
   const buildSkillsSection = () => {
+    const skillDivs = skills.map((skill) => {
+      function onMouseEnter(event: MouseEvent<HTMLDivElement>) {
+        const skillDiv = event.target as HTMLElement;
+        skillDiv.style.backgroundColor = theme.bgAccent;
+        setCurrentSkill(skill);
+      }
+
+      function onMouseLeave(event: MouseEvent<HTMLDivElement>) {
+        const skillDiv = event.target as HTMLElement;
+        const bars = document.querySelectorAll(".comp-graph .bar");
+        skillDiv.style.backgroundColor = theme.bgPrimary;
+        bars.forEach((bar) => {
+          (bar as HTMLElement).style.backgroundColor = "inherit";
+        });
+        setCurrentSkill(initialSkill);
+      }
+
+      return (
+        <div
+          className="skill"
+          style={{
+            padding: "0.5em 1em",
+            margin: "0.5em",
+            backgroundColor: theme.bgPrimary,
+            color: theme.fgPrimary,
+            cursor: "pointer",
+          }}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+        >
+          {skill.name}
+        </div>
+      );
+    });
+
     return (
       <Section
         id={SKILLS_SECTION_ID}
         heading={"🧰 My Skills"}
-        children={[<p key={1} style={pStyles}></p>]}
+        children={[
+          <p key={1} style={pStyles}>
+            These are some of the languages and frameworks that I have used.
+            Hover over or click to see competency ratings!
+          </p>,
+          <div
+            key={2}
+            className={"skills"}
+            style={{
+              display: "flex",
+              justifyContent: "space-evenly",
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            {skillDivs}
+          </div>,
+          <CompetencyGraph key={3} skill={currentSkill} />,
+        ]}
       />
     );
   };
