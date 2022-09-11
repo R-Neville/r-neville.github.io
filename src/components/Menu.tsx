@@ -41,6 +41,7 @@ function Menu(props: { theme: Theme, id: string; linkItems: LinkItem[], currentL
       style={{
         display: "none",
         flexDirection: "column",
+        alignItems: "center",
         padding: "1em 0",
         backgroundColor: "inherit",
       }}
@@ -56,7 +57,7 @@ function Menu(props: { theme: Theme, id: string; linkItems: LinkItem[], currentL
             height: "50px",
             border: "none",
             borderRadius: "50%",
-            margin: "1em auto",
+            margin: "1em",
             backgroundColor: theme.fgPrimary,
             cursor: "pointer",
           }}

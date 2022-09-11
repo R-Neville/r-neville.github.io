@@ -20,6 +20,7 @@ const SKILLS_SECTION_ID = "skills";
 const PROJECTS_SECTION_ID = "projects";
 const CONTACT_SECTION_ID = "contact";
 const MAX_MENU_WIDTH = 920;
+const MY_GITHUB = "https://github.com/R-Neville";
 const MY_LINKEDIN = "https://linkedin.com/in/r-neville";
 
 const skills = [
@@ -192,7 +193,9 @@ function App() {
   );
 
   const onChangeThemeButtonClick = useCallback(() => {
-    const hamburger = document.querySelector("header .hamburger") as HTMLElement;
+    const hamburger = document.querySelector(
+      "header .hamburger"
+    ) as HTMLElement;
     const menu = document.getElementById(MENU_ID);
     if (!menu) return;
     if (menuVisible) {
@@ -394,8 +397,86 @@ function App() {
   };
 
   const buildProjectsSection = () => {
+    const anchorStyles = {
+      padding: "0.5em 1em",
+      margin: "0.5em",
+      backgroundColor: theme.bgPrimary,
+      fontSize: "1em",
+      color: theme.fgPrimary,
+      textDecoration: "none",
+    };
+
+    function onAnchorMouseEnter(event: MouseEvent<HTMLAnchorElement>) {
+      const anchor = event.target as HTMLElement;
+      anchor.style.backgroundColor = theme.bgAccent;
+    }
+
+    function onAnchorMouseLeave(event: MouseEvent<HTMLAnchorElement>) {
+      const anchor = event.target as HTMLElement;
+      anchor.style.backgroundColor = theme.bgPrimary;
+    }
+
     return (
-      <Section theme={theme} id={PROJECTS_SECTION_ID} heading={"🛠️ Projects"} />
+      <Section
+        theme={theme}
+        id={PROJECTS_SECTION_ID}
+        heading={"🛠️ Projects"}
+        children={[
+          <p key={1} style={pStyles}>
+            I have a handfull of public repositories on my GitHub profile, and I
+            will be adding much more over the coming few months. I published a
+            TypeScript command line argument parser earlier this year (2022),
+            and just finished reworking a color picker and palette app with
+            React called 'Chromaticity'.
+          </p>,
+          <p key={2} style={pStyles}>
+            As part of my Coder Academy studies, I built a two-sided maketplace
+            application with Ruby on Rails. It's called 'SampleSpace' and it's
+            for sharing audio samples for use in music production. This code for
+            this application is on GitHub.
+          </p>,
+          <p key={4} style={pStyles}>
+            As mentioned in earlier sections, I enjoy making desktop
+            applications with Electron.js. I'm currently working on my own IDE
+            using Electron with TypeScript, with custom HTML components for the
+            UI. I'm learning a lot, I'll be publishing the code eventually!
+          </p>,
+          <div key={5} style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", margin: "1em" }}>
+            <a
+              href={MY_GITHUB}
+              style={anchorStyles}
+              onMouseEnter={onAnchorMouseEnter}
+              onMouseLeave={onAnchorMouseLeave}
+            >
+              GitHub
+            </a>
+            <a
+              href={"https://www.npmjs.com/package/sparsely"}
+              style={anchorStyles}
+              onMouseEnter={onAnchorMouseEnter}
+              onMouseLeave={onAnchorMouseLeave}
+            >
+              Sparsely
+            </a>
+            <a
+              href={"https://r-neville.github.io/chromaticity/"}
+              style={anchorStyles}
+              onMouseEnter={onAnchorMouseEnter}
+              onMouseLeave={onAnchorMouseLeave}
+            >
+              Chromaticity
+            </a>
+            <a
+              href={"https://github.com/R-Neville/sample-space"}
+              style={anchorStyles}
+              onMouseEnter={onAnchorMouseEnter}
+              onMouseLeave={onAnchorMouseLeave}
+            >
+              SampleSpace
+            </a>
+          </div>,
+        ]}
+      />
     );
   };
 

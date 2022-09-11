@@ -15,13 +15,10 @@ function Section(props: {
       style={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        padding: "1em",
         paddingTop: HEADER_HEIGHT + "px",
         width: "100%",
         minHeight: "100vh",
-        margin: "0 auto",
-        backgroundColor: theme.fgPrimary,
+        marginBottom: "1em",
       }}
     >
       <div
@@ -30,9 +27,12 @@ function Section(props: {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          padding: "1em",
           width: "100%",
           height: "100%",
           maxWidth: "650px",
+          margin: "0 auto",
+          backgroundColor: theme.fgPrimary,
         }}
       >
         <h2

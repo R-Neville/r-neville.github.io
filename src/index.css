@@ -18,6 +18,10 @@ body,
   margin: 0;
 }
 
+p {
+  text-align: center !important;
+}
+
 @media screen and (min-width: 920px) {
   header .header .hamburger {
     display: none !important;
@@ -29,11 +33,5 @@ body,
 
   header .header {
     justify-content: space-evenly !important;
-  }
-}
-
-@media screen and (max-width: 700px) {
-  p {
-    text-align: center !important;
   }
 }
