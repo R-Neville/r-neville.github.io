@@ -1,7 +1,5 @@
 import themes from "../themes";
 
-const HEADER_HEIGHT = 75;
-
 function Section(props: {
   id: string;
   heading: string;
@@ -14,9 +12,9 @@ function Section(props: {
       id={props.id}
       style={{
         padding: "1em",
-        paddingTop: HEADER_HEIGHT + "px",
+        // paddingTop: HEADER_HEIGHT + "px",
         width: "100%",
-        height: "100vh",
+        minHeight: "100vh",
         margin: "0 auto",
         marginBottom: "1em",
         backgroundColor: theme.fgPrimary,

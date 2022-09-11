@@ -31,3 +31,9 @@ body,
     justify-content: space-evenly !important;
   }
 }
+
+@media screen and (max-width: 700px) {
+  p {
+    text-align: center !important;
+  }
+}

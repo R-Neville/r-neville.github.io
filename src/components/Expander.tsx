@@ -57,7 +57,7 @@ function Expander(props: { children: JSX.Element | JSX.Element[] }) {
           Array.from(expandables.children).forEach((e) => {
             (e as HTMLElement).style.display = "none";
           });
-          expandables.style.display = "block";
+          expandables.style.display = "flex";
           const showMoreButton = parent.querySelector(
             ".show-more"
           ) as HTMLElement;

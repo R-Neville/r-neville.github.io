@@ -1,12 +1,10 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback, useMemo, MouseEvent } from "react";
 import themes from "./themes";
 import { slideDown, slideUp } from "./helpers";
 import { addEvent, removeEvent } from "./events";
 import Header from "./components/Header";
 import Section from "./components/Section";
 import Footer from "./components/Footer";
-import GitSrc from "./assets/images/github-8-64.png";
-import LinkedInSrc from "./assets/images/linkedin-3-64.png";
 import Expander from "./components/Expander";
 
 export interface LinkItem {
@@ -21,8 +19,9 @@ const SKILLS_SECTION_ID = "skills";
 const PROJECTS_SECTION_ID = "projects";
 const CONTACT_SECTION_ID = "contact";
 const MAX_MENU_WIDTH = 920;
-const MY_GITHUB = "https://github.com/R-Neville";
-const MY_LINKEDIN = "www.linkedin.com/in/r-neville";
+const HEADER_HEIGHT = 75;
+// const MY_GITHUB = "https://github.com/R-Neville";
+const MY_LINKEDIN = "https://linkedin.com/in/r-neville";
 
 function App() {
   let theme = themes.dark;
@@ -68,16 +67,32 @@ function App() {
     }
   }, []);
 
+  const onWindowScroll = useCallback(() => {
+    if (menuVisible) {
+      const menu = document.getElementById(MENU_ID);
+      const hamburger = document.querySelector(
+        "header .hamburger"
+      ) as HTMLElement;
+      if (menu) {
+        menu.style.display = "none";
+        setMenuVisible(false);
+        hamburger.style.backgroundColor = "inherit";
+      }
+    }
+  }, [menuVisible]);
+
   const observerCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
+      for (let entry of entries) {
         const section = entry.target;
-        if (entry.isIntersecting) {
-          setCurrentSection(`#${section.id}`);
+        const selector = `#${section.id}`;
+        if (entry.isIntersecting && selector !== currentSection) {
+          setCurrentSection(selector);
+          break;
         }
-      });
+      }
     },
-    []
+    [currentSection]
   );
 
   const onHamburgerClick = useCallback(
@@ -112,7 +127,9 @@ function App() {
           const section = document.querySelector(sectionId);
           if (section) {
             setCurrentSection(sectionId);
-            section.scrollIntoView({ behavior: "smooth" });
+            (section.previousElementSibling as HTMLElement).scrollIntoView({
+              behavior: "smooth",
+            });
           }
         });
         setMenuVisible(false);
@@ -121,7 +138,9 @@ function App() {
         const section = document.querySelector(sectionId);
         if (section) {
           setCurrentSection(sectionId);
-          section.scrollIntoView({ behavior: "smooth" });
+          (section.previousElementSibling as HTMLElement).scrollIntoView({
+            behavior: "smooth",
+          });
         }
       }
     },
@@ -129,12 +148,15 @@ function App() {
   );
 
   useEffect(() => {
-    const observer = new IntersectionObserver(observerCallback);
+    const observer = new IntersectionObserver(observerCallback, {
+      threshold: 0.5,
+    });
     const sections = document.querySelectorAll("section");
     sections.forEach((section) => {
       observer.observe(section);
     });
     addEvent(window, "resize", onWindowResize);
+    addEvent(window, "scroll", onWindowScroll);
     addEvent(document, "hamburger:click", onHamburgerClick);
     addEvent(document, "nav-link:click", onNavLinkClick);
     return () => {
@@ -142,6 +164,7 @@ function App() {
         observer.unobserve(section);
       });
       removeEvent(window, "resize", onWindowResize);
+      removeEvent(window, "scroll", onWindowScroll);
       removeEvent(document, "hamburger:click", onHamburgerClick);
       removeEvent(document, "nav-link:click", onNavLinkClick);
     };
@@ -150,9 +173,14 @@ function App() {
     theme,
     observerCallback,
     onWindowResize,
+    onWindowScroll,
     onHamburgerClick,
     onNavLinkClick,
   ]);
+
+  function spacerDiv() {
+    return <div style={{ width: "100%", height: HEADER_HEIGHT + "px" }}></div>;
+  }
 
   const pStyles = {
     color: theme.bgAccent,
@@ -199,18 +227,24 @@ function App() {
         children={[
           <p key={1} style={pStyles}>
             I was born in Australia, and grew up in rural Queensland. I
-            discovered programming after I finished highschool, and studied
-            IT at the University of Southern Queensland for two years
-            before enrolling in a Web development bootcamp at Coder Academy. I'm
-            due to finish in November, 2022, and can't wait to kickstart my
-            career in the industry!
+            discovered programming after I finished highschool, and studied IT
+            at the University of Southern Queensland for two years before
+            enrolling in a Web development bootcamp at Coder Academy. I'm due to
+            finish in November, 2022, and can't wait to kickstart my career in
+            the industry!
           </p>,
-          <img
+          <Expander
             key={2}
-            src={"/images/country-road.jpg"}
-            alt=""
-            style={{ width: "100%", maxWidth: "250px" }}
-          ></img>,
+            children={[
+              <p key={1} style={{ display: "none", ...pStyles }}>
+                I'm a quick learner and transitioning to new languages or
+                frameworks isn't a worry for me.
+              </p>,
+              <p key={2} style={{ display: "none", ...pStyles }}>
+                I like to style all my projects with custom CSS/Sass!
+              </p>,
+            ]}
+          />,
         ]}
       />
     );
@@ -231,6 +265,27 @@ function App() {
   };
 
   const buildContactSection = () => {
+    const anchorStyles = {
+      padding: "0.5em 1em",
+      border: `1px solid ${theme.bgAccent}`,
+      margin: "0.5em",
+      fontSize: "1em",
+      color: theme.bgAccent,
+      textDecoration: "none",
+    };
+
+    function onAnchorMouseEnter(event: MouseEvent<HTMLAnchorElement>) {
+      const anchor = event.target as HTMLElement;
+      anchor.style.backgroundColor = theme.bgAccent;
+      anchor.style.color = theme.fgPrimary;
+    }
+
+    function onAnchorMouseLeave(event: MouseEvent<HTMLAnchorElement>) {
+      const anchor = event.target as HTMLElement;
+      anchor.style.backgroundColor = "inherit";
+      anchor.style.color = theme.bgAccent;
+    }
+
     return (
       <Section
         id={CONTACT_SECTION_ID}
@@ -240,14 +295,15 @@ function App() {
             If you would like to contact me about work or collaboration, please
             don't hesitate to connect with me on LinkedIn!
           </p>,
-          <div key={2}>
-            <a href={MY_LINKEDIN} style={{ margin: "0.5em" }}>
-              <img src={LinkedInSrc} alt="LinkedIn"></img>
-            </a>
-            <a href={MY_GITHUB} style={{ margin: "0.5em" }}>
-              <img src={GitSrc} alt="GitHub"></img>
-            </a>
-          </div>,
+          <a
+            key={2}
+            href={MY_LINKEDIN}
+            style={anchorStyles}
+            onMouseEnter={onAnchorMouseEnter}
+            onMouseLeave={onAnchorMouseLeave}
+          >
+            LinkedIn
+          </a>,
         ]}
       />
     );
@@ -277,10 +333,15 @@ function App() {
           flexDirection: "column",
         }}
       >
+        {spacerDiv()}
         {buildTopSection()}
+        {spacerDiv()}
         {buildAboutSection()}
+        {spacerDiv()}
         {buildSkillsSection()}
+        {spacerDiv()}
         {buildProjectsSection()}
+        {spacerDiv()}
         {buildContactSection()}
       </main>
       <Footer linkItems={appLinks} />
