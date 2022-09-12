@@ -26,7 +26,7 @@ const MY_LINKEDIN = "https://linkedin.com/in/r-neville";
 const skills = [
   {
     name: "CSS",
-    competency: 10,
+    competency: 9,
   },
   {
     name: "JavaScript",
