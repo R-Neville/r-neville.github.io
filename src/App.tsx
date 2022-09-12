@@ -422,26 +422,15 @@ function App() {
         id={PROJECTS_SECTION_ID}
         heading={"🛠️ Projects"}
         children={[
-          <p key={1} style={pStyles}>
-            I have a handfull of public repositories on my GitHub profile, and I
-            will be adding much more over the coming few months. I published a
-            TypeScript command line argument parser earlier this year (2022),
-            and just finished reworking a color picker and palette app with
-            React called 'Chromaticity'.
-          </p>,
-          <p key={2} style={pStyles}>
-            As part of my Coder Academy studies, I built a two-sided maketplace
-            application with Ruby on Rails. It's called 'SampleSpace' and it's
-            for sharing audio samples for use in music production. This code for
-            this application is on GitHub.
-          </p>,
-          <p key={4} style={pStyles}>
-            As mentioned in earlier sections, I enjoy making desktop
-            applications with Electron.js. I'm currently working on my own IDE
-            using Electron with TypeScript, with custom HTML components for the
-            UI. I'm learning a lot, I'll be publishing the code eventually!
-          </p>,
-          <div key={5} style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", margin: "1em" }}>
+          <div
+            key={1}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              flexWrap: "wrap",
+              margin: "1em",
+            }}
+          >
             <a
               href={MY_GITHUB}
               style={anchorStyles}
@@ -475,6 +464,32 @@ function App() {
               SampleSpace
             </a>
           </div>,
+          <p key={2} style={pStyles}>
+            I have a handfull of public repositories on my GitHub profile, and I
+            will be adding much more over the coming few months. I published a
+            TypeScript command line argument parser earlier this year (2022),
+            and just finished reworking a color picker and palette app with
+            React called 'Chromaticity'.
+          </p>,
+          <Expander
+            key={3}
+            theme={theme}
+            showText={"Show More"}
+            children={[
+              <p key={1} style={{ display: "none", ...pStyles }}>
+                As part of my Coder Academy studies, I built a two-sided
+                maketplace application with Ruby on Rails. It's called
+                'SampleSpace' and it's for sharing audio samples for use in
+                music production. The code for this application is on GitHub.
+              </p>,
+              <p key={2} style={{ display: "none", ...pStyles }}>
+                I enjoy making desktop applications with Electron. I'm currently
+                building my own IDE using Electron in TypeScript, with custom
+                HTML components for the UI. I'm learning a lot, I'll be
+                publishing the code eventually!
+              </p>,
+            ]}
+          />,
         ]}
       />
     );
