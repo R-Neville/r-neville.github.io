@@ -20,13 +20,13 @@ const SKILLS_SECTION_ID = "skills";
 const PROJECTS_SECTION_ID = "projects";
 const CONTACT_SECTION_ID = "contact";
 const MAX_MENU_WIDTH = 920;
-const HEADER_HEIGHT = 75;
+const MY_GITHUB = "https://github.com/R-Neville";
 const MY_LINKEDIN = "https://linkedin.com/in/r-neville";
 
 const skills = [
   {
     name: "CSS",
-    competency: 10,
+    competency: 9,
   },
   {
     name: "JavaScript",
@@ -61,15 +61,11 @@ const skills = [
     competency: 5,
   },
   {
-    name: "python",
+    name: "Python",
     competency: 4,
   },
   {
     name: "C++",
-    competency: 4,
-  },
-  {
-    name: "Qt5",
     competency: 4,
   },
 ] as SkillInfo[];
@@ -177,7 +173,7 @@ function App() {
         slideUp(menu, 5, () => {
           const section = document.querySelector(sectionId);
           if (section) {
-            (section.previousElementSibling as HTMLElement).scrollIntoView({
+            (section as HTMLElement).scrollIntoView({
               behavior: "smooth",
             });
           }
@@ -187,7 +183,7 @@ function App() {
       } else {
         const section = document.querySelector(sectionId);
         if (section) {
-          (section.previousElementSibling as HTMLElement).scrollIntoView({
+          (section as HTMLElement).scrollIntoView({
             behavior: "smooth",
           });
         }
@@ -197,10 +193,20 @@ function App() {
   );
 
   const onChangeThemeButtonClick = useCallback(() => {
+    const hamburger = document.querySelector(
+      "header .hamburger"
+    ) as HTMLElement;
+    const menu = document.getElementById(MENU_ID);
+    if (!menu) return;
+    if (menuVisible) {
+      slideUp(menu, 5);
+      setMenuVisible(false);
+      hamburger.style.backgroundColor = "inherit";
+    }
     themeManager.changeTheme();
     const newTheme = themeManager.current;
     setTheme(newTheme);
-  }, [themeManager]);
+  }, [menuVisible, themeManager]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(observerCallback, {
@@ -239,10 +245,6 @@ function App() {
     onNavLinkClick,
     onChangeThemeButtonClick,
   ]);
-
-  function spacerDiv() {
-    return <div style={{ width: "100%", height: HEADER_HEIGHT + "px" }}></div>;
-  }
 
   const pStyles = {
     color: theme.bgAccent,
@@ -395,8 +397,101 @@ function App() {
   };
 
   const buildProjectsSection = () => {
+    const anchorStyles = {
+      padding: "0.5em 1em",
+      margin: "0.5em",
+      backgroundColor: theme.bgPrimary,
+      fontSize: "1em",
+      color: theme.fgPrimary,
+      textDecoration: "none",
+    };
+
+    function onAnchorMouseEnter(event: MouseEvent<HTMLAnchorElement>) {
+      const anchor = event.target as HTMLElement;
+      anchor.style.backgroundColor = theme.bgAccent;
+    }
+
+    function onAnchorMouseLeave(event: MouseEvent<HTMLAnchorElement>) {
+      const anchor = event.target as HTMLElement;
+      anchor.style.backgroundColor = theme.bgPrimary;
+    }
+
     return (
-      <Section theme={theme} id={PROJECTS_SECTION_ID} heading={"🛠️ Projects"} />
+      <Section
+        theme={theme}
+        id={PROJECTS_SECTION_ID}
+        heading={"🛠️ Projects"}
+        children={[
+          <div
+            key={1}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              flexWrap: "wrap",
+              margin: "1em",
+            }}
+          >
+            <a
+              href={MY_GITHUB}
+              style={anchorStyles}
+              onMouseEnter={onAnchorMouseEnter}
+              onMouseLeave={onAnchorMouseLeave}
+            >
+              GitHub
+            </a>
+            <a
+              href={"https://www.npmjs.com/package/sparsely"}
+              style={anchorStyles}
+              onMouseEnter={onAnchorMouseEnter}
+              onMouseLeave={onAnchorMouseLeave}
+            >
+              Sparsely
+            </a>
+            <a
+              href={"https://r-neville.github.io/chromaticity/"}
+              style={anchorStyles}
+              onMouseEnter={onAnchorMouseEnter}
+              onMouseLeave={onAnchorMouseLeave}
+            >
+              Chromaticity
+            </a>
+            <a
+              href={"https://github.com/R-Neville/sample-space"}
+              style={anchorStyles}
+              onMouseEnter={onAnchorMouseEnter}
+              onMouseLeave={onAnchorMouseLeave}
+            >
+              SampleSpace
+            </a>
+          </div>,
+          <p key={2} style={pStyles}>
+            I have a handfull of public repositories on my GitHub profile, and I
+            will be adding much more over the coming few months. I published a
+            TypeScript command line argument parser earlier this year (2022),
+            and just finished reworking a color picker and palette app with
+            React called 'Chromaticity'.
+          </p>,
+          <Expander
+            key={3}
+            theme={theme}
+            showText={"Show More"}
+            children={[
+              <p key={1} style={{ display: "none", ...pStyles }}>
+                As part of my Coder Academy studies, I built a two-sided
+                maketplace application with Ruby on Rails. It's called
+                'SampleSpace' and it's for sharing audio samples for use in
+                music production. The code for this application is on GitHub.
+              </p>,
+              <p key={2} style={{ display: "none", ...pStyles }}>
+                I enjoy making desktop applications with Electron. I'm currently
+                building my own IDE using Electron in TypeScript, with custom
+                HTML components for the UI. I'm learning a lot, I'll be
+                publishing the code eventually!
+              </p>,
+            ]}
+          />,
+        ]}
+      />
     );
   };
 
@@ -470,15 +565,10 @@ function App() {
           flexDirection: "column",
         }}
       >
-        {spacerDiv()}
         {buildTopSection()}
-        {spacerDiv()}
         {buildAboutSection()}
-        {spacerDiv()}
         {buildSkillsSection()}
-        {spacerDiv()}
         {buildProjectsSection()}
-        {spacerDiv()}
         {buildContactSection()}
       </main>
       <Footer theme={theme} linkItems={appLinks} />
