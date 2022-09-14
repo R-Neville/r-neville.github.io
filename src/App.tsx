@@ -25,7 +25,7 @@ const SKILLS_SECTION_ID = "skills";
 const PROJECTS_SECTION_ID = "projects";
 const CONTACT_SECTION_ID = "contact";
 const MAX_MENU_WIDTH = 920;
-const MY_GITHUB = "https://github.com/R-Neville";
+// const MY_GITHUB = "https://github.com/R-Neville";
 const MY_LINKEDIN = "https://linkedin.com/in/r-neville";
 
 const appLinks = [
