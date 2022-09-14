@@ -13,6 +13,11 @@ export interface LinkItem {
   selector: string;
 }
 
+interface ProjectItem {
+  text: string;
+  href: string;
+}
+
 const MENU_ID = "menu";
 const TOP_SECTION_ID = "welcome";
 const ABOUT_SECTION_ID = "about";
@@ -22,6 +27,29 @@ const CONTACT_SECTION_ID = "contact";
 const MAX_MENU_WIDTH = 920;
 const MY_GITHUB = "https://github.com/R-Neville";
 const MY_LINKEDIN = "https://linkedin.com/in/r-neville";
+
+const appLinks = [
+  {
+    text: "Welcome",
+    selector: `#${TOP_SECTION_ID}`,
+  },
+  {
+    text: "About",
+    selector: `#${ABOUT_SECTION_ID}`,
+  },
+  {
+    text: "Skills",
+    selector: `#${SKILLS_SECTION_ID}`,
+  },
+  {
+    text: "Projects",
+    selector: `#${PROJECTS_SECTION_ID}`,
+  },
+  {
+    text: "Contact",
+    selector: `#${CONTACT_SECTION_ID}`,
+  },
+] as LinkItem[];
 
 const skills = [
   {
@@ -70,28 +98,20 @@ const skills = [
   },
 ] as SkillInfo[];
 
-const appLinks = [
+const projects = [
   {
-    text: "Welcome",
-    selector: `#${TOP_SECTION_ID}`,
+    text: "Sparsely",
+    href: "https://www.npmjs.com/package/sparsely",
   },
   {
-    text: "About",
-    selector: `#${ABOUT_SECTION_ID}`,
+    text: "Chromaticity",
+    href: "https://r-neville.github.io/chromaticity/",
   },
   {
-    text: "Skills",
-    selector: `#${SKILLS_SECTION_ID}`,
+    text: "SampleSpace",
+    href: "https://github.com/R-Neville/sample-space",
   },
-  {
-    text: "Projects",
-    selector: `#${PROJECTS_SECTION_ID}`,
-  },
-  {
-    text: "Contact",
-    selector: `#${CONTACT_SECTION_ID}`,
-  },
-] as LinkItem[];
+] as ProjectItem[];
 
 function App() {
   const themeManager = useMemo(() => new ThemeManager(), []);
@@ -416,6 +436,20 @@ function App() {
       anchor.style.backgroundColor = theme.bgPrimary;
     }
 
+    const projectLinks = projects.map((p, i) => {
+      return (
+        <a
+          key={i}
+          href={p.href}
+          style={anchorStyles}
+          onMouseEnter={onAnchorMouseEnter}
+          onMouseLeave={onAnchorMouseLeave}
+        >
+          {p.text}
+        </a>
+      );
+    });
+
     return (
       <Section
         theme={theme}
@@ -431,38 +465,7 @@ function App() {
               margin: "1em",
             }}
           >
-            <a
-              href={MY_GITHUB}
-              style={anchorStyles}
-              onMouseEnter={onAnchorMouseEnter}
-              onMouseLeave={onAnchorMouseLeave}
-            >
-              GitHub
-            </a>
-            <a
-              href={"https://www.npmjs.com/package/sparsely"}
-              style={anchorStyles}
-              onMouseEnter={onAnchorMouseEnter}
-              onMouseLeave={onAnchorMouseLeave}
-            >
-              Sparsely
-            </a>
-            <a
-              href={"https://r-neville.github.io/chromaticity/"}
-              style={anchorStyles}
-              onMouseEnter={onAnchorMouseEnter}
-              onMouseLeave={onAnchorMouseLeave}
-            >
-              Chromaticity
-            </a>
-            <a
-              href={"https://github.com/R-Neville/sample-space"}
-              style={anchorStyles}
-              onMouseEnter={onAnchorMouseEnter}
-              onMouseLeave={onAnchorMouseLeave}
-            >
-              SampleSpace
-            </a>
+            {projectLinks}
           </div>,
           <p key={2} style={pStyles}>
             I have a handfull of public repositories on my GitHub profile, and I
@@ -484,7 +487,7 @@ function App() {
               </p>,
               <p key={2} style={{ display: "none", ...pStyles }}>
                 I enjoy making desktop applications with Electron. I'm currently
-                building my own IDE using Electron in TypeScript, with custom
+                building my own IDE in TypeScript with Electron - using custom
                 HTML components for the UI. I'm learning a lot, I'll be
                 publishing the code eventually!
               </p>,
