@@ -481,14 +481,14 @@ function App() {
             children={[
               <p key={1} style={{ display: "none", ...pStyles }}>
                 As part of my Coder Academy studies, I built a two-sided
-                maketplace application with Ruby on Rails. It's called
+                marketplace application with Ruby on Rails. It's called
                 'SampleSpace' and it's for sharing audio samples for use in
                 music production. The code for this application is on GitHub.
               </p>,
               <p key={2} style={{ display: "none", ...pStyles }}>
                 I enjoy making desktop applications with Electron. I'm currently
                 building my own IDE in TypeScript with Electron - using custom
-                HTML components for the UI. I'm learning a lot, I'll be
+                HTML components for the UI. I'm learning a lot and will be
                 publishing the code eventually!
               </p>,
             ]}
