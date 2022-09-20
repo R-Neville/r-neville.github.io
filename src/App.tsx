@@ -100,6 +100,10 @@ const skills = [
 
 const projects = [
   {
+    text: "Canvas Line Editor",
+    href: "https://r-neville.github.io/canvas-line-editor/",
+  },
+  {
     text: "Sparsely",
     href: "https://www.npmjs.com/package/sparsely",
   },
@@ -489,7 +493,9 @@ function App() {
                 I enjoy making desktop applications with Electron. I'm currently
                 building my own IDE in TypeScript with Electron - using custom
                 HTML components for the UI. I'm learning a lot and will be
-                publishing the code eventually!
+                publishing the code eventually! For now, you can check out
+                some of my related work in Canvas Line Editor - an HTML canvas
+                based text editor built with custom HTML components in TypeScript!
               </p>,
             ]}
           />,
