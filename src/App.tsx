@@ -62,11 +62,11 @@ const skills = [
   },
   {
     name: "TypeScript",
-    competency: 7,
+    competency: 9,
   },
   {
     name: "React.js",
-    competency: 7,
+    competency: 8,
   },
   {
     name: "Ruby",
@@ -74,7 +74,7 @@ const skills = [
   },
   {
     name: "Node.js",
-    competency: 6,
+    competency: 7,
   },
   {
     name: "Electron.js",
@@ -86,7 +86,7 @@ const skills = [
   },
   {
     name: "Express.js",
-    competency: 5,
+    competency: 6,
   },
   {
     name: "Python",
@@ -100,10 +100,6 @@ const skills = [
 
 const projects = [
   {
-    text: "Canvas Line Editor",
-    href: "https://r-neville.github.io/canvas-line-editor/",
-  },
-  {
     text: "Sparsely",
     href: "https://www.npmjs.com/package/sparsely",
   },
@@ -114,6 +110,18 @@ const projects = [
   {
     text: "SampleSpace",
     href: "https://github.com/R-Neville/sample-space",
+  },
+  {
+    text: "Projectable",
+    href: "https://github.com/R-Neville/projectable",
+  },
+  {
+    text: "WavKit",
+    href: "https://github.com/R-Neville/wav-kit",
+  },
+  {
+    text: "Canvas Line Editor",
+    href: "https://r-neville.github.io/canvas-line-editor/",
   },
 ] as ProjectItem[];
 
@@ -301,7 +309,8 @@ function App() {
                 Express.js websites - and I'm currently learning Ruby on Rails.
               </p>,
               <p key={3} style={{ display: "none", ...pStyles }}>
-                I'm also into Electron.js and I'm building my own IDE!
+                I'm also into Electron.js and I'm building an audio player and
+                editor!
               </p>,
             ]}
           />,
@@ -319,8 +328,9 @@ function App() {
         children={[
           <p key={1} style={pStyles}>
             I was born and raised in Queensland, Australia. I discovered
-            programming after finishing highschool and I'm due to finish a Web
-            dev bootcamp through Coder Academy in November, 2022.
+            programming after delving into logic and philosophy when I finished
+            school. Just completed a Web dev bootcamp through Coder Academy, and
+            can't wait to get started in the industry.
           </p>,
           <Expander
             key={2}
@@ -333,6 +343,11 @@ function App() {
               </p>,
               <p key={2} style={{ display: "none", ...pStyles }}>
                 I like to style all my projects with custom CSS/Sass!
+              </p>,
+              <p key={2} style={{ display: "none", ...pStyles }}>
+                I also make music. I find it complemetary to my interest
+                in programming - both are creative and technical in different
+                ways.
               </p>,
             ]}
           />,
@@ -491,11 +506,8 @@ function App() {
               </p>,
               <p key={2} style={{ display: "none", ...pStyles }}>
                 I enjoy making desktop applications with Electron. I'm currently
-                building my own IDE in TypeScript with Electron - using custom
-                HTML components for the UI. I'm learning a lot and will be
-                publishing the code eventually! For now, you can check out
-                some of my related work in Canvas Line Editor - an HTML canvas
-                based text editor built with custom HTML components in TypeScript!
+                building an audio player and editor - using custom HTML
+                components for the UI - called 'WavKit'.
               </p>,
             ]}
           />,
