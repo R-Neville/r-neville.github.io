@@ -345,7 +345,7 @@ function App() {
                 I like to style all my projects with custom CSS/Sass!
               </p>,
               <p key={2} style={{ display: "none", ...pStyles }}>
-                I also make music. I find it complemetary to my interest
+                I also make music. I find it complementary to my interest
                 in programming - both are creative and technical in different
                 ways.
               </p>,
@@ -503,6 +503,9 @@ function App() {
                 marketplace application with Ruby on Rails. It's called
                 'SampleSpace' and it's for sharing audio samples for use in
                 music production. The code for this application is on GitHub.
+                You'll also find the React client for my final Coder Academy
+                assessment on GitHub - it's a project management app called
+                'Projectable'.
               </p>,
               <p key={2} style={{ display: "none", ...pStyles }}>
                 I enjoy making desktop applications with Electron. I'm currently
