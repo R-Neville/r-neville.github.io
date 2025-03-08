@@ -1,37 +1,43 @@
+@import "tailwindcss";
+
+@theme {
+    /* Primary */
+    --color-primary-50: #f6f7f6;
+    --color-primary-100: #e1e6e2;
+    --color-primary-200: #c3ccc4;
+    --color-primary-300: #9dab9f;
+    --color-primary-400: #79887d;
+    --color-primary-500: #5e6e62;
+    --color-primary-600: #4a574e;
+    --color-primary-700: #404a43;
+    --color-primary-800: #343b37;
+    --color-primary-900: #2e3330;
+    --color-primary-950: #171c18;
+}
+
+
+html,
+body {
+    display: grid;
+    grid-template-rows: minmax(0px, 100px);
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+
+#root {
+    display: grid;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+
 @font-face {
-  font-family: "Monoid";
-  src: url("./assets/fonts/Monoid-Regular-NoCalt.ttf");
+    font-family: 'Space Grotesk';
+    src: url(./assets/fonts/SpaceGrotesk-VariableFont_wght.ttf);
 }
 
 * {
-  box-sizing: border-box;
-  font-family: 'Monoid';
-}
-
-body,
-#root {
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  width: 100%;
-  min-height: 100vh;
-  margin: 0;
-}
-
-p {
-  text-align: center !important;
-}
-
-@media screen and (min-width: 920px) {
-  header .header .hamburger {
-    display: none !important;
-  }
-
-  header .header nav {
-    display: flex !important;
-  }
-
-  header .header {
-    justify-content: space-evenly !important;
-  }
+    box-sizing: border-box;
+    font-family: 'Space Grotesk';
 }
