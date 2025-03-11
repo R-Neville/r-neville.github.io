@@ -1,5 +1,5 @@
-import Clickable from '#/components/shared/Clickable'
-import Icon from '#/components/shared/Icon'
+import Button from '#/components/Button'
+import Icon from '#/components/Icon'
 import icons from '#/icons'
 import { setSidebarState, useAppDispatch, useAppSelector } from '#/store'
 import { FC } from 'react'
@@ -12,14 +12,15 @@ const SidebarTrigger: FC = () => {
     const { open } = sidebarState
 
     return (
-        <Clickable
-            variant="secondary"
+        <Button
+            theme="secondary"
+            variant={open ? 'active' : 'normal'}
             onClick={() => {
                 void dispatch(setSidebarState({ ...sidebarState, open: !open }))
             }}
         >
             <Icon icon={icons.bars} size="lg" />
-        </Clickable>
+        </Button>
     )
 }
 

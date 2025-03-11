@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
+import ModuleDefinition from './model/ModuleDefinition'
 import { setIsMobile, setSidebarState } from './thunks'
-
-export type View = 'splash' | 'contact' | 'music'
+import { setCurrentModule } from './thunks/setCurrentModule'
 
 export interface ISidebarState {
     open: boolean
@@ -12,7 +12,7 @@ export interface ISidebarState {
 interface IConfigState {
     isMobile: boolean
     sidebarState: ISidebarState
-    currentView: View
+    currentModule: ModuleDefinition
 }
 
 const initialState: IConfigState = {
@@ -22,7 +22,7 @@ const initialState: IConfigState = {
         type: 'general',
         float: false,
     },
-    currentView: 'splash',
+    currentModule: new ModuleDefinition('info', 'index'),
 }
 
 const configSlice = createSlice({
@@ -36,6 +36,10 @@ const configSlice = createSlice({
 
         builder.addCase(setSidebarState.fulfilled, (state, action) => {
             state.sidebarState = action.payload
+        })
+
+        builder.addCase(setCurrentModule.fulfilled, (state, action) => {
+            state.currentModule = action.payload
         })
     },
 })

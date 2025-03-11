@@ -3,6 +3,7 @@ import {
     faBars,
     faEllipsisH,
     faEllipsisV,
+    faHouse,
     faTimes,
     faXmark,
 } from '@fortawesome/free-solid-svg-icons'
@@ -16,6 +17,7 @@ const icons = {
     user: faUser,
     warning: faExclamationTriangle,
     times: faTimes,
+    home: faHouse,
 }
 
 export default icons

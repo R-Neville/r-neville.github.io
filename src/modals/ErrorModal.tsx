@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from '#/store'
 import { hideErrorModal } from '#/store/error/thunks/hideErrorModal'
 import { FC } from 'react'
 import BaseModal from '../components/BaseModal'
-import Icon from '../components/shared/Icon'
+import Icon from '../components/Icon'
 import icons from '../icons'
 
 const ErrorModal: FC = () => {

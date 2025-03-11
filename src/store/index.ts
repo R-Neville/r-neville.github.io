@@ -15,9 +15,11 @@ export const store = configureStore({
     reducer,
     middleware: (getDefaultMiddleware) => {
         if (import.meta.env.DEV) {
-            return getDefaultMiddleware().concat(logger)
+            return getDefaultMiddleware({ serializableCheck: false }).concat(
+                logger,
+            )
         }
-        return getDefaultMiddleware()
+        return getDefaultMiddleware({ serializableCheck: false })
     },
 })
 

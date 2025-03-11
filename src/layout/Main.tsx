@@ -1,6 +1,6 @@
 import ErrorModal from '#/modals/ErrorModal'
+import Modules from '#/modules'
 import { useAppSelector } from '#/store'
-import Views from '#/views'
 import { FC } from 'react'
 import AppHeader from './AppHeader'
 import AppSidebar from './AppSidebar'
@@ -18,7 +18,7 @@ const Main: FC = () => {
             <AppHeader />
             <div className={`grid ${gridCols} relative`}>
                 <AppSidebar />
-                <Views />
+                <Modules />
             </div>
             <ErrorModal />
         </div>

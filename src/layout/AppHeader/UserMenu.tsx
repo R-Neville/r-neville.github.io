@@ -1,7 +1,5 @@
-import Icon from '#/components/shared/Icon'
-import PopoverMenu, {
-    IPopoverMenuOption,
-} from '#/components/shared/PopoverMenu'
+import Icon from '#/components/Icon'
+import PopoverMenu, { IPopoverMenuOption } from '#/components/PopoverMenu'
 import icons from '#/icons'
 import { FC, useMemo } from 'react'
 

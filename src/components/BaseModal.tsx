@@ -2,8 +2,8 @@ import useOnClickAwayClass from '#/hooks/useOnClickAwayClass'
 import icons from '#/icons'
 import arePropsEqual from '#/utils/arePropsEqual'
 import React, { FC, JSX } from 'react'
-import Clickable from './shared/Clickable'
-import Icon from './shared/Icon'
+import Clickable from './Clickable'
+import Icon from './Icon'
 
 interface IBaseModalProps {
     open: boolean

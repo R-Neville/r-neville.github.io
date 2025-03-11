@@ -1,5 +1,5 @@
-import Clickable from '#/components/shared/Clickable'
-import Icon from '#/components/shared/Icon'
+import Clickable from '#/components/Clickable'
+import Icon from '#/components/Icon'
 import icons from '#/icons'
 import { setSidebarState, useAppDispatch, useAppSelector } from '#/store'
 import { FC, useEffect } from 'react'

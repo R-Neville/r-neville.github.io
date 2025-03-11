@@ -79,4 +79,4 @@ const PopoverMenu: FC<IPopoverMenuProps> = (props) => {
     )
 }
 
-export default React.memo(PopoverMenu, arePropsEqual<IPopoverMenuProps>([]))
+export default React.memo(PopoverMenu, arePropsEqual([]))
