@@ -18,18 +18,19 @@
 
 html,
 body {
-    display: grid;
-    grid-template-rows: minmax(0px, 100px);
     height: 100vh;
+    max-height: 100vh;
     padding: 0;
     margin: 0;
+    overflow: hidden;
 }
 
 #root {
-    display: grid;
     height: 100vh;
+    max-height: 100vh;
     padding: 0;
     margin: 0;
+    overflow: hidden;
 }
 
 @font-face {

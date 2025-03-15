@@ -2,6 +2,7 @@ export type ModuleType = 'info' | 'components' | 'music'
 
 export const componentViews = [
     'HorizontalVirtualiser',
+    'VerticalVirtualiser',
     'Calendar',
     'MutliSelect',
 ] as const

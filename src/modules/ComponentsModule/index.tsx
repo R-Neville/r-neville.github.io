@@ -2,6 +2,7 @@ import { useAppSelector } from '#/store'
 import { FC } from 'react'
 import HorizontalVirtualiserView from './HorizontalVirtualiserView'
 import IndexView from './IndexView'
+import VerticalVirtualiserView from './VerticalVirtualiserView'
 
 const ComponentsModule: FC = () => {
     const { currentModule } = useAppSelector((state) => state.config)
@@ -11,6 +12,8 @@ const ComponentsModule: FC = () => {
             return <IndexView />
         case 'HorizontalVirtualiser':
             return <HorizontalVirtualiserView />
+        case 'VerticalVirtualiser':
+            return <VerticalVirtualiserView />
     }
 
     return <div></div>

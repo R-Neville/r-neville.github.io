@@ -7,8 +7,6 @@ import MusicModule from './MusicModule'
 const Modules: FC = () => {
     const { currentModule } = useAppSelector((state) => state.config)
 
-    console.log({ currentModule })
-
     switch (currentModule.getType()) {
         case 'info':
             return <InfoModule />
@@ -17,8 +15,6 @@ const Modules: FC = () => {
         case 'music':
             return <MusicModule />
     }
-
-    return <div></div>
 }
 
 export default Modules

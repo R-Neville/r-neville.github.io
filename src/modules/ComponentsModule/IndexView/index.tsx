@@ -19,7 +19,7 @@ const IndexView: FC = () => {
                 </div>
             }
         >
-            <div className="flex flex-col h-full overflow-y-auto">
+            <div className="flex flex-col gap-2 h-full overflow-y-auto">
                 <p>
                     Here are a few components that I've created to showcase my
                     skills:
@@ -37,6 +37,20 @@ const IndexView: FC = () => {
                     }}
                 >
                     Horizontal Virtualiser
+                </Button>
+                <Button
+                    onClick={() => {
+                        void dispatch(
+                            setCurrentModule(
+                                new ModuleDefinition(
+                                    'components',
+                                    'VerticalVirtualiser',
+                                ),
+                            ),
+                        )
+                    }}
+                >
+                    Vertical Virtualiser
                 </Button>
             </div>
         </ViewWrapper>

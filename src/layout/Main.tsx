@@ -16,7 +16,7 @@ const Main: FC = () => {
     return (
         <div className="grid grid-rows-[max-content_minmax(0px,_100%)] h-full w-full p-0">
             <AppHeader />
-            <div className={`grid ${gridCols} relative`}>
+            <div className={`grid ${gridCols} relative h-full`}>
                 <AppSidebar />
                 <Modules />
             </div>
