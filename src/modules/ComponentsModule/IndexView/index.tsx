@@ -52,6 +52,17 @@ const IndexView: FC = () => {
                 >
                     Vertical Virtualiser
                 </Button>
+                <Button
+                    onClick={() => {
+                        void dispatch(
+                            setCurrentModule(
+                                new ModuleDefinition('components', 'Calendar'),
+                            ),
+                        )
+                    }}
+                >
+                    Calendar
+                </Button>
             </div>
         </ViewWrapper>
     )

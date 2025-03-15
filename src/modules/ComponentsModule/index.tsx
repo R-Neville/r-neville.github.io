@@ -1,5 +1,6 @@
 import { useAppSelector } from '#/store'
 import { FC } from 'react'
+import CalendarView from './CalendarView'
 import HorizontalVirtualiserView from './HorizontalVirtualiserView'
 import IndexView from './IndexView'
 import VerticalVirtualiserView from './VerticalVirtualiserView'
@@ -14,6 +15,8 @@ const ComponentsModule: FC = () => {
             return <HorizontalVirtualiserView />
         case 'VerticalVirtualiser':
             return <VerticalVirtualiserView />
+        case 'Calendar':
+            return <CalendarView />
     }
 
     return <div></div>
