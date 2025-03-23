@@ -1,5 +1,6 @@
 import { faUser } from '@fortawesome/free-regular-svg-icons'
 import {
+    faArrowRight,
     faBars,
     faEllipsisH,
     faEllipsisV,
@@ -18,6 +19,7 @@ const icons = {
     warning: faExclamationTriangle,
     times: faTimes,
     home: faHouse,
+    arrowRight: faArrowRight,
 }
 
 export default icons

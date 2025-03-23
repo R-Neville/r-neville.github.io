@@ -62,7 +62,7 @@ const HorizontalVirtualiser: FCType = (props) => {
     return (
         <div
             ref={rootRef}
-            className={`${uniqueClass} h-full w-full overflow-auto`}
+            className={`${uniqueClass} h-full w-full min-w-0 overflow-auto`}
             onScroll={(event) => {
                 const target = event.target as HTMLDivElement
                 const { scrollLeft } = target

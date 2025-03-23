@@ -14,13 +14,15 @@ const IndexView: FC = () => {
                     I'm a full-stack TypeScript and PHP developer based in
                     Brisbane.
                 </div>
-                <ButtonLink
-                    newTab
-                    theme="secondary"
-                    href="https://www.linkedin.com/in/r-neville/"
-                >
-                    <div className="px-1">Wanna Connect?</div>
-                </ButtonLink>
+                <div className="mt-10">
+                    <ButtonLink
+                        newTab
+                        theme="secondary"
+                        href="https://www.linkedin.com/in/r-neville/"
+                    >
+                        <div className="px-1">Wanna Connect?</div>
+                    </ButtonLink>
+                </div>
             </div>
         </ViewWrapper>
     )

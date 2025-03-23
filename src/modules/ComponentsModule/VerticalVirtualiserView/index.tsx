@@ -4,7 +4,7 @@ import { FC, useMemo } from 'react'
 
 const VerticalVirtualiserView: FC = () => {
     const data = useMemo(() => {
-        return Array.from(Array(1000)).map((_, i) => {
+        return Array.from(Array(100000)).map((_, i) => {
             return {
                 name: `Item ${i + 1}`,
             }
@@ -13,9 +13,11 @@ const VerticalVirtualiserView: FC = () => {
 
     return (
         <div className="grid grid-rows-[max-content_minmax(0px,_100%)] w-full h-full overflow-hidden">
-            <div className="p-4">
+            <div className="flex flex-col gap-2 p-4">
                 <Heading rank="h2">VerticalVirtualiser</Heading>
-                <p></p>
+                <p>
+                    Try scrolling vertically - this list contains 100000 items!
+                </p>
             </div>
             <div className="grid p-4 overflow-hidden">
                 <VerticalVirtualiser<(typeof data)[number]>

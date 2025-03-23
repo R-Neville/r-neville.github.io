@@ -7,6 +7,7 @@ import processEvents from './utils/processEvents'
 import Week from './Week'
 
 interface ICalendarProps<E> {
+    minColumnWidth?: number
     startDate: DateTime
     timezone?: string
     events: E[]
@@ -18,7 +19,13 @@ interface ICalendarProps<E> {
 const Calendar: <EventData extends ICalendarEvent>(
     props: ICalendarProps<EventData>,
 ) => JSX.Element = (props) => {
-    const { startDate, events, renderEventContent, renderHeaderContent } = props
+    const {
+        startDate,
+        events,
+        minColumnWidth = 100,
+        renderEventContent,
+        renderHeaderContent,
+    } = props
 
     const startOfMonth = useMemo(() => {
         return startDate.startOf('month')
@@ -40,8 +47,6 @@ const Calendar: <EventData extends ICalendarEvent>(
         return Math.ceil(endOfCalendar.diff(startOfCalendar, 'weeks').weeks)
     }, [startOfCalendar, endOfCalendar])
 
-    console.log(numberOfWeeks)
-
     const eventsByWeekByDay = useMemo(() => {
         return processEvents(events)
     }, [events])
@@ -54,18 +59,30 @@ const Calendar: <EventData extends ICalendarEvent>(
             return (
                 <Week
                     key={i}
+                    minColumnWidth={minColumnWidth}
                     startOfWeek={weekStart}
                     eventsByDay={weekEvents}
                     renderEventContent={renderEventContent}
                 />
             )
         })
-    }, [eventsByWeekByDay, numberOfWeeks, renderEventContent, startOfCalendar])
+    }, [
+        eventsByWeekByDay,
+        minColumnWidth,
+        numberOfWeeks,
+        renderEventContent,
+        startOfCalendar,
+    ])
 
     return (
-        <div className="grid grid-rows-[max-content_minmax(0px,_100%)] h-full">
-            <Header renderHeaderContent={renderHeaderContent} />
-            <div className={`flex flex-col gap-2`}>{weeks}</div>
+        <div className="grid grid-rows-[minmax(0px,100%)] grid-cols-[minmax(0px,100%)] overflow-hidden h-fit w-full min-w-0 min-h-0">
+            <div className="flex relative flex-col gap-2 w-full h-full overflow-auto min-w-0 min-h-0">
+                <Header
+                    minColumnWidth={minColumnWidth}
+                    renderHeaderContent={renderHeaderContent}
+                />
+                <div className="flex flex-col gap-2 w-full">{weeks}</div>
+            </div>
         </div>
     )
 }

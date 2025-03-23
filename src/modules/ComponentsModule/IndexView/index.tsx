@@ -1,10 +1,10 @@
-import Button from '#/components/Button'
 import Heading from '#/components/Heading'
 import ViewWrapper from '#/components/ViewWrapper'
 import { useAppDispatch } from '#/store'
 import ModuleDefinition from '#/store/config/model/ModuleDefinition'
 import { setCurrentModule } from '#/store/config/thunks/setCurrentModule'
 import { FC } from 'react'
+import ComponentCard from './ComponentCard'
 
 const IndexView: FC = () => {
     const dispatch = useAppDispatch()
@@ -24,21 +24,9 @@ const IndexView: FC = () => {
                     Here are a few components that I've created to showcase my
                     skills:
                 </p>
-                <Button
-                    onClick={() => {
-                        void dispatch(
-                            setCurrentModule(
-                                new ModuleDefinition(
-                                    'components',
-                                    'HorizontalVirtualiser',
-                                ),
-                            ),
-                        )
-                    }}
-                >
-                    Horizontal Virtualiser
-                </Button>
-                <Button
+                <ComponentCard
+                    title="VerticalVirtualiser"
+                    description="A component for rendering vertically virtualised lists of items."
                     onClick={() => {
                         void dispatch(
                             setCurrentModule(
@@ -49,10 +37,24 @@ const IndexView: FC = () => {
                             ),
                         )
                     }}
-                >
-                    Vertical Virtualiser
-                </Button>
-                <Button
+                ></ComponentCard>
+                <ComponentCard
+                    title="HorizonalVirtualiser"
+                    description="A component for rendering horizontally virtualised lists of items."
+                    onClick={() => {
+                        void dispatch(
+                            setCurrentModule(
+                                new ModuleDefinition(
+                                    'components',
+                                    'HorizontalVirtualiser',
+                                ),
+                            ),
+                        )
+                    }}
+                ></ComponentCard>
+                <ComponentCard
+                    title="Calendar"
+                    description="A simple month view calendar component."
                     onClick={() => {
                         void dispatch(
                             setCurrentModule(
@@ -60,9 +62,7 @@ const IndexView: FC = () => {
                             ),
                         )
                     }}
-                >
-                    Calendar
-                </Button>
+                ></ComponentCard>
             </div>
         </ViewWrapper>
     )

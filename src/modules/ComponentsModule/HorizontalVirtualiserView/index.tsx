@@ -1,5 +1,6 @@
 import Heading from '#/components/Heading'
 import HorizontalVirtualiser from '#/components/HorizontalVirtualiser'
+import NumberInput from '#/components/NumberInput'
 import { FC, useMemo } from 'react'
 
 const HorizontalVirtualiserView: FC = () => {
@@ -13,9 +14,15 @@ const HorizontalVirtualiserView: FC = () => {
 
     return (
         <div className="flex flex-col w-full h-full">
-            <div className="p-4">
+            <div className="flex flex-col gap-2 p-4">
                 <Heading rank="h2">HorizontalVirtualiser</Heading>
-                <p></p>
+                <p>
+                    Try scrolling horizontally - this list contains 100000
+                    items!
+                </p>
+                <div className="flex gap-2 items-center">
+                    <NumberInput value={20} />
+                </div>
             </div>
             <div className="p-4 h-full">
                 <HorizontalVirtualiser<(typeof data)[number]>
