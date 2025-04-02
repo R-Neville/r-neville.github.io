@@ -27,11 +27,10 @@ const AppHeader: FC = () => {
             </div>
             <div className="flex items-center gap-2">
                 <Button
-                    theme="secondary"
-                    variant={
+                    theme={
                         currentModule.getType() === 'components'
-                            ? 'active'
-                            : 'normal'
+                            ? 'primary'
+                            : 'secondary'
                     }
                     onClick={() => {
                         void dispatch(
@@ -44,11 +43,10 @@ const AppHeader: FC = () => {
                     <div>Components</div>
                 </Button>
                 <Button
-                    theme="secondary"
-                    variant={
+                    theme={
                         currentModule.getType() === 'music'
-                            ? 'active'
-                            : 'normal'
+                            ? 'primary'
+                            : 'secondary'
                     }
                     onClick={() => {}}
                 >

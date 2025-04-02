@@ -13,8 +13,7 @@ const SidebarTrigger: FC = () => {
 
     return (
         <Button
-            theme="secondary"
-            variant={open ? 'active' : 'normal'}
+            theme={open ? 'primary' : 'secondary'}
             onClick={() => {
                 void dispatch(setSidebarState({ ...sidebarState, open: !open }))
             }}
