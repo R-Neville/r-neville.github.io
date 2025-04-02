@@ -11,6 +11,8 @@ const AppSidebar: FC = () => {
 
     const [width, setWidth] = useState<number>(200)
 
+    const { float } = sidebarState
+
     const resize = useCallback(() => {
         const controller = new AbortController()
 
@@ -50,22 +52,24 @@ const AppSidebar: FC = () => {
         return <></>
     }
 
-    let dynamicClassNames = 'w-[200px]'
+    let dynamicClassNames = 'relative w-[200px]'
     if (sidebarState.float) {
         dynamicClassNames = 'absolute w-full z-[999]'
     }
 
     return (
         <div
-            className={`relative flex flex-col h-full border-r border-r-primary-100 bg-primary-50 text-primary-800 ${dynamicClassNames} select-none`}
+            className={`flex flex-col h-full border-r border-r-primary-100 bg-primary-50 text-primary-800 ${dynamicClassNames} select-none`}
             style={{
-                width: `${width}px`,
+                width: float ? undefined : `${width}px`,
             }}
         >
-            <div
-                className="absolute right-0 top-0 bottom-0 w-2 cursor-ew-resize hover:bg-primary-100"
-                onMouseDown={resize}
-            ></div>
+            {!float && (
+                <div
+                    className="absolute right-0 top-0 bottom-0 w-2 cursor-ew-resize hover:bg-primary-100"
+                    onMouseDown={resize}
+                ></div>
+            )}
             <div className="flex items-center justify-between p-4">
                 <div className="text-lg">Projects</div>
                 {sidebarState.float && (

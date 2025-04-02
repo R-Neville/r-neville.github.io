@@ -20,6 +20,8 @@ const _ComponentCard = (props: IComponentCardProps) => {
         >
             <div className="flex items-center gap-2 p-2">
                 <div className="font-semibold ">{title}</div>
+            </div>
+            <div className="flex items-center gap-2 p-2">
                 <Icon icon={icons.arrowRight} />
                 <div className="italic">{description}</div>
             </div>
