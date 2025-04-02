@@ -2,7 +2,7 @@ import Button from '#/components/Button'
 import Icon from '#/components/Icon'
 import icons from '#/icons'
 import { setSidebarState, useAppDispatch, useAppSelector } from '#/store'
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 
 const AppSidebar: FC = () => {
     const dispatch = useAppDispatch()
@@ -11,10 +11,8 @@ const AppSidebar: FC = () => {
 
     const [width, setWidth] = useState<number>(200)
 
-    const resize = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-        const { pageX } = event
+    const resize = useCallback(() => {
         const controller = new AbortController()
-        const x = pageX
 
         const onMouseMove = (event: MouseEvent) => {
             const { pageX } = event
