@@ -1,8 +1,16 @@
+import Button from '#/components/Button'
 import Heading from '#/components/Heading'
+import Icon from '#/components/Icon'
 import VerticalVirtualiser from '#/components/VerticalVirtualiser.tsx'
+import icons from '#/icons'
+import { useAppDispatch } from '#/store'
+import ModuleDefinition from '#/store/config/model/ModuleDefinition'
+import { setCurrentModule } from '#/store/config/thunks/setCurrentModule'
 import { FC, useMemo } from 'react'
 
 const VerticalVirtualiserView: FC = () => {
+    const dispatch = useAppDispatch()
+
     const data = useMemo(() => {
         return Array.from(Array(100000)).map((_, i) => {
             return {
@@ -14,10 +22,25 @@ const VerticalVirtualiserView: FC = () => {
     return (
         <div className="grid grid-rows-[max-content_minmax(0px,_100%)] w-full h-full overflow-hidden">
             <div className="flex flex-col gap-2 p-4">
-                <Heading rank="h2">VerticalVirtualiser</Heading>
-                <p>
-                    Try scrolling vertically - this list contains 100000 items!
-                </p>
+                <div className="flex justify-between items-center">
+                    <Heading rank="h2">VerticalVirtualiser</Heading>
+                    <Button
+                        theme="secondary"
+                        variant={'normal'}
+                        onClick={() => {
+                            void dispatch(
+                                setCurrentModule(
+                                    new ModuleDefinition('components', 'index'),
+                                ),
+                            )
+                        }}
+                    >
+                        <div className="flex items-center gap-2">
+                            <Icon icon={icons.arrowLeft} />
+                            Back
+                        </div>
+                    </Button>
+                </div>
             </div>
             <div className="grid p-4 overflow-hidden">
                 <VerticalVirtualiser<(typeof data)[number]>

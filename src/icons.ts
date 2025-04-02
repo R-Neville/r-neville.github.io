@@ -1,5 +1,6 @@
 import { faUser } from '@fortawesome/free-regular-svg-icons'
 import {
+    faArrowLeft,
     faArrowRight,
     faBars,
     faEllipsisH,
@@ -20,6 +21,7 @@ const icons = {
     times: faTimes,
     home: faHouse,
     arrowRight: faArrowRight,
+    arrowLeft: faArrowLeft,
 }
 
 export default icons
