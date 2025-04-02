@@ -1,7 +1,8 @@
 import arePropsEqual from '#/utils/arePropsEqual'
 import { DateTime } from 'luxon'
-import React, { JSX, useMemo } from 'react'
+import React, { JSX, useMemo, useState } from 'react'
 import Header from './Header'
+import Toolbar from './Toolbar'
 import { DayOfWeek, ICalendarEvent } from './types'
 import processEvents from './utils/processEvents'
 import Week from './Week'
@@ -20,12 +21,14 @@ const Calendar: <EventData extends ICalendarEvent>(
     props: ICalendarProps<EventData>,
 ) => JSX.Element = (props) => {
     const {
-        startDate,
+        startDate: s,
         events,
         minColumnWidth = 100,
         renderEventContent,
         renderHeaderContent,
     } = props
+
+    const [startDate, setStartDate] = useState<DateTime>(s)
 
     const startOfMonth = useMemo(() => {
         return startDate.startOf('month')
@@ -75,7 +78,8 @@ const Calendar: <EventData extends ICalendarEvent>(
     ])
 
     return (
-        <div className="grid grid-rows-[minmax(0px,100%)] grid-cols-[minmax(0px,100%)] overflow-hidden h-fit w-full min-w-0 min-h-0">
+        <div className="grid grid-rows-[max-content_minmax(0px,100%)] grid-cols-[minmax(0px,100%)] gap-2 overflow-hidden h-fit w-full min-w-0 min-h-0">
+            <Toolbar startDate={startDate} setStartDate={setStartDate} />
             <div className="flex relative flex-col gap-2 w-full h-full overflow-auto min-w-0 min-h-0">
                 <Header
                     minColumnWidth={minColumnWidth}

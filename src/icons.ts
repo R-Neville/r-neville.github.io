@@ -3,6 +3,8 @@ import {
     faArrowLeft,
     faArrowRight,
     faBars,
+    faChevronLeft,
+    faChevronRight,
     faEllipsisH,
     faEllipsisV,
     faHouse,
@@ -22,6 +24,8 @@ const icons = {
     home: faHouse,
     arrowRight: faArrowRight,
     arrowLeft: faArrowLeft,
+    chevronRight: faChevronRight,
+    chevronLeft: faChevronLeft,
 }
 
 export default icons
