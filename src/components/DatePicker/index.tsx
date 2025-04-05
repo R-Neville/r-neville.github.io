@@ -1,80 +1,43 @@
+import useOnClickAwayClass from '#/hooks/useOnClickAwayClass'
 import icons from '#/icons'
+import { Theme } from '#/theme'
 import arePropsEqual from '#/utils/arePropsEqual'
 import { DateTime } from 'luxon'
-import React, { JSX, useMemo, useState } from 'react'
+import React, { FC, useState } from 'react'
 import Button from '../Button'
 import Icon from '../Icon'
-import Header from './Header'
-import Week from './Week'
+import Calendar from './Calendar'
 
-interface ICalendarProps {
-    startDate: DateTime
-    timezone?: string
-    onChange: (newDate: DateTime) => void
+interface IDatePickerProps {
+    theme?: Theme
+    value: DateTime
+    onChange: (newValue: DateTime) => void
 }
 
-const Calendar: (props: ICalendarProps) => JSX.Element = (props) => {
-    const { startDate: s, onChange } = props
+const DatePicker: FC<IDatePickerProps> = (props) => {
+    const { value, theme = 'secondary', onChange } = props
 
-    const [startDate, setStartDate] = useState<DateTime>(s)
+    const [open, setOpen] = useState<boolean>(false)
 
-    const startOfMonth = useMemo(() => {
-        return startDate.startOf('month')
-    }, [startDate])
-
-    const startOfCalendar = useMemo(() => {
-        return startOfMonth.startOf('week')
-    }, [startOfMonth])
-
-    const endOfMonth = useMemo(() => {
-        return startDate.endOf('month')
-    }, [startDate])
-
-    const endOfCalendar = useMemo(() => {
-        return endOfMonth.endOf('week')
-    }, [endOfMonth])
-
-    const numberOfWeeks = useMemo(() => {
-        return Math.ceil(endOfCalendar.diff(startOfCalendar, 'weeks').weeks)
-    }, [startOfCalendar, endOfCalendar])
-
-    const weeks = useMemo(() => {
-        return Array.from(Array(numberOfWeeks)).map((_zero, i) => {
-            const weekStart = startOfCalendar.plus({ weeks: i })
-            return <Week key={i} startOfWeek={weekStart} onChange={onChange} />
-        })
-    }, [numberOfWeeks, onChange, startOfCalendar])
+    const clickawayClass = useOnClickAwayClass(() => {
+        setOpen(false)
+    }, !open)
 
     return (
-        <div className="grid grid-rows-[max-content_minmax(0px,100%)] grid-cols-[minmax(0px,100%)] gap-2 overflow-hidden h-fit w-full min-w-0 min-h-0">
-            <div className="flex relative flex-col gap-2 w-full h-full overflow-auto min-w-0 min-h-0">
-                <div className="flex justify-between">
-                    <Button
-                        theme="secondary"
-                        onClick={() => {
-                            setStartDate((prev) => prev.minus({ month: 1 }))
-                        }}
-                    >
-                        <div>
-                            <Icon icon={icons.chevronLeft} />
-                        </div>
-                    </Button>
-                    <Button
-                        theme="secondary"
-                        onClick={() => {
-                            setStartDate((prev) => prev.plus({ month: 1 }))
-                        }}
-                    >
-                        <div>
-                            <Icon icon={icons.chevronRight} />
-                        </div>
-                    </Button>
+        <div className={`${clickawayClass} relative`}>
+            <Button theme={theme} onClick={() => setOpen((prev) => !prev)}>
+                <div className="flex items-center gap-2">
+                    <Icon icon={icons.calendar} />
+                    {value.toFormat('MMM yyyy')}
                 </div>
-                <Header />
-                <div className="flex flex-col gap-2 w-full">{weeks}</div>
-            </div>
+            </Button>
+            {open && (
+                <div className="absolute right-0 bg-white z-[9999] w-[300px] h-fit">
+                    <Calendar startDate={value} onChange={onChange} />
+                </div>
+            )}
         </div>
     )
 }
 
-export default React.memo(Calendar, arePropsEqual([])) as typeof Calendar
+export default React.memo(DatePicker, arePropsEqual([]))

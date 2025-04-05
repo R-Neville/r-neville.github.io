@@ -1,4 +1,5 @@
 import Button from '#/components/Button'
+import DatePicker from '#/components/DatePicker'
 import Icon from '#/components/Icon'
 import icons from '#/icons'
 import arePropsEqual from '#/utils/arePropsEqual'
@@ -22,7 +23,7 @@ const Toolbar: FC<IToolbarProps> = (props) => {
 
     return (
         <div className="flex items-center justify-between gap-2">
-            <button></button>
+            <div></div>
             <div className="flex items-center gap-2">
                 {!isCurrentMonth && (
                     <Button
@@ -45,6 +46,12 @@ const Toolbar: FC<IToolbarProps> = (props) => {
                         <Icon icon={icons.chevronLeft} />
                     </div>
                 </Button>
+                <DatePicker
+                    value={startDate}
+                    onChange={(date) => {
+                        setStartDate(date)
+                    }}
+                />
                 <Button
                     theme="secondary"
                     onClick={() => {

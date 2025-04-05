@@ -1,5 +1,5 @@
 import arePropsEqual from '#/utils/arePropsEqual'
-import { DateTime } from 'luxon'
+import { Info } from 'luxon'
 import React, { FC, useMemo } from 'react'
 import { daysOfWeek } from '../types'
 
@@ -9,9 +9,9 @@ const Header: FC = () => {
             return (
                 <div
                     key={day}
-                    className="w-full p-2 rounded bg-primary-50 text-primary-600 shadow"
+                    className="flex items-center justify-center w-full p-1.5 rounded bg-primary-50 text-primary-600 shadow"
                 >
-                    {DateTime.now().set({ weekday: day }).toFormat('DD')}
+                    {Info.weekdays('narrow')[day]}
                 </div>
             )
         })

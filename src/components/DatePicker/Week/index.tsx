@@ -4,12 +4,13 @@ import React, { FC, useMemo } from 'react'
 import { daysOfWeek } from '../types'
 
 interface IWeekProps {
+    currentMonth: number
     startOfWeek: DateTime
     onChange: (newDate: DateTime) => void
 }
 
 const Week: FC<IWeekProps> = (props) => {
-    const { startOfWeek, onChange } = props
+    const { startOfWeek, currentMonth, onChange } = props
 
     const days = useMemo(() => {
         return daysOfWeek.map((day) => {
@@ -18,27 +19,27 @@ const Week: FC<IWeekProps> = (props) => {
 
             const isToday = date.toUnixInteger() === today.toUnixInteger()
 
+            let themeClasses = 'text-primary-400'
+            if (isToday) {
+                themeClasses = 'bg-primary-400 text-white'
+            } else if (date.month !== currentMonth) {
+                themeClasses = 'text-primary-200'
+            }
+
             return (
                 <div
-                    className="flex flex-col p-2 gap-1 w-full border border-primary-100 rounded"
+                    className={`flex justify-center items-center gap-1 p-1.5 w-full h-fit border border-primary-100 rounded hover:bg-primary-100 cursor-pointer ${themeClasses}`}
                     onClick={() => {
                         onChange(date)
                     }}
                 >
-                    {isToday && (
-                        <div className="px-1 w-fit rounded bg-primary-50 text-primary-600 border border-primary-100">
-                            {date.day}
-                        </div>
-                    )}
-                    {!isToday && (
-                        <div className="text-primary-400">{date.day}</div>
-                    )}
+                    {date.day}
                 </div>
             )
         })
-    }, [onChange, startOfWeek])
+    }, [currentMonth, onChange, startOfWeek])
 
-    return <div className="flex gap-2 min-h-20 w-full">{days}</div>
+    return <div className="flex gap-1 w-full">{days}</div>
 }
 
 export default React.memo(Week, arePropsEqual([])) as typeof Week

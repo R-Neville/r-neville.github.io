@@ -24,6 +24,10 @@ const Week: <EventType>(props: IWeekProps<EventType>) => JSX.Element = (
 
             const isToday = date.toUnixInteger() === today.toUnixInteger()
 
+            const todayClasses = isToday
+                ? 'rounded bg-neutral-500 text-white'
+                : ''
+
             return (
                 <div
                     className="flex flex-col p-2 gap-1 w-full border border-primary-100 rounded"
@@ -31,14 +35,9 @@ const Week: <EventType>(props: IWeekProps<EventType>) => JSX.Element = (
                         minWidth: `${minColumnWidth}px`,
                     }}
                 >
-                    {isToday && (
-                        <div className="px-1 w-fit rounded bg-primary-50 text-primary-600 border border-primary-100">
-                            {date.day}
-                        </div>
-                    )}
-                    {!isToday && (
-                        <div className="text-primary-400">{date.day}</div>
-                    )}
+                    <div className={`flex px-2 w-fit ${todayClasses}`}>
+                        {date.day}
+                    </div>
                     <div className="flex flex-col">
                         {events.map((event, i) => {
                             return renderEventContent(event, i)

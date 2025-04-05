@@ -1,10 +1,11 @@
-import { faUser } from '@fortawesome/free-regular-svg-icons'
+import { faCalendar, faUser } from '@fortawesome/free-regular-svg-icons'
 import {
     faArrowLeft,
     faArrowRight,
     faBars,
     faChevronLeft,
     faChevronRight,
+    faCrosshairs,
     faEllipsisH,
     faEllipsisV,
     faHouse,
@@ -26,6 +27,8 @@ const icons = {
     arrowLeft: faArrowLeft,
     chevronRight: faChevronRight,
     chevronLeft: faChevronLeft,
+    calendar: faCalendar,
+    crosshairs: faCrosshairs,
 }
 
 export default icons
