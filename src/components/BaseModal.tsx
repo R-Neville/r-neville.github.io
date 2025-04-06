@@ -26,7 +26,7 @@ const BaseModal: FC<IBaseModalProps> = (props: IBaseModalProps) => {
         dialogClassName,
     } = props
 
-    const clickAwayClass = useOnClickAwayClass(handleClose, open)
+    const clickAwayClass = useOnClickAwayClass(handleClose, !open)
 
     if (!open) {
         return <></>

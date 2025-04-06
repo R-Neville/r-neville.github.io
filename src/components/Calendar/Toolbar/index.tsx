@@ -33,7 +33,9 @@ const Toolbar: FC<IToolbarProps> = (props) => {
                             setStartDate(now)
                         }}
                     >
-                        Go to Current
+                        <div>
+                            <Icon icon={icons.crosshairs} />
+                        </div>
                     </Button>
                 )}
                 <Button

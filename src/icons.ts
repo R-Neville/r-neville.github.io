@@ -5,10 +5,13 @@ import {
     faBars,
     faChevronLeft,
     faChevronRight,
+    faCode,
+    faCog,
     faCrosshairs,
     faEllipsisH,
     faEllipsisV,
     faHouse,
+    faPlus,
     faTimes,
     faXmark,
 } from '@fortawesome/free-solid-svg-icons'
@@ -29,6 +32,9 @@ const icons = {
     chevronLeft: faChevronLeft,
     calendar: faCalendar,
     crosshairs: faCrosshairs,
+    cog: faCog,
+    code: faCode,
+    plus: faPlus,
 }
 
 export default icons

@@ -19,12 +19,12 @@ const DatePicker: FC<IDatePickerProps> = (props) => {
 
     const [open, setOpen] = useState<boolean>(false)
 
-    const clickawayClass = useOnClickAwayClass(() => {
+    const onClickAwayClass = useOnClickAwayClass(() => {
         setOpen(false)
     }, !open)
 
     return (
-        <div className={`${clickawayClass} relative`}>
+        <div className={`${onClickAwayClass} relative`}>
             <Button theme={theme} onClick={() => setOpen((prev) => !prev)}>
                 <div className="flex items-center gap-2">
                     <Icon icon={icons.calendar} />

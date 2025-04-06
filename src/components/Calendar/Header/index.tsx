@@ -14,7 +14,7 @@ const Header: FC<IHeaderProps> = (props: IHeaderProps) => {
             return (
                 <div
                     key={day}
-                    className="w-full p-2 rounded bg-primary-50 text-primary-600 shadow"
+                    className="w-full p-2"
                     style={{
                         minWidth: `${minColumnWidth}px`,
                     }}
@@ -25,7 +25,11 @@ const Header: FC<IHeaderProps> = (props: IHeaderProps) => {
         })
     }, [minColumnWidth, renderHeaderContent])
 
-    return <div className="flex gap-2 w-full sticky top-0">{headers}</div>
+    return (
+        <div className="flex gap-2 w-full sticky top-0 z-[99] bg-primary-50 text-primary-600 shadow">
+            {headers}
+        </div>
+    )
 }
 
 export default React.memo(Header, arePropsEqual(['renderHeaderContent']))

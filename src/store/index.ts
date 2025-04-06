@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { useDispatch, useSelector } from 'react-redux'
 import logger from 'redux-logger'
+import components from './components'
 import config from './config'
 import error from './error'
 import request from './request'
@@ -9,6 +10,7 @@ const reducer = combineReducers({
     config,
     error,
     request,
+    components,
 })
 
 export const store = configureStore({

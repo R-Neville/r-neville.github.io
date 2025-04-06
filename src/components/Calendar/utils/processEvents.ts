@@ -18,7 +18,7 @@ export default function processEvents<Event extends ICalendarEvent>(
                 byWeekByDay[startOfWeek] = {}
             }
 
-            if (byWeekByDay[startOfDay] === undefined) {
+            if (byWeekByDay[startOfWeek][startOfDay] === undefined) {
                 byWeekByDay[startOfWeek][startOfDay] = []
             }
 

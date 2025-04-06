@@ -1,6 +1,6 @@
 import arePropsEqual from '#/utils/arePropsEqual'
 import { DateTime } from 'luxon'
-import React, { JSX, useMemo, useState } from 'react'
+import React, { JSX, useEffect, useMemo, useState } from 'react'
 import Header from './Header'
 import Toolbar from './Toolbar'
 import { DayOfWeek, ICalendarEvent } from './types'
@@ -13,8 +13,10 @@ interface ICalendarProps<E> {
     timezone?: string
     events: E[]
     showNowMarker: boolean
+    onChange?: (newDate: DateTime) => void
     renderHeaderContent: (dayOfWeek: DayOfWeek) => JSX.Element
     renderEventContent: (event: E, index: number) => JSX.Element
+    onNewEvent?: (date: DateTime) => void
 }
 
 const Calendar: <EventData extends ICalendarEvent>(
@@ -26,6 +28,8 @@ const Calendar: <EventData extends ICalendarEvent>(
         minColumnWidth = 100,
         renderEventContent,
         renderHeaderContent,
+        onChange,
+        onNewEvent,
     } = props
 
     const [startDate, setStartDate] = useState<DateTime>(s)
@@ -62,10 +66,12 @@ const Calendar: <EventData extends ICalendarEvent>(
             return (
                 <Week
                     key={i}
+                    currentMonth={startDate.month}
                     minColumnWidth={minColumnWidth}
                     startOfWeek={weekStart}
                     eventsByDay={weekEvents}
                     renderEventContent={renderEventContent}
+                    onNewEvent={onNewEvent}
                 />
             )
         })
@@ -73,19 +79,31 @@ const Calendar: <EventData extends ICalendarEvent>(
         eventsByWeekByDay,
         minColumnWidth,
         numberOfWeeks,
+        onNewEvent,
         renderEventContent,
+        startDate.month,
         startOfCalendar,
     ])
 
+    useEffect(() => {
+        if (onChange !== undefined) {
+            onChange(startOfMonth)
+        }
+    }, [onChange, startOfMonth])
+
     return (
-        <div className="grid grid-rows-[max-content_minmax(0px,100%)] grid-cols-[minmax(0px,100%)] gap-2 overflow-hidden h-fit w-full min-w-0 min-h-0">
+        <div className="grid grid-rows-[max-content_minmax(0px,100%)] grid-cols-[minmax(0px,100%)] gap-2 overflow-hidden h-full w-full min-w-0 min-h-0">
             <Toolbar startDate={startDate} setStartDate={setStartDate} />
-            <div className="flex relative flex-col gap-2 w-full h-full overflow-auto min-w-0 min-h-0">
+            <div className="relative grid grid-rows-[max-content_minmax(0px,100%)] gap-2 w-full h-full overflow-auto min-w-0 min-h-0">
                 <Header
                     minColumnWidth={minColumnWidth}
                     renderHeaderContent={renderHeaderContent}
                 />
-                <div className="flex flex-col gap-2 w-full">{weeks}</div>
+                <div
+                    className={`grid grid-rows-[repeat(${numberOfWeeks})] gap-2 w-full h-fit min-h-0`}
+                >
+                    {weeks}
+                </div>
             </div>
         </div>
     )
