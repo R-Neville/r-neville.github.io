@@ -8,3 +8,8 @@ export interface ICalendarEvent {
     start: DateTime
     end: DateTime
 }
+
+export interface IExampleCalendarEvent extends ICalendarEvent {
+    title: string
+    description: string
+}

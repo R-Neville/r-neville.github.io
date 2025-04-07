@@ -2,7 +2,7 @@ import useOnClickAwayClass from '#/hooks/useOnClickAwayClass'
 import icons from '#/icons'
 import arePropsEqual from '#/utils/arePropsEqual'
 import React, { FC, JSX } from 'react'
-import Clickable from './Clickable'
+import Button from './Button'
 import Icon from './Icon'
 
 interface IBaseModalProps {
@@ -26,7 +26,10 @@ const BaseModal: FC<IBaseModalProps> = (props: IBaseModalProps) => {
         dialogClassName,
     } = props
 
-    const clickAwayClass = useOnClickAwayClass(handleClose, !open)
+    const clickAwayClass = useOnClickAwayClass(
+        handleClose,
+        !open || !clickAwayable,
+    )
 
     if (!open) {
         return <></>
@@ -40,14 +43,13 @@ const BaseModal: FC<IBaseModalProps> = (props: IBaseModalProps) => {
                 <div
                     className={`${clickAwayable ? clickAwayClass : ''} flex flex-col relative h-full overflow-hidden rounded border border-primary-100 shadow text-primary-800 bg-white`}
                 >
-                    <div className="flex items-center justify-between p-2">
+                    <div className="flex items-center justify-between p-4">
                         {title}
-                        <Clickable onClick={handleClose}>
+                        <Button theme="secondary" onClick={handleClose}>
                             <Icon icon={icons.xMark} size="lg" />
-                        </Clickable>
+                        </Button>
                     </div>
-
-                    <div className="flex flex-col p-4 overflow-auto">
+                    <div className="flex flex-col p-4 overflow-auto h-full">
                         {children}
                     </div>
                     {footer !== undefined && footer}

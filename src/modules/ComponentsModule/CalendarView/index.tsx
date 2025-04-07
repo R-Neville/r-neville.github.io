@@ -4,6 +4,7 @@ import Heading from '#/components/Heading'
 import Icon from '#/components/Icon'
 import icons from '#/icons'
 import { useAppDispatch, useAppSelector } from '#/store'
+import { setCalendarEventModalState } from '#/store/components/thunks/setCalendarEventModalState'
 import ModuleDefinition from '#/store/config/model/ModuleDefinition'
 import { setCurrentModule } from '#/store/config/thunks/setCurrentModule'
 import { DateTime, Interval } from 'luxon'
@@ -41,8 +42,6 @@ const CalendarView: FC = () => {
             })
             .flat()
     }, [calendarStart, maxEventsPerDay])
-
-    console.log(events)
 
     return (
         <div className="flex flex-col w-full h-full min-w-0 min-h-0 overflow-hidden">
@@ -111,7 +110,14 @@ const CalendarView: FC = () => {
                         return <div>{proxyDate.toFormat('EEE')}</div>
                     }}
                     onNewEvent={(date) => {
-                        console.log(date)
+                        void dispatch(
+                            setCalendarEventModalState({
+                                open: true,
+                                date,
+                                event: null,
+                                mode: 'new',
+                            }),
+                        )
                     }}
                 />
             </div>
