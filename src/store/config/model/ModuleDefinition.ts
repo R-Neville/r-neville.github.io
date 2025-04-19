@@ -5,6 +5,7 @@ export const componentViews = [
     'VerticalVirtualiser',
     'Calendar',
     'MutliSelect',
+    'Synth',
 ] as const
 
 export type ComponentView = (typeof componentViews)[number]

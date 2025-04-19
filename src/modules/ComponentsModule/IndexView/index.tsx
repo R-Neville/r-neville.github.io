@@ -63,6 +63,17 @@ const IndexView: FC = () => {
                         )
                     }}
                 ></ComponentCard>
+                <ComponentCard
+                    title="Synth"
+                    description="A simple synth component."
+                    onClick={() => {
+                        void dispatch(
+                            setCurrentModule(
+                                new ModuleDefinition('components', 'Synth'),
+                            ),
+                        )
+                    }}
+                ></ComponentCard>
             </div>
         </ViewWrapper>
     )

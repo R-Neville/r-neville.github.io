@@ -3,6 +3,7 @@ import { FC } from 'react'
 import CalendarView from './CalendarView'
 import HorizontalVirtualiserView from './HorizontalVirtualiserView'
 import IndexView from './IndexView'
+import SynthView from './SynthModule'
 import VerticalVirtualiserView from './VerticalVirtualiserView'
 
 const ComponentsModule: FC = () => {
@@ -17,6 +18,8 @@ const ComponentsModule: FC = () => {
             return <VerticalVirtualiserView />
         case 'Calendar':
             return <CalendarView />
+        case 'Synth':
+            return <SynthView />
     }
 
     return <div></div>

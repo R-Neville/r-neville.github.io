@@ -23,7 +23,7 @@ const Toolbar: FC<IToolbarProps> = (props) => {
 
     return (
         <div className="flex items-center justify-between gap-2">
-            <div></div>
+            <div className="flex items-center gap-2"></div>
             <div className="flex items-center gap-2">
                 {!isCurrentMonth && (
                     <Button
