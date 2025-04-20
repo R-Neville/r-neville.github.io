@@ -1,100 +1,21 @@
 import arePropsEqual from '#/utils/arePropsEqual'
-import React, { FC, useEffect, useState } from 'react'
-import Button from '../Button'
+import React, { FC } from 'react'
+import { SynthProvider } from './Context/Provider'
+import { Controls } from './Controls'
 import { Keyboard } from './Keyboard'
-import Oscillator from './model/Oscillator'
+import { Oscilloscope } from './Oscilloscope'
 
 const SynthComponent: FC = () => {
-    const [audioContext, setAudioContext] = useState<AudioContext | null>(null)
-    const [oscillator, setOscillator] = useState<Oscillator | null>(null)
-    const [gain, setGain] = useState<GainNode | null>(null)
-
-    useEffect(() => {
-        setAudioContext(new AudioContext())
-    }, [])
-
-    useEffect(() => {
-        if (audioContext !== null) {
-            setGain(audioContext.createGain())
-        }
-    }, [audioContext])
-
-    console.log({ oscillator, audioContext, gain })
-
     return (
-        <div className="flex flex-col gap-2">
-            <div className="flex flex-row gap-2">
-                <Button
-                    variant={
-                        oscillator?.getType() === 'sawtooth'
-                            ? 'active'
-                            : 'normal'
-                    }
-                    onClick={() => {
-                        if (audioContext !== null) {
-                            const oscillator = new Oscillator(
-                                audioContext,
-                                'sawtooth',
-                            )
-                            setOscillator(oscillator)
-                        }
-                    }}
-                >
-                    Saw Oscillator
-                </Button>
-                <Button
-                    variant={
-                        oscillator?.getType() === 'sine' ? 'active' : 'normal'
-                    }
-                    onClick={() => {
-                        if (audioContext !== null) {
-                            const oscillator = new Oscillator(
-                                audioContext,
-                                'sine',
-                            )
-                            setOscillator(oscillator)
-                        }
-                    }}
-                >
-                    Sine Oscillator
-                </Button>
-                <Button
-                    variant={
-                        oscillator?.getType() === 'square' ? 'active' : 'normal'
-                    }
-                    onClick={() => {
-                        if (audioContext !== null) {
-                            const oscillator = new Oscillator(
-                                audioContext,
-                                'square',
-                            )
-                            setOscillator(oscillator)
-                        }
-                    }}
-                >
-                    Square Oscillator
-                </Button>
-                <Button
-                    variant={
-                        oscillator?.getType() === 'triangle'
-                            ? 'active'
-                            : 'normal'
-                    }
-                    onClick={() => {
-                        if (audioContext !== null) {
-                            const oscillator = new Oscillator(
-                                audioContext,
-                                'triangle',
-                            )
-                            setOscillator(oscillator)
-                        }
-                    }}
-                >
-                    Triangle Oscillator
-                </Button>
+        <SynthProvider>
+            <div className="flex flex-col gap-2 w-full min-h-0 overflow-auto">
+                <Controls />
+                <Keyboard />
+                <div className="flex flex-row gap-2 w-full">
+                    <Oscilloscope numberOfSamples={2048} />
+                </div>
             </div>
-            {oscillator && <Keyboard oscillator={oscillator} />}
-        </div>
+        </SynthProvider>
     )
 }
 

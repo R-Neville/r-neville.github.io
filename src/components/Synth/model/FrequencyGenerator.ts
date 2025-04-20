@@ -1,4 +1,4 @@
-class NoteGenerator {
+class FrequencyGenerator {
     private readonly referenceIndex = 49
     private readonly referenceFrequency = 440
 
@@ -14,4 +14,4 @@ class NoteGenerator {
     }
 }
 
-export default NoteGenerator
+export default FrequencyGenerator
