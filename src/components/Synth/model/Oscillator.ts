@@ -65,7 +65,9 @@ class Oscillator {
     public getOscillator() {
         const oscillator = new OscillatorNode(this.context)
         if (this.waveForm !== null) {
-            oscillator.setPeriodicWave(this.waveForm.getImage())
+            oscillator.setPeriodicWave(
+                this.waveForm.getImage(Math.random() * ((2 * Math.PI) / 8)),
+            )
         } else {
             oscillator.type = this.type
         }

@@ -1,5 +1,5 @@
 export interface IWaveForm {
-    getImage(): PeriodicWave
+    getImage(phaseOffsetRadians: number): PeriodicWave
 }
 
 export type WaveForm = new (
