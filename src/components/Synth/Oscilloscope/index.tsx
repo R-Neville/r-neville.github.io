@@ -1,5 +1,5 @@
 import arePropsEqual from '#/utils/arePropsEqual'
-import React, { FC, useEffect, useRef } from 'react'
+import React, { FC, useCallback, useEffect, useRef } from 'react'
 import { useSynthContext } from '../Context'
 
 interface OscilloscopeProps {
@@ -11,7 +11,7 @@ const OscilloscopeComponent: FC<OscilloscopeProps> = () => {
 
     const canvasRef = useRef<HTMLCanvasElement>(null)
 
-    useEffect(() => {
+    const drawWaveform = useCallback(() => {
         const canvas = canvasRef.current
         const c = canvas?.getContext('2d')
         const analyser = oscillator?.analyzer
@@ -20,36 +20,47 @@ const OscilloscopeComponent: FC<OscilloscopeProps> = () => {
         if (!c || !canvas || !audioContext || !oscillator || !analyser) {
             return
         }
-
-        c.fillStyle = '#181818'
+        analyser.getByteTimeDomainData(dataArray)
+        const segmentWidth = canvas.width / (analyser?.frequencyBinCount ?? 0)
         c.fillRect(0, 0, canvas.width, canvas.height)
-        c.strokeStyle = '#33ee55'
+        c.beginPath()
+        c.moveTo(-100, canvas.height / 2)
+        for (let i = 1; i < analyser.frequencyBinCount; i += 1) {
+            const x = i * segmentWidth
+            const v = dataArray[i] / 128.0
+            const y = (v * canvas.height) / 2
+            c.lineTo(x, y)
+        }
+        c.lineTo(canvas.width + 100, canvas.height / 2)
+        c.stroke()
+        requestAnimationFrame(drawWaveform)
+    }, [audioContext, oscillator])
+
+    useEffect(() => {
+        drawWaveform()
+    }, [audioContext, drawWaveform, oscillator])
+
+    useEffect(() => {
+        const canvas = canvasRef.current
+        const c = canvas?.getContext('2d')
+
+        if (!c || !canvas) {
+            return
+        }
+        c.fillStyle = '#000000'
+        c.fillRect(0, 0, canvas.width, canvas.height)
+        c.strokeStyle = 'limegreen'
         c.beginPath()
         c.moveTo(0, canvas.height / 2)
         c.lineTo(canvas.width, canvas.height / 2)
         c.stroke()
-
-        const draw = () => {
-            analyser.getByteTimeDomainData(dataArray)
-            const segmentWidth =
-                canvas.width / (analyser?.frequencyBinCount ?? 0)
-            c.fillRect(0, 0, canvas.width, canvas.height)
-            c.beginPath()
-            c.moveTo(-100, canvas.height / 2)
-            for (let i = 1; i < analyser.frequencyBinCount; i += 1) {
-                const x = i * segmentWidth
-                const v = dataArray[i] / 128.0
-                const y = (v * canvas.height) / 2
-                c.lineTo(x, y)
-            }
-            c.lineTo(canvas.width + 100, canvas.height / 2)
-            c.stroke()
-            requestAnimationFrame(draw)
-        }
-        draw()
     }, [audioContext, oscillator])
 
-    return <canvas ref={canvasRef} height={200} />
+    return (
+        <div className="flex flex-col gap-2 p-2 rounded-md bg-black">
+            <canvas className="rounded-md" ref={canvasRef} height={100} />
+        </div>
+    )
 }
 
 export const Oscilloscope = React.memo(OscilloscopeComponent, arePropsEqual([]))
