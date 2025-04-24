@@ -32,7 +32,7 @@ class Oscillator {
         this.panAmount = panAmount
 
         if (type === 'sawtooth') {
-            this.waveForm = new SawtoothWave(context, 4096)
+            this.waveForm = new SawtoothWave(context, 100)
         } else {
             this.waveForm = null
         }
@@ -55,7 +55,7 @@ class Oscillator {
     }
 
     public setDetuneAmount(amount: number) {
-        this.detuneAmount = Math.max(1 / 100, amount)
+        this.detuneAmount = Math.max(1 / 10, amount)
     }
 
     public setPanAmount(amount: number) {
@@ -117,6 +117,7 @@ class Oscillator {
     }
 
     public stopTone() {
+        console.log(this.oscillators)
         this.oscillators.forEach((oscillator) => {
             oscillator.stop()
             oscillator.disconnect()

@@ -2,6 +2,7 @@ import arePropsEqual from '#/utils/arePropsEqual'
 import React, { FC, useState } from 'react'
 
 interface KnobProps {
+    numberOfSteps: number
     label: string
     value: number
     onChange: (value: number) => void
@@ -9,12 +10,17 @@ interface KnobProps {
 
 const maxRotation = 270
 
-const KnobComponent: FC<KnobProps> = ({ label, value, onChange }) => {
+const KnobComponent: FC<KnobProps> = ({
+    label,
+    value,
+    onChange,
+    numberOfSteps,
+}) => {
     const [rotation, setRotation] = useState(value)
 
     return (
         <div className="rounded-full flex flex-col gap-2 select-none">
-            <div className="relative shadow-md rounded-full h-10 w-10">
+            <div className="relative shadow-md flex items-center justify-center rounded-full h-12 w-12 bg-primary-500">
                 <div
                     className="relative rounded-full h-10 w-10 p-2 bg-white border border-primary-200 cursor-grab"
                     style={{
@@ -31,7 +37,10 @@ const KnobComponent: FC<KnobProps> = ({ label, value, onChange }) => {
                                 Math.max(rotation + deltaX, 0),
                                 maxRotation,
                             )
-                            onChange(newValue / maxRotation)
+                            const step = Math.round(
+                                (newValue / maxRotation) * numberOfSteps,
+                            )
+                            onChange(step)
                             setRotation(newValue)
                         }
 

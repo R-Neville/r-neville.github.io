@@ -54,22 +54,25 @@ const ControlsComponent: FC = () => {
             </div>
             <div className="flex flex-row gap-2">
                 <Knob
+                    numberOfSteps={16}
                     label="Voices"
                     value={numberOfVoices}
                     onChange={(value) => {
-                        const voices = Math.round(value * 16)
+                        const voices = Math.round(value)
                         setNumberOfVoices(voices)
                     }}
                 />
                 <Knob
+                    numberOfSteps={10}
                     label="Detune"
                     value={detuneAmount}
                     onChange={(value) => {
-                        const detune = Math.round(value * 100)
+                        const detune = Math.round(value)
                         setDetuneAmount(detune)
                     }}
                 />
                 <Knob
+                    numberOfSteps={100}
                     label="Panning"
                     value={panAmount}
                     onChange={(value) => {
