@@ -1,5 +1,6 @@
 import arePropsEqual from '#/utils/arePropsEqual'
 import React, { useEffect } from 'react'
+import { useSynthContext } from '../Context'
 import Oscillator from '../model/Oscillator'
 
 const blackKeyIndices = [1, 3, 6, 8, 10]
@@ -23,15 +24,19 @@ export type KeyLabel = (typeof keyLabels)[number]
 
 interface KeyboardKeyProps {
     keyIndex: number
-    oscillator: Oscillator | null
-    parentWidth: number
 }
 
-const KeyboardKeyComponent = ({
-    keyIndex,
-    oscillator,
-    parentWidth,
-}: KeyboardKeyProps) => {
+const KeyboardKeyComponent = ({ keyIndex }: KeyboardKeyProps) => {
+    const {
+        audioContext,
+        oscillator,
+        detuneAmount,
+        numberOfVoices,
+        panAmount,
+        type,
+        setOscillator,
+    } = useSynthContext()
+
     const toneIndex = keyIndex % 12
     const blackToneIndex = toneIndex + 1
     const hasBlack = blackKeyIndices.includes(blackToneIndex)
@@ -39,18 +44,24 @@ const KeyboardKeyComponent = ({
     const blackNoteLabel = keyLabels[blackToneIndex]
 
     useEffect(() => {
-        const onMouseUp = () => {
-            oscillator?.stopTone()
-        }
-
         const abortController = new AbortController()
 
-        window.addEventListener('mouseup', onMouseUp, abortController)
+        if (oscillator !== null) {
+            const onMouseUp = () => {
+                oscillator?.stopTone()
+                setOscillator(null)
+            }
+            window.addEventListener('mouseup', onMouseUp, abortController)
+        }
 
         return () => abortController.abort()
-    }, [oscillator])
+    }, [oscillator, setOscillator])
 
     const itemWidth = parentWidth / 14
+
+    if (audioContext === null) {
+        return null
+    }
 
     return (
         <div
@@ -60,7 +71,15 @@ const KeyboardKeyComponent = ({
             }}
             title={noteLabel}
             onMouseDown={() => {
-                oscillator?.playTone(keyIndex, 4)
+                const oscillator = new Oscillator(
+                    audioContext,
+                    type,
+                    numberOfVoices,
+                    detuneAmount,
+                    panAmount,
+                )
+                oscillator.playTone(keyIndex)
+                setOscillator(oscillator)
             }}
         >
             {hasBlack && keyIndex !== 23 && (
