@@ -6,7 +6,7 @@ const SynthProvider = ({ children }: { children: React.ReactNode }) => {
     const [detuneAmount, setDetuneAmount] = useState<number>(0)
     const [numberOfVoices, setNumberOfVoices] = useState<number>(1)
     const [panAmount, setPanAmount] = useState<number>(0)
-    const [type, setType] = useState<OscillatorType>('sawtooth')
+    const [type, setType] = useState<OscillatorType>('sine')
     const [oscillator, setOscillator] = useState<Oscillator | null>(null)
 
     const audioContext = useMemo(() => new AudioContext(), [])

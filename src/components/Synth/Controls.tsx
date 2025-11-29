@@ -1,6 +1,5 @@
 import arePropsEqual from '#/utils/arePropsEqual'
 import React, { FC } from 'react'
-import Button from '../Button'
 import { useSynthContext } from './Context'
 import { Knob } from './Knob'
 
@@ -19,40 +18,22 @@ const ControlsComponent: FC = () => {
     return (
         <div className="flex flex-row gap-2 w-full">
             <div className="flex flex-row gap-2">
-                <Button
-                    variant={type === 'sawtooth' ? 'active' : 'normal'}
-                    onClick={() => {
-                        setType('sawtooth')
+                <Knob
+                    numberOfSteps={4}
+                    label={type}
+                    value={0}
+                    onChange={(value) => {
+                        const waveForm = {
+                            0: 'sine',
+                            1: 'triangle',
+                            2: 'square',
+                            3: 'sawtooth',
+                        }[value]
+                        if (waveForm !== undefined) {
+                            setType(waveForm as OscillatorType)
+                        }
                     }}
-                >
-                    Saw
-                </Button>
-                <Button
-                    variant={type === 'sine' ? 'active' : 'normal'}
-                    onClick={() => {
-                        setType('sine')
-                    }}
-                >
-                    Sine
-                </Button>
-                <Button
-                    variant={type === 'square' ? 'active' : 'normal'}
-                    onClick={() => {
-                        setType('square')
-                    }}
-                >
-                    Square
-                </Button>
-                <Button
-                    variant={type === 'triangle' ? 'active' : 'normal'}
-                    onClick={() => {
-                        setType('triangle')
-                    }}
-                >
-                    Triangle
-                </Button>
-            </div>
-            <div className="flex flex-row gap-2">
+                />
                 <Knob
                     numberOfSteps={16}
                     label="Voices"

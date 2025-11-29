@@ -18,6 +18,4 @@ export const ping = createAsyncThunk('config/ping', async (_, thunkAPI) => {
         void dispatch(processApiErrorResponse(error))
         return null
     })
-
-    console.log(result)
 })

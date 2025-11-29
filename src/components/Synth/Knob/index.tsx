@@ -63,8 +63,8 @@ const KnobComponent: FC<KnobProps> = ({
                     <div className="absolute bottom-2 left-2 rounded-full h-1 w-1 bg-primary-400"></div>
                 </div>
             </div>
-            <div className="text-sm whitespace-nowrap">
-                {label} {value}
+            <div className="flex items-center justify-center text-sm whitespace-nowrap">
+                {label}
             </div>
         </div>
     )

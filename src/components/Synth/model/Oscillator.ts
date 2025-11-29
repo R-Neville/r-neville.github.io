@@ -105,8 +105,10 @@ class Oscillator {
         })
     }
 
-    public playTone(keyIndex: number) {
-        const frequency = this.noteGenerator.generateNote(keyIndex)
+    public playTone(keyIndex: number, octave = 4) {
+        const frequency = this.noteGenerator.generateNote(
+            keyIndex + octave * 12,
+        )
         this.oscillators = this.getOscillators(frequency).map(
             (oscillator, i) => {
                 oscillator.connect(this.context.destination)
@@ -117,7 +119,6 @@ class Oscillator {
     }
 
     public stopTone() {
-        console.log(this.oscillators)
         this.oscillators.forEach((oscillator) => {
             oscillator.stop()
             oscillator.disconnect()

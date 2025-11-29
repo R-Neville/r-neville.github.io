@@ -1,14 +1,9 @@
 import arePropsEqual from '#/utils/arePropsEqual'
 import React, { FC, useRef } from 'react'
 import { useResizeObserver } from 'usehooks-ts'
-import Oscillator from '../model/Oscillator'
 import { KeyboardKey } from './KeyboardKey'
 
-interface KeyboardProps {
-    oscillator: Oscillator | null
-}
-
-const KeyboardComponent: FC<KeyboardProps> = ({ oscillator }) => {
+const KeyboardComponent: FC = () => {
     const ref = useRef<HTMLDivElement>(null)
 
     const { width = 0 } = useResizeObserver({ ref })
@@ -17,14 +12,7 @@ const KeyboardComponent: FC<KeyboardProps> = ({ oscillator }) => {
         if ([1, 3, 6, 8, 10].includes(index % 12)) {
             return <></>
         }
-        return (
-            <KeyboardKey
-                parentWidth={width}
-                key={index}
-                keyIndex={index}
-                oscillator={oscillator}
-            />
-        )
+        return <KeyboardKey parentWidth={width} key={index} keyIndex={index} />
     })
 
     return (

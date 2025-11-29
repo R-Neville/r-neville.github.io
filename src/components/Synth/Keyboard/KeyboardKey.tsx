@@ -1,5 +1,5 @@
 import arePropsEqual from '#/utils/arePropsEqual'
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useSynthContext } from '../Context'
 import Oscillator from '../model/Oscillator'
 
@@ -24,9 +24,10 @@ export type KeyLabel = (typeof keyLabels)[number]
 
 interface KeyboardKeyProps {
     keyIndex: number
+    parentWidth: number
 }
 
-const KeyboardKeyComponent = ({ keyIndex }: KeyboardKeyProps) => {
+const KeyboardKeyComponent = ({ keyIndex, parentWidth }: KeyboardKeyProps) => {
     const {
         audioContext,
         oscillator,
@@ -46,16 +47,38 @@ const KeyboardKeyComponent = ({ keyIndex }: KeyboardKeyProps) => {
     useEffect(() => {
         const abortController = new AbortController()
 
-        if (oscillator !== null) {
-            const onMouseUp = () => {
-                oscillator?.stopTone()
-                setOscillator(null)
-            }
-            window.addEventListener('mouseup', onMouseUp, abortController)
+        const onMouseUp = () => {
+            oscillator?.stopTone()
         }
+        window.addEventListener('mouseup', onMouseUp, abortController)
 
         return () => abortController.abort()
-    }, [oscillator, setOscillator])
+    }, [oscillator])
+
+    const playTone = useCallback(
+        (keyIndex: number) => {
+            if (audioContext === null) {
+                return
+            }
+            const oscillator = new Oscillator(
+                audioContext,
+                type,
+                numberOfVoices,
+                detuneAmount,
+                panAmount,
+            )
+            oscillator.playTone(keyIndex, 4)
+            setOscillator(oscillator)
+        },
+        [
+            audioContext,
+            detuneAmount,
+            numberOfVoices,
+            panAmount,
+            setOscillator,
+            type,
+        ],
+    )
 
     const itemWidth = parentWidth / 14
 
@@ -71,15 +94,7 @@ const KeyboardKeyComponent = ({ keyIndex }: KeyboardKeyProps) => {
             }}
             title={noteLabel}
             onMouseDown={() => {
-                const oscillator = new Oscillator(
-                    audioContext,
-                    type,
-                    numberOfVoices,
-                    detuneAmount,
-                    panAmount,
-                )
-                oscillator.playTone(keyIndex)
-                setOscillator(oscillator)
+                playTone(keyIndex)
             }}
         >
             {hasBlack && keyIndex !== 23 && (
@@ -92,7 +107,7 @@ const KeyboardKeyComponent = ({ keyIndex }: KeyboardKeyProps) => {
                     title={blackNoteLabel}
                     onMouseDown={(event) => {
                         event.stopPropagation()
-                        oscillator?.playTone(keyIndex + 1, 4)
+                        playTone(keyIndex + 1)
                     }}
                 ></div>
             )}
