@@ -16,7 +16,7 @@ const Button: FC<IButtonProps> = (props) => {
 
     return (
         <button
-            className={`flex items-center py-1 px-2 rounded select-none outline-none cursor-pointer ${themeClassNames}`}
+            className={`flex items-center justify-center gap-2 py-1 px-2 h-10 min-w-10 rounded select-none outline-none cursor-pointer ${themeClassNames}`}
             onClick={onClick}
         >
             {children}

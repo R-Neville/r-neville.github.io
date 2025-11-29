@@ -5,11 +5,7 @@ export const daysOfWeek = [0, 1, 2, 3, 4, 5, 6] as const
 export type DayOfWeek = (typeof daysOfWeek)[number]
 
 export interface ICalendarEvent {
+    title?: string
     start: DateTime
     end: DateTime
-}
-
-export interface IExampleCalendarEvent extends ICalendarEvent {
-    title: string
-    description: string
 }

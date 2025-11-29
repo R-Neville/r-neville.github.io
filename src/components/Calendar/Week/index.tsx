@@ -62,7 +62,7 @@ const Week: <EventType extends ICalendarEvent>(
                     <div className={`flex px-2 w-fit ${todayClasses}`}>
                         {date.day}
                     </div>
-                    <div className="flex flex-col gap-2 h-full">
+                    <div className="flex flex-col gap-2 h-full min-h-10">
                         {events.map((event, i) => {
                             return renderEventContent(event, i)
                         })}

@@ -49,6 +49,7 @@ const Toolbar: FC<IToolbarProps> = (props) => {
                     </div>
                 </Button>
                 <DatePicker
+                    showValue
                     value={startDate}
                     onChange={(date) => {
                         setStartDate(date)

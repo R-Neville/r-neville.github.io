@@ -1,6 +1,6 @@
 import useOnClickAwayClass from '#/hooks/useOnClickAwayClass'
 import icons from '#/icons'
-import { Theme } from '#/theme'
+import { Theme, Variant } from '#/theme'
 import arePropsEqual from '#/utils/arePropsEqual'
 import { DateTime } from 'luxon'
 import React, { FC, useState } from 'react'
@@ -9,13 +9,23 @@ import Icon from '../Icon'
 import Calendar from './Calendar'
 
 interface IDatePickerProps {
+    asButton?: boolean
     theme?: Theme
+    variant?: Variant
     value: DateTime
+    showValue?: boolean
     onChange: (newValue: DateTime) => void
 }
 
 const DatePicker: FC<IDatePickerProps> = (props) => {
-    const { value, theme = 'secondary', onChange } = props
+    const {
+        value,
+        theme = 'secondary',
+        variant = 'normal',
+        onChange,
+        showValue = false,
+        asButton = false,
+    } = props
 
     const [open, setOpen] = useState<boolean>(false)
 
@@ -25,12 +35,15 @@ const DatePicker: FC<IDatePickerProps> = (props) => {
 
     return (
         <div className={`${onClickAwayClass} relative`}>
-            <Button theme={theme} onClick={() => setOpen((prev) => !prev)}>
-                <div className="flex items-center gap-2">
+            {asButton && (
+                <Button onClick={() => setOpen((prev) => !prev)}>
+                    {showValue && value.toFormat('MMM yyyy')}
                     <Icon icon={icons.calendar} />
-                    {value.toFormat('MMM yyyy')}
-                </div>
-            </Button>
+                </Button>
+            )}
+            <div onClick={() => setOpen((prev) => !prev)}>
+                <Icon icon={icons.calendar} />
+            </div>
             {open && (
                 <div className="absolute right-0 bg-white z-[9999] w-[300px] h-fit">
                     <Calendar startDate={value} onChange={onChange} />

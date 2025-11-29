@@ -1,4 +1,4 @@
-import { IExampleCalendarEvent } from '#/components/Calendar/types'
+import { ICalendarEvent } from '#/components/Calendar/types'
 import { createSlice } from '@reduxjs/toolkit'
 import { DateTime } from 'luxon'
 import { setMaxCalendarEventsPerDay } from './thunks'
@@ -7,7 +7,7 @@ import { setCalendarEventModalState } from './thunks/setCalendarEventModalState'
 export interface ICalendarEventModalState {
     open: boolean
     date: DateTime | null
-    event: IExampleCalendarEvent | null
+    event: ICalendarEvent | null
     mode: 'new' | 'edit' | 'view'
 }
 
@@ -15,6 +15,7 @@ interface IComponentsState {
     calendar: {
         maxEventsPerDay: number
         eventModalState: ICalendarEventModalState
+        events: ICalendarEvent[]
     }
 }
 
@@ -27,6 +28,7 @@ const initialState: IComponentsState = {
             event: null,
             mode: 'new',
         },
+        events: [],
     },
 }
 

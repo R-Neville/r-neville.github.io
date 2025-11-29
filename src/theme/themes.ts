@@ -1,4 +1,4 @@
-export type Theme = 'primary' | 'secondary' | 'outline'
+export type Theme = 'primary' | 'secondary' | 'outline' | 'transparent'
 
 export type Variant = 'normal' | 'active'
 
@@ -14,6 +14,10 @@ const themes: Record<Theme, Record<Variant, string>> = {
     outline: {
         normal: 'bg-inherit text-primary-800 border border-primary-600',
         active: 'bg-primary-100 text-primary-800 border border-primary-600',
+    },
+    transparent: {
+        normal: 'bg-none text-primary-800 cursor-pointer border-transparent',
+        active: 'bg-primary-600 text-primary-50 cursor-pointer',
     },
 }
 
