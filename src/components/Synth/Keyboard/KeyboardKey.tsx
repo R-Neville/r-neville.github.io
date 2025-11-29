@@ -2,7 +2,7 @@ import arePropsEqual from '#/utils/arePropsEqual'
 import React, { useEffect } from 'react'
 import Oscillator from '../model/Oscillator'
 
-const blackKeyIndices = [1, 4, 6, 9, 11]
+const blackKeyIndices = [1, 3, 6, 8, 10]
 
 const keyLabels = [
     'C',
@@ -24,12 +24,19 @@ export type KeyLabel = (typeof keyLabels)[number]
 interface KeyboardKeyProps {
     keyIndex: number
     oscillator: Oscillator | null
+    parentWidth: number
 }
 
-const KeyboardKeyComponent = ({ keyIndex, oscillator }: KeyboardKeyProps) => {
+const KeyboardKeyComponent = ({
+    keyIndex,
+    oscillator,
+    parentWidth,
+}: KeyboardKeyProps) => {
     const toneIndex = keyIndex % 12
-    const isBlack = blackKeyIndices.includes(toneIndex)
+    const blackToneIndex = toneIndex + 1
+    const hasBlack = blackKeyIndices.includes(blackToneIndex)
     const noteLabel = keyLabels[toneIndex]
+    const blackNoteLabel = keyLabels[blackToneIndex]
 
     useEffect(() => {
         const onMouseUp = () => {
@@ -43,19 +50,34 @@ const KeyboardKeyComponent = ({ keyIndex, oscillator }: KeyboardKeyProps) => {
         return () => abortController.abort()
     }, [oscillator])
 
-    let keyClassName = 'bg-white'
-    if (isBlack) {
-        keyClassName = 'bg-black'
-    }
+    const itemWidth = parentWidth / 14
 
     return (
         <div
-            className={`${keyClassName} flex items-center justify-center w-4 h-10 cursor-pointer rounded border`}
+            className={`relative h-[100px] flex items-center justify-center cursor-pointer border border-primary-600 rounded-b bg-white`}
+            style={{
+                width: `${itemWidth}px`,
+            }}
             title={noteLabel}
             onMouseDown={() => {
-                oscillator?.playTone(keyIndex)
+                oscillator?.playTone(keyIndex, 4)
             }}
-        ></div>
+        >
+            {hasBlack && keyIndex !== 23 && (
+                <div
+                    className="absolute top-0 bg-black h-[50px] z-[99] rounded-b"
+                    style={{
+                        width: `${itemWidth / 2}px`,
+                        left: `${itemWidth / 2 + itemWidth / 4}px`,
+                    }}
+                    title={blackNoteLabel}
+                    onMouseDown={(event) => {
+                        event.stopPropagation()
+                        oscillator?.playTone(keyIndex + 1, 4)
+                    }}
+                ></div>
+            )}
+        </div>
     )
 }
 

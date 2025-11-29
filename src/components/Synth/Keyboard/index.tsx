@@ -1,5 +1,6 @@
 import arePropsEqual from '#/utils/arePropsEqual'
-import React, { FC } from 'react'
+import React, { FC, useRef } from 'react'
+import { useResizeObserver } from 'usehooks-ts'
 import Oscillator from '../model/Oscillator'
 import { KeyboardKey } from './KeyboardKey'
 
@@ -8,13 +9,29 @@ interface KeyboardProps {
 }
 
 const KeyboardComponent: FC<KeyboardProps> = ({ oscillator }) => {
-    const keys = Array.from({ length: 88 }).map((_, index) => {
+    const ref = useRef<HTMLDivElement>(null)
+
+    const { width = 0 } = useResizeObserver({ ref })
+
+    const keys = Array.from({ length: 24 }).map((_, index) => {
+        if ([1, 3, 6, 8, 10].includes(index % 12)) {
+            return <></>
+        }
         return (
-            <KeyboardKey key={index} keyIndex={index} oscillator={oscillator} />
+            <KeyboardKey
+                parentWidth={width}
+                key={index}
+                keyIndex={index}
+                oscillator={oscillator}
+            />
         )
     })
 
-    return <div className="flex flex-row">{keys}</div>
+    return (
+        <div ref={ref} className="relative flex flex-row">
+            {keys}
+        </div>
+    )
 }
 
 export const Keyboard = React.memo(KeyboardComponent, arePropsEqual([]))

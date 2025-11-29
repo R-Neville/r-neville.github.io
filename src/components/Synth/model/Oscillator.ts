@@ -30,10 +30,11 @@ class Oscillator {
         return oscillator
     }
 
-    public playTone(keyIndex: number) {
+    public playTone(keyIndex: number, octave: number) {
         this.oscillator = this.getOscillator()
-        this.oscillator.frequency.value =
-            this.noteGenerator.generateNote(keyIndex)
+        this.oscillator.frequency.value = this.noteGenerator.generateNote(
+            keyIndex + octave * 12,
+        )
         this.oscillator.connect(this.context.destination)
         this.oscillator.start()
     }

@@ -11,8 +11,7 @@ const IndexView: FC = () => {
                     It's R-Neville here, and this is my portfolio site!
                 </div>
                 <div className="text-xl">
-                    I'm a full-stack TypeScript and PHP developer based in
-                    Brisbane.
+                    I'm a full-stack developer based on the Sunshine Coast.
                 </div>
                 <div className="mt-10">
                     <ButtonLink
