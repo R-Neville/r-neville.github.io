@@ -2,14 +2,20 @@ import Button from '#/components/Button'
 import Icon from '#/components/Icon'
 import icons from '#/icons'
 import { setSidebarState, useAppDispatch, useAppSelector } from '#/store'
+import ModuleDefinition from '#/store/config/model/ModuleDefinition'
+import { setCurrentModule } from '#/store/config/thunks/setCurrentModule'
 import { FC, useCallback, useEffect, useState } from 'react'
+import SidebarOption from './SidebarOption'
+import SidebarSection from './SidebarSection'
+
+const MIN_WIDTH = 300
 
 const AppSidebar: FC = () => {
     const dispatch = useAppDispatch()
 
     const { sidebarState } = useAppSelector((state) => state.config)
 
-    const [width, setWidth] = useState<number>(200)
+    const [width, setWidth] = useState<number>(MIN_WIDTH)
 
     const { float } = sidebarState
 
@@ -18,7 +24,7 @@ const AppSidebar: FC = () => {
 
         const onMouseMove = (event: MouseEvent) => {
             const { pageX } = event
-            setWidth(Math.min(Math.max(pageX, 200), 500))
+            setWidth(Math.min(Math.max(pageX, MIN_WIDTH), 500))
         }
 
         const onMouseUp = () => {
@@ -90,7 +96,62 @@ const AppSidebar: FC = () => {
                 )}
             </div>
             <div className="flex flex-col p-4">
-                Nothing to show here yet... Stay tuned!
+                <SidebarSection title="Components">
+                    <div className="flex flex-col">
+                        <SidebarOption
+                            text="VerticalVirtualiser"
+                            onClick={() => {
+                                void dispatch(
+                                    setCurrentModule(
+                                        new ModuleDefinition(
+                                            'components',
+                                            'VerticalVirtualiser',
+                                        ),
+                                    ),
+                                )
+                            }}
+                        />
+                        <SidebarOption
+                            text="HorizontalVirtualiser"
+                            onClick={() => {
+                                void dispatch(
+                                    setCurrentModule(
+                                        new ModuleDefinition(
+                                            'components',
+                                            'HorizontalVirtualiser',
+                                        ),
+                                    ),
+                                )
+                            }}
+                        />
+                        <SidebarOption
+                            text="Calendar"
+                            onClick={() => {
+                                void dispatch(
+                                    setCurrentModule(
+                                        new ModuleDefinition(
+                                            'components',
+                                            'Calendar',
+                                        ),
+                                    ),
+                                )
+                            }}
+                        />
+                        <SidebarOption
+                            text="Synth"
+                            onClick={() => {
+                                void dispatch(
+                                    setCurrentModule(
+                                        new ModuleDefinition(
+                                            'components',
+                                            'Synth',
+                                        ),
+                                    ),
+                                )
+                            }}
+                        />
+                    </div>
+                </SidebarSection>
             </div>
         </div>
     )

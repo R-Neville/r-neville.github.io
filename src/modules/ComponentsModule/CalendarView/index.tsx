@@ -5,8 +5,6 @@ import Icon from '#/components/Icon'
 import icons from '#/icons'
 import { useAppDispatch, useAppSelector } from '#/store'
 import { setCalendarEventModalState } from '#/store/components/thunks/setCalendarEventModalState'
-import ModuleDefinition from '#/store/config/model/ModuleDefinition'
-import { setCurrentModule } from '#/store/config/thunks/setCurrentModule'
 import { DateTime, Interval } from 'luxon'
 import { FC, useMemo, useState } from 'react'
 
@@ -49,25 +47,6 @@ const CalendarView: FC = () => {
                 <div className="flex justify-between items-center">
                     <Heading rank="h2">Calendar</Heading>
                     <div className="flex items-center gap-2">
-                        <Button
-                            theme="secondary"
-                            variant={'normal'}
-                            onClick={() => {
-                                void dispatch(
-                                    setCurrentModule(
-                                        new ModuleDefinition(
-                                            'components',
-                                            'index',
-                                        ),
-                                    ),
-                                )
-                            }}
-                        >
-                            <div className="flex items-center gap-2">
-                                <Icon icon={icons.arrowLeft} />
-                                Back
-                            </div>
-                        </Button>
                         <Button theme="secondary">
                             <div className="flex items-center gap-2 py-1 px-2">
                                 <Icon icon={icons.cog} />

@@ -10,9 +10,9 @@ const SynthComponent: FC = () => {
         <SynthProvider>
             <div className="flex flex-col gap-2 w-full min-h-0 overflow-auto">
                 <div className="flex flex-row gap-2 w-full">
+                    <Controls />
                     <Oscilloscope numberOfSamples={2048} />
                 </div>
-                <Controls />
                 <Keyboard />
             </div>
         </SynthProvider>

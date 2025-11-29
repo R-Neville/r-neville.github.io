@@ -26,32 +26,6 @@ const AppHeader: FC = () => {
                 <div className="text-lg select-none">R-Neville</div>
             </div>
             <div className="flex items-center gap-2">
-                <Button
-                    theme={
-                        currentModule.getType() === 'components'
-                            ? 'primary'
-                            : 'secondary'
-                    }
-                    onClick={() => {
-                        void dispatch(
-                            setCurrentModule(
-                                new ModuleDefinition('components', 'index'),
-                            ),
-                        )
-                    }}
-                >
-                    <div>Components</div>
-                </Button>
-                <Button
-                    theme={
-                        currentModule.getType() === 'music'
-                            ? 'primary'
-                            : 'secondary'
-                    }
-                    onClick={() => {}}
-                >
-                    <div>Music</div>
-                </Button>
                 {showHomeOption && (
                     <Button
                         theme="secondary"

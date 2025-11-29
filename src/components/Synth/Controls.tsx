@@ -19,8 +19,9 @@ const ControlsComponent: FC = () => {
         <div className="flex flex-row gap-2 w-full">
             <div className="flex flex-row gap-2">
                 <Knob
+                    label="Waveform"
                     numberOfSteps={4}
-                    label={type}
+                    displayValue={type}
                     value={0}
                     onChange={(value) => {
                         const waveForm = {
@@ -36,7 +37,8 @@ const ControlsComponent: FC = () => {
                 />
                 <Knob
                     numberOfSteps={16}
-                    label="Voices"
+                    label={`Voices`}
+                    displayValue={`${numberOfVoices}/16`}
                     value={numberOfVoices}
                     onChange={(value) => {
                         const voices = Math.round(value)
@@ -45,7 +47,8 @@ const ControlsComponent: FC = () => {
                 />
                 <Knob
                     numberOfSteps={10}
-                    label="Detune"
+                    label={`Detune`}
+                    displayValue={`${detuneAmount}/10`}
                     value={detuneAmount}
                     onChange={(value) => {
                         const detune = Math.round(value)
@@ -54,7 +57,8 @@ const ControlsComponent: FC = () => {
                 />
                 <Knob
                     numberOfSteps={100}
-                    label="Panning"
+                    label={`Pan`}
+                    displayValue={`${panAmount}/100`}
                     value={panAmount}
                     onChange={(value) => {
                         setPanAmount(Number(value.toFixed(2)))

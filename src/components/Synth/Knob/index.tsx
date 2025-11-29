@@ -5,6 +5,7 @@ interface KnobProps {
     numberOfSteps: number
     label: string
     value: number
+    displayValue: string
     onChange: (value: number) => void
 }
 
@@ -15,11 +16,13 @@ const KnobComponent: FC<KnobProps> = ({
     value,
     onChange,
     numberOfSteps,
+    displayValue,
 }) => {
     const [rotation, setRotation] = useState(value)
 
     return (
-        <div className="rounded-full flex flex-col gap-2 select-none">
+        <div className="rounded-full flex flex-col items-center gap-2 select-none">
+            <div>{label}</div>
             <div className="relative shadow-md flex items-center justify-center rounded-full h-12 w-12 bg-primary-500">
                 <div
                     className="relative rounded-full h-10 w-10 p-2 bg-white border border-primary-200 cursor-grab"
@@ -64,7 +67,7 @@ const KnobComponent: FC<KnobProps> = ({
                 </div>
             </div>
             <div className="flex items-center justify-center text-sm whitespace-nowrap">
-                {label}
+                {displayValue}
             </div>
         </div>
     )
