@@ -58,7 +58,12 @@ const configSlice = createSlice({
         )
 
         builder.addCase(addCalendarEvent.fulfilled, (state, action) => {
-            state.calendar.events = [...state.calendar.events, action.payload]
+            state.calendar.events = [
+                ...state.calendar.events.filter(
+                    (e) => e.id !== action.payload.id,
+                ),
+                action.payload,
+            ]
         })
 
         builder.addCase(setEventEnd.fulfilled, (state, action) => {
