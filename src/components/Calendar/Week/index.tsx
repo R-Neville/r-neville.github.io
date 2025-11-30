@@ -41,9 +41,9 @@ const Week: <EventType extends ICalendarEvent>(
 
             const todayClasses =
                 isToday && isCurrentMonth
-                    ? 'rounded bg-neutral-500 text-white'
+                    ? 'rounded bg-primary-500 text-white'
                     : isToday && !isCurrentMonth
-                      ? 'rounded bg-neutral-500 text-white'
+                      ? 'rounded bg-primary-500 text-white'
                       : ''
 
             const monthClasses = isCurrentMonth

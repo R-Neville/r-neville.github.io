@@ -9,7 +9,7 @@ const Header: FC = () => {
             return (
                 <div
                     key={day}
-                    className="flex items-center justify-center w-full p-1.5 rounded bg-primary-50 text-primary-600 shadow"
+                    className="flex items-center justify-center w-full p-1.5  text-primary-600"
                 >
                     {Info.weekdays('narrow')[day]}
                 </div>

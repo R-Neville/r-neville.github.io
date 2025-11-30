@@ -62,7 +62,7 @@ const Calendar: (props: ICalendarProps) => JSX.Element = (props) => {
                     <div className="flex justify-between">
                         {startOfMonth.month !== s.month && (
                             <Button
-                                theme="secondary"
+                                theme="transparent"
                                 onClick={() => {
                                     setStartDate(s)
                                 }}
@@ -73,7 +73,7 @@ const Calendar: (props: ICalendarProps) => JSX.Element = (props) => {
                             </Button>
                         )}
                         <Button
-                            theme="secondary"
+                            theme="transparent"
                             onClick={() => {
                                 setStartDate((prev) => prev.minus({ month: 1 }))
                             }}
@@ -83,7 +83,7 @@ const Calendar: (props: ICalendarProps) => JSX.Element = (props) => {
                             </div>
                         </Button>
                         <Button
-                            theme="secondary"
+                            theme="transparent"
                             onClick={() => {
                                 setStartDate((prev) => prev.plus({ month: 1 }))
                             }}

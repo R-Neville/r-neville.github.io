@@ -14,7 +14,7 @@ const Header: FC<IHeaderProps> = (props: IHeaderProps) => {
             return (
                 <div
                     key={day}
-                    className="w-full p-2"
+                    className="w-full p-2 font-semibold"
                     style={{
                         minWidth: `${minColumnWidth}px`,
                     }}
@@ -26,7 +26,7 @@ const Header: FC<IHeaderProps> = (props: IHeaderProps) => {
     }, [minColumnWidth, renderHeaderContent])
 
     return (
-        <div className="flex gap-2 w-full sticky top-0 z-[99] bg-primary-50 text-primary-600 shadow">
+        <div className="flex gap-2 w-full sticky top-0 z-[99]  text-primary-600 ">
             {headers}
         </div>
     )
