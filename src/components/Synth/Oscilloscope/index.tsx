@@ -1,3 +1,4 @@
+import useBoundingRect from '#/hooks/useBoundingRect'
 import arePropsEqual from '#/utils/arePropsEqual'
 import React, { FC, useCallback, useEffect, useRef } from 'react'
 import { useSynthContext } from '../Context'
@@ -6,10 +7,15 @@ interface OscilloscopeProps {
     numberOfSamples: number
 }
 
+const CANVAS_HEIGHT = 120
+
 const OscilloscopeComponent: FC<OscilloscopeProps> = () => {
     const { audioContext, oscillator } = useSynthContext()
 
+    const ref = useRef<HTMLDivElement>(null)
     const canvasRef = useRef<HTMLCanvasElement>(null)
+
+    const { width } = useBoundingRect(ref)
 
     const drawWaveform = useCallback(() => {
         const canvas = canvasRef.current
@@ -57,8 +63,13 @@ const OscilloscopeComponent: FC<OscilloscopeProps> = () => {
     }, [audioContext, oscillator])
 
     return (
-        <div className="flex flex-col gap-2 p-2 rounded-md bg-primary-800">
-            <canvas className="rounded-md" ref={canvasRef} height={100} />
+        <div ref={ref} className="w-full h-full bg-primary-800 p-2 rounded-md">
+            <canvas
+                ref={canvasRef}
+                className="w-full bg-primary-800"
+                height={CANVAS_HEIGHT}
+                width={width}
+            />
         </div>
     )
 }

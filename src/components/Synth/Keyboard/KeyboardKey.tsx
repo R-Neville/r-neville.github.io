@@ -50,7 +50,13 @@ const KeyboardKeyComponent = ({ keyIndex, parentWidth }: KeyboardKeyProps) => {
         const onMouseUp = () => {
             oscillator?.stopTone()
         }
+
+        const onTouchEnd = () => {
+            oscillator?.stopTone()
+        }
+
         window.addEventListener('mouseup', onMouseUp, abortController)
+        window.addEventListener('touchend', onTouchEnd, abortController)
 
         return () => abortController.abort()
     }, [oscillator])
@@ -101,6 +107,11 @@ const KeyboardKeyComponent = ({ keyIndex, parentWidth }: KeyboardKeyProps) => {
                 stopTone()
                 playTone(keyIndex)
             }}
+            onTouchStart={() => {
+                stopTone()
+                playTone(keyIndex)
+            }}
+            onTouchEnd={stopTone}
             onMouseLeave={stopTone}
             onMouseUp={stopTone}
             onContextMenu={(event) => {
@@ -110,7 +121,7 @@ const KeyboardKeyComponent = ({ keyIndex, parentWidth }: KeyboardKeyProps) => {
         >
             {hasBlack && keyIndex !== 23 && (
                 <div
-                    className="absolute top-0 bg-black h-[50px] z-[99] rounded-b"
+                    className="absolute top-0 bg-black h-[50px] z-99 rounded-b"
                     style={{
                         width: `${itemWidth / 2}px`,
                         left: `${itemWidth / 2 + itemWidth / 4}px`,
@@ -121,6 +132,12 @@ const KeyboardKeyComponent = ({ keyIndex, parentWidth }: KeyboardKeyProps) => {
                         stopTone()
                         playTone(keyIndex + 1)
                     }}
+                    onTouchStart={(event) => {
+                        event.stopPropagation()
+                        stopTone()
+                        playTone(keyIndex + 1)
+                    }}
+                    onTouchEnd={stopTone}
                     onMouseLeave={stopTone}
                     onMouseUp={stopTone}
                     onContextMenu={(event) => {
