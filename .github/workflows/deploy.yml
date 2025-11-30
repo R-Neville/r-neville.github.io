@@ -10,8 +10,10 @@ on:
 
 jobs:
     deploy:
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
         runs-on: ubuntu-latest
-        name: github-pages
         steps:
             - name: Checkout Code
               uses: actions/checkout@v4
