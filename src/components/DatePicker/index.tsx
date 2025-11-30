@@ -1,4 +1,4 @@
-import usePosition from '#/hooks/usePosition'
+import usePosition from '#/hooks/useBoundingRect'
 import icons from '#/icons'
 import { Theme, Variant } from '#/theme'
 import arePropsEqual from '#/utils/arePropsEqual'

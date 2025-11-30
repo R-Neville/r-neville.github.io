@@ -1,6 +1,6 @@
 import { RefObject, useEffect, useState } from 'react'
 
-export default function useElementPosition<T extends HTMLElement>(
+export default function useBoundingRect<T extends HTMLElement>(
     ref: RefObject<T | null>,
 ) {
     const [position, setPosition] = useState({
@@ -11,7 +11,7 @@ export default function useElementPosition<T extends HTMLElement>(
     })
 
     useEffect(() => {
-        const updatePosition = () => {
+        const observer = new ResizeObserver(() => {
             if (ref.current) {
                 const rect = ref.current?.getBoundingClientRect()
                 setPosition({
@@ -21,13 +21,15 @@ export default function useElementPosition<T extends HTMLElement>(
                     height: rect.height,
                 })
             }
+        })
+
+        if (ref.current !== null) {
+            observer.observe(ref.current)
         }
 
-        updatePosition()
-
-        window.addEventListener('resize', updatePosition)
-
-        return () => window.removeEventListener('resize', updatePosition)
+        return () => {
+            observer.disconnect()
+        }
     }, [ref])
 
     return position
