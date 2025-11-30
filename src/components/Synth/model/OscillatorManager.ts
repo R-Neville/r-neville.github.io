@@ -1,7 +1,5 @@
 import Oscillator from './Oscillator'
 
-const MAX_OSCILLATORS = 3
-
 class OscillatorManager {
     private oscillators: Oscillator[] = []
 
