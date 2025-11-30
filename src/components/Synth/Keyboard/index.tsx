@@ -10,7 +10,7 @@ const KeyboardComponent: FC = () => {
 
     const keys = Array.from({ length: 24 }).map((_, index) => {
         if ([1, 3, 6, 8, 10].includes(index % 12)) {
-            return <></>
+            return null
         }
         return <KeyboardKey parentWidth={width} key={index} keyIndex={index} />
     })

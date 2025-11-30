@@ -18,7 +18,7 @@ interface IConfigState {
 const initialState: IConfigState = {
     isMobile: false,
     sidebarState: {
-        open: true,
+        open: false,
         type: 'general',
         float: false,
     },
