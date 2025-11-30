@@ -2,7 +2,7 @@ import { useAppSelector } from '#/store'
 import { FC } from 'react'
 import CalendarView from './CalendarView'
 import HorizontalVirtualiserView from './HorizontalVirtualiserView'
-import SynthView from './SynthModule'
+import SynthView from './SynthView'
 import VerticalVirtualiserView from './VerticalVirtualiserView'
 
 const ComponentsModule: FC = () => {
