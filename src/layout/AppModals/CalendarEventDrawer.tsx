@@ -4,9 +4,15 @@ import DateInput from '#/components/DateInput'
 import TextInput from '#/components/TextInput'
 import TimePicker from '#/components/TimePicker'
 import { useAppDispatch, useAppSelector } from '#/store'
-import { setCalendarEventModalState } from '#/store/components/thunks/setCalendarEventModalState'
+import {
+    addCalendarEvent,
+    setEventEnd,
+    setEventStart,
+    setEventTitle,
+} from '#/store/components'
+import { setCalendarEventDrawerState } from '#/store/components/thunks/setCalendarEventDrawerState'
 import { DateTime } from 'luxon'
-import { FC, useEffect, useMemo, useState } from 'react'
+import { FC, useMemo } from 'react'
 
 const CalendarEventDrawer: FC = () => {
     const dispatch = useAppDispatch()
@@ -15,13 +21,7 @@ const CalendarEventDrawer: FC = () => {
         (state) => state.components.calendar,
     )
 
-    const { mode, open, date, event } = eventModalState
-
-    console.log(date?.toFormat('DD'))
-
-    const [title, setTitle] = useState<string>(event?.title ?? '')
-    const [start, setStart] = useState<DateTime | null>(null)
-    const [end, setEnd] = useState<DateTime | null>(null)
+    const { mode, open, event } = eventModalState
 
     const titleText = useMemo(() => {
         if (mode === 'new') {
@@ -36,64 +36,60 @@ const CalendarEventDrawer: FC = () => {
             <div className="flex flex-col gap-2">
                 <TextInput
                     label="Title"
-                    value={title}
+                    value={event?.title}
                     onChange={(value) => {
-                        setTitle(value)
+                        void dispatch(setEventTitle(value))
                     }}
                 />
                 <DateInput
                     label="Date"
-                    value={start ?? DateTime.now()}
+                    value={event?.start ?? DateTime.now()}
                     onChange={(value) => {
                         const newStart = value.set({
-                            hour: start?.hour,
-                            minute: start?.minute,
+                            hour: event?.start?.hour,
+                            minute: event?.start?.minute,
                         })
-                        setStart(newStart)
+                        void dispatch(setEventStart(newStart))
                         const newEnd = value.set({
-                            hour: end?.hour,
-                            minute: end?.minute,
+                            hour: event?.end?.hour,
+                            minute: event?.end?.minute,
                         })
-                        setStart(newEnd)
+                        void dispatch(setEventEnd(newEnd))
                     }}
                 />
                 <TimePicker
                     label="Start"
-                    value={start ?? DateTime.now()}
+                    value={event?.start ?? DateTime.now()}
                     onChange={(value) => {
-                        const newStart = start?.set({
+                        const newStart = event?.start?.set({
                             hour: value?.hour,
                             minute: value?.minute,
                         })
-                        setStart(newStart ?? null)
+                        if (newStart) {
+                            void dispatch(setEventStart(newStart))
+                        }
                     }}
                 />
                 <TimePicker
                     label="End"
-                    value={start ?? DateTime.now()}
+                    value={event?.end ?? DateTime.now()}
                     onChange={(value) => {
-                        const newEnd = end?.set({
+                        const newEnd = event?.end?.set({
                             hour: value?.hour,
                             minute: value?.minute,
                         })
-                        setStart(newEnd ?? null)
+                        if (newEnd) {
+                            void dispatch(setEventEnd(newEnd))
+                        }
                     }}
                 />
             </div>
         )
-    }, [end, start, title])
-
-    useEffect(() => {
-        setStart(open ? (event?.start ?? date ?? null) : null)
-        setEnd(open ? (event?.end ?? date ?? null) : null)
-        console.log('wip')
-    }, [open, date, event])
+    }, [dispatch, event?.end, event?.start, event?.title])
 
     const onClose = () => {
-        setStart(null)
-        setEnd(null)
         void dispatch(
-            setCalendarEventModalState({
+            setCalendarEventDrawerState({
                 open: false,
                 date: null,
                 event: null,
@@ -110,27 +106,29 @@ const CalendarEventDrawer: FC = () => {
             onClose={onClose}
             footer={
                 <div className="flex items-center justify-end gap-2 p-4 w-full">
-                    {mode === 'view' && (
+                    <>
                         <Button theme="secondary" onClick={onClose}>
-                            Close
+                            Cancel
                         </Button>
-                    )}
-                    {mode === 'new' && (
-                        <>
-                            <Button theme="secondary" onClick={onClose}>
-                                Cancel
-                            </Button>
-                            <Button theme="primary">Save</Button>
-                        </>
-                    )}
-                    {mode === 'edit' && (
-                        <>
-                            <Button theme="secondary" onClick={onClose}>
-                                Cancel
-                            </Button>
-                            <Button theme="primary">Save</Button>
-                        </>
-                    )}
+                        <Button
+                            theme="primary"
+                            onClick={() => {
+                                if (
+                                    event?.start &&
+                                    event?.end &&
+                                    event?.start < event?.end
+                                ) {
+                                    void dispatch(addCalendarEvent(event)).then(
+                                        () => {
+                                            onClose()
+                                        },
+                                    )
+                                }
+                            }}
+                        >
+                            Save
+                        </Button>
+                    </>
                 </div>
             }
         >

@@ -1,13 +1,6 @@
 import { faClock } from '@fortawesome/free-regular-svg-icons'
 import { DateTime } from 'luxon'
-import {
-    ChangeEventHandler,
-    FC,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import { ChangeEvent, FC, useCallback, useRef, useState } from 'react'
 import { useDebounceCallback } from 'usehooks-ts'
 import Icon from './Icon'
 
@@ -20,74 +13,64 @@ interface ITimePickerProps {
 const TimePicker: FC<ITimePickerProps> = (props) => {
     const { value, label, onChange } = props
 
-    const [hours, setHours] = useState<number | null>(value.hour)
-    const [minutes, setMinutes] = useState<number | null>(value.minute)
     const [invalid, setInvalid] = useState<boolean>(false)
 
     const inputRef = useRef<HTMLInputElement>(null)
 
-    const onInputChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-        let hoursValid = true
-        let minutesValid = true
+    const debouncedOnChange = useDebounceCallback(
+        (hours: number, minutes: number) => {
+            if (hours !== null) {
+                if (minutes !== null) {
+                    onChange(value.set({ hour: hours, minute: minutes }))
+                }
+                onChange(value.set({ hour: hours }))
+            }
+        },
+        300,
+    )
 
-        const value = event.target.value
+    const onInputChange = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            let hoursValid = true
+            let minutesValid = true
 
-        const parts = value.split(':')
-        const hoursStr = parts.shift() ?? ''
-        const minutesStr = parts.shift() ?? ''
+            const value = event.target.value
 
-        if (hoursStr.length < 0 || hoursStr.length > 2) {
-            hoursValid = false
-        }
+            const parts = value.split(':')
+            const hoursStr = parts.shift() ?? ''
+            const minutesStr = parts.shift() ?? ''
 
-        if (minutesStr.length < 0 || minutesStr.length > 2) {
-            minutesValid = false
-        }
+            if (hoursStr.length < 0 || hoursStr.length > 2) {
+                hoursValid = false
+            }
 
-        const [hoursNum, minutesNum] = value.split(':').map((p) => Number(p))
+            if (minutesStr.length < 0 || minutesStr.length > 2) {
+                minutesValid = false
+            }
 
-        if (isNaN(hoursNum) || hoursNum < 0 || hoursNum > 23) {
-            hoursValid = false
-        }
+            const [hoursNum, minutesNum] = value
+                .split(':')
+                .map((p) => Number(p))
 
-        if (isNaN(minutesNum) || minutesNum < 0 || minutesNum > 59) {
-            minutesValid = false
-        }
+            if (isNaN(hoursNum) || hoursNum < 0 || hoursNum > 23) {
+                hoursValid = false
+            }
 
-        if (hoursValid && minutesValid) {
-            setInvalid(false)
-        }
+            if (isNaN(minutesNum) || minutesNum < 0 || minutesNum > 59) {
+                minutesValid = false
+            }
 
-        if (hoursValid) {
-            setHours(hoursNum)
+            if (hoursValid && minutesValid) {
+                setInvalid(false)
+                debouncedOnChange(hoursNum, minutesNum)
+            }
 
-            if (minutesValid) {
-                setMinutes(minutesNum)
-            } else {
-                setMinutes(null)
+            if (!hoursValid || !minutesValid) {
                 setInvalid(true)
             }
-        } else {
-            setHours(null)
-            setInvalid(true)
-        }
-    }
-
-    const debouncedOnChange = useDebounceCallback(onChange, 300)
-
-    const newValue = useMemo(() => {
-        if (hours !== null) {
-            if (minutes !== null) {
-                return value.set({ hour: hours, minute: minutes })
-            }
-            return value.set({ hour: hours })
-        }
-        return value
-    }, [value, hours, minutes])
-
-    useEffect(() => {
-        debouncedOnChange(newValue)
-    }, [newValue, debouncedOnChange])
+        },
+        [debouncedOnChange],
+    )
 
     const borderColour = invalid ? 'border-red-400' : 'border-primary-200'
 

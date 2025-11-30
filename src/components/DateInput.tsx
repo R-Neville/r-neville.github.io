@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { FC, useMemo, useState } from 'react'
+import { FC, useState } from 'react'
 import DatePicker from './DatePicker'
 
 interface IDateInputProps {
@@ -15,12 +15,6 @@ const DateInput: FC<IDateInputProps> = (props) => {
     const [isInvalid, setIsInvalid] = useState<boolean>(false)
 
     const border = isInvalid ? 'border-red-400' : 'border-primary-200'
-
-    useMemo(() => {
-        const initial = value ?? DateTime.now()
-        setValue(initial)
-        setInputValue(initial.toFormat('DD'))
-    }, [value])
 
     return (
         <div className="flex flex-col gap-1">
@@ -57,6 +51,7 @@ const DateInput: FC<IDateInputProps> = (props) => {
                     value={_value}
                     onChange={(value) => {
                         setValue(value)
+                        setInputValue(value.toFormat('DD'))
                         if (onChange === undefined) {
                             return
                         }

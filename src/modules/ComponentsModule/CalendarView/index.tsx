@@ -1,9 +1,10 @@
 import Calendar from '#/components/Calendar'
 import Heading from '#/components/Heading'
 import { useAppDispatch, useAppSelector } from '#/store'
-import { setCalendarEventModalState } from '#/store/components/thunks/setCalendarEventModalState'
+import { setCalendarEventDrawerState } from '#/store/components/thunks'
 import { DateTime, Interval } from 'luxon'
 import { FC, useState } from 'react'
+import { v4 } from 'uuid'
 
 const CalendarView: FC = () => {
     const dispatch = useAppDispatch()
@@ -18,6 +19,7 @@ const CalendarView: FC = () => {
                 <div className="flex justify-between items-center">
                     <Heading rank="h2">Calendar</Heading>
                 </div>
+                <p>Here's a simple calendar that I'm working on.</p>
             </div>
             <div className="p-4 h-full w-full overflow-hidden">
                 <Calendar
@@ -34,9 +36,17 @@ const CalendarView: FC = () => {
                                 key={index}
                                 className="p-2 bg-white rounded border border-primary-200 text-sm cursor-pointer select-none shadow"
                                 onClick={() => {
-                                    console.log(event)
+                                    void dispatch(
+                                        setCalendarEventDrawerState({
+                                            open: true,
+                                            date: null,
+                                            mode: 'edit',
+                                            event,
+                                        }),
+                                    )
                                 }}
                             >
+                                {event.title && <div>{event.title}</div>}
                                 {int.toFormat('HH:mm')}
                             </div>
                         )
@@ -49,10 +59,15 @@ const CalendarView: FC = () => {
                     }}
                     onNewEvent={(date) => {
                         void dispatch(
-                            setCalendarEventModalState({
+                            setCalendarEventDrawerState({
                                 open: true,
                                 date,
-                                event: null,
+                                event: {
+                                    id: v4(),
+                                    start: date,
+                                    end: date,
+                                    title: '',
+                                },
                                 mode: 'new',
                             }),
                         )

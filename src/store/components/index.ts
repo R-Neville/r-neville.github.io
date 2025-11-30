@@ -1,10 +1,16 @@
 import { ICalendarEvent } from '#/components/Calendar/types'
 import { createSlice } from '@reduxjs/toolkit'
 import { DateTime } from 'luxon'
-import { setMaxCalendarEventsPerDay } from './thunks'
-import { setCalendarEventModalState } from './thunks/setCalendarEventModalState'
+import {
+    addCalendarEvent,
+    setEventEnd,
+    setEventStart,
+    setEventTitle,
+    setMaxCalendarEventsPerDay,
+} from './thunks'
+import { setCalendarEventDrawerState } from './thunks/setCalendarEventDrawerState'
 
-export interface ICalendarEventModalState {
+export interface ICalendarEventDrawerState {
     open: boolean
     date: DateTime | null
     event: ICalendarEvent | null
@@ -14,7 +20,7 @@ export interface ICalendarEventModalState {
 interface IComponentsState {
     calendar: {
         maxEventsPerDay: number
-        eventModalState: ICalendarEventModalState
+        eventModalState: ICalendarEventDrawerState
         events: ICalendarEvent[]
     }
 }
@@ -45,11 +51,33 @@ const configSlice = createSlice({
         )
 
         builder.addCase(
-            setCalendarEventModalState.fulfilled,
+            setCalendarEventDrawerState.fulfilled,
             (state, action) => {
                 state.calendar.eventModalState = action.payload
             },
         )
+
+        builder.addCase(addCalendarEvent.fulfilled, (state, action) => {
+            state.calendar.events = [...state.calendar.events, action.payload]
+        })
+
+        builder.addCase(setEventEnd.fulfilled, (state, action) => {
+            if (state.calendar.eventModalState.event) {
+                state.calendar.eventModalState.event.end = action.payload
+            }
+        })
+
+        builder.addCase(setEventStart.fulfilled, (state, action) => {
+            if (state.calendar.eventModalState.event) {
+                state.calendar.eventModalState.event.start = action.payload
+            }
+        })
+
+        builder.addCase(setEventTitle.fulfilled, (state, action) => {
+            if (state.calendar.eventModalState.event) {
+                state.calendar.eventModalState.event.title = action.payload
+            }
+        })
     },
 })
 
