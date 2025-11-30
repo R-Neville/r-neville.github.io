@@ -50,7 +50,13 @@ const KeyboardKeyComponent = ({ keyIndex, parentWidth }: KeyboardKeyProps) => {
         const onMouseUp = () => {
             oscillator?.stopTone()
         }
+
+        const onTouchEnd = () => {
+            oscillator?.stopTone()
+        }
+
         window.addEventListener('mouseup', onMouseUp, abortController)
+        window.addEventListener('touchend', onTouchEnd, abortController)
 
         return () => abortController.abort()
     }, [oscillator])
