@@ -1,12 +1,12 @@
+import useBoundingRect from '#/hooks/useBoundingRect'
 import arePropsEqual from '#/utils/arePropsEqual'
 import React, { FC, useRef } from 'react'
-import { useResizeObserver } from 'usehooks-ts'
 import { KeyboardKey } from './KeyboardKey'
 
 const KeyboardComponent: FC = () => {
     const ref = useRef<HTMLDivElement>(null)
 
-    const { width = 0 } = useResizeObserver({ ref })
+    const { width = 0 } = useBoundingRect(ref)
 
     const keys = Array.from({ length: 24 }).map((_, index) => {
         if ([1, 3, 6, 8, 10].includes(index % 12)) {
