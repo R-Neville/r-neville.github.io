@@ -21,8 +21,8 @@ const KnobComponent: FC<KnobProps> = ({
     const [rotation, setRotation] = useState(value)
 
     return (
-        <div className="rounded-full flex flex-col items-center gap-2 select-none">
-            <div>{label}</div>
+        <div className="flex flex-col items-center bg-primary-800 gap-2 p-2 select-none rounded border border-primary-600">
+            <div className="text-primary-200">{label}</div>
             <div className="relative shadow-md flex items-center justify-center rounded-full h-12 w-12 bg-primary-500">
                 <div
                     className="relative rounded-full h-10 w-10 p-2 bg-white border border-primary-200 cursor-grab"
@@ -63,10 +63,10 @@ const KnobComponent: FC<KnobProps> = ({
                         )
                     }}
                 >
-                    <div className="absolute bottom-2 left-2 rounded-full h-1 w-1 bg-primary-400"></div>
+                    <div className="absolute bottom-2 left-2 rounded-full h-1 w-1 bg-primary-800"></div>
                 </div>
             </div>
-            <div className="flex items-center justify-center text-sm whitespace-nowrap">
+            <div className="flex items-center justify-center text-sm whitespace-nowrap text-primary-200">
                 {displayValue}
             </div>
         </div>

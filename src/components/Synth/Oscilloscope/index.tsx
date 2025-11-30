@@ -47,9 +47,9 @@ const OscilloscopeComponent: FC<OscilloscopeProps> = () => {
         if (!c || !canvas) {
             return
         }
-        c.fillStyle = '#000000'
+        c.fillStyle = '#2b4261'
         c.fillRect(0, 0, canvas.width, canvas.height)
-        c.strokeStyle = 'limegreen'
+        c.strokeStyle = '#cdd9ea'
         c.beginPath()
         c.moveTo(0, canvas.height / 2)
         c.lineTo(canvas.width, canvas.height / 2)
@@ -57,7 +57,7 @@ const OscilloscopeComponent: FC<OscilloscopeProps> = () => {
     }, [audioContext, oscillator])
 
     return (
-        <div className="flex flex-col gap-2 p-2 rounded-md bg-black">
+        <div className="flex flex-col gap-2 p-2 rounded-md bg-primary-800">
             <canvas className="rounded-md" ref={canvasRef} height={100} />
         </div>
     )

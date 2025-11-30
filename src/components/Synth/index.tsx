@@ -8,7 +8,7 @@ import { Oscilloscope } from './Oscilloscope'
 const SynthComponent: FC = () => {
     return (
         <SynthProvider>
-            <div className="flex flex-col gap-2 w-full min-h-0 overflow-auto">
+            <div className="flex flex-col gap-2 w-full min-h-0 rounded p-2 overflow-auto bg-primary-400">
                 <div className="flex flex-row gap-2 w-full">
                     <Controls />
                     <Oscilloscope numberOfSamples={2048} />
