@@ -1,37 +1,45 @@
+@import 'tailwindcss';
+
+@theme {
+    /* Primary */
+    --color-primary-50: #f4f6fb;
+    --color-primary-100: #e8edf6;
+    --color-primary-200: #cdd9ea;
+    --color-primary-300: #a1bad8;
+    --color-primary-400: #6e95c2;
+    --color-primary-500: #4c78ab;
+    --color-primary-600: #3a5f8f;
+    --color-primary-700: #304d74;
+    --color-primary-800: #2b4261;
+    --color-primary-900: #283a52;
+    --color-primary-950: #0f151f;
+}
+
+html,
+body {
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+#root {
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
 @font-face {
-  font-family: "Monoid";
-  src: url("./assets/fonts/Monoid-Regular-NoCalt.ttf");
+    font-family: 'Space Grotesk';
+    src: url(./assets/fonts/SpaceGrotesk-VariableFont_wght.ttf);
 }
 
 * {
-  box-sizing: border-box;
-  font-family: 'Monoid';
-}
-
-body,
-#root {
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  width: 100%;
-  min-height: 100vh;
-  margin: 0;
-}
-
-p {
-  text-align: center !important;
-}
-
-@media screen and (min-width: 920px) {
-  header .header .hamburger {
-    display: none !important;
-  }
-
-  header .header nav {
-    display: flex !important;
-  }
-
-  header .header {
-    justify-content: space-evenly !important;
-  }
+    box-sizing: border-box;
+    font-family: 'Space Grotesk';
 }

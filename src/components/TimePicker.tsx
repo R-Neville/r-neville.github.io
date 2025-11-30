@@ -1,0 +1,86 @@
+import { faClock } from '@fortawesome/free-regular-svg-icons'
+import { DateTime } from 'luxon'
+import { ChangeEvent, FC, useCallback, useRef, useState } from 'react'
+import Icon from './Icon'
+
+interface ITimePickerProps {
+    value: DateTime
+    onChange: (value: DateTime) => void
+    label?: string
+}
+
+const TimePicker: FC<ITimePickerProps> = (props) => {
+    const { value, label, onChange } = props
+
+    const [invalid, setInvalid] = useState<boolean>(false)
+
+    const inputRef = useRef<HTMLInputElement>(null)
+
+    const onInputChange = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            let hoursValid = true
+            let minutesValid = true
+
+            const textValue = event.target.value
+
+            const parts = textValue.split(':')
+            const hoursStr = parts.shift() ?? ''
+            const minutesStr = parts.shift() ?? ''
+
+            if (hoursStr.length < 0 || hoursStr.length > 2) {
+                hoursValid = false
+            }
+
+            if (minutesStr.length < 0 || minutesStr.length > 2) {
+                minutesValid = false
+            }
+
+            const [hoursNum, minutesNum] = textValue
+                .split(':')
+                .map((p) => Number(p))
+
+            if (isNaN(hoursNum) || hoursNum < 0 || hoursNum > 23) {
+                hoursValid = false
+            }
+
+            if (isNaN(minutesNum) || minutesNum < 0 || minutesNum > 59) {
+                minutesValid = false
+            }
+
+            if (hoursValid && minutesValid) {
+                onChange(value.set({ hour: hoursNum, minute: minutesNum }))
+                setInvalid(false)
+            }
+
+            if (!hoursValid || !minutesValid) {
+                setInvalid(true)
+            }
+        },
+        [onChange, value],
+    )
+
+    const borderColour = invalid ? 'border-red-400' : 'border-primary-200'
+
+    return (
+        <div className="flex flex-col gap-1">
+            {label !== undefined && (
+                <div className="pl-1 font-semibold">{label}</div>
+            )}
+            <div
+                className={`flex items-center justify-between p-2 border rounded ${borderColour}`}
+            >
+                <input
+                    ref={inputRef}
+                    placeholder="hh:mm"
+                    defaultValue={value.toFormat('HH:mm')}
+                    type="text"
+                    className="flex items-center border-none outline-none"
+                    onChange={onInputChange}
+                />
+                <Icon icon={faClock} />
+            </div>
+        </div>
+    )
+}
+
+export default TimePicker
