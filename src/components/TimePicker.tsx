@@ -1,7 +1,6 @@
 import { faClock } from '@fortawesome/free-regular-svg-icons'
 import { DateTime } from 'luxon'
 import { ChangeEvent, FC, useCallback, useRef, useState } from 'react'
-import { useDebounceCallback } from 'usehooks-ts'
 import Icon from './Icon'
 
 interface ITimePickerProps {
@@ -17,26 +16,14 @@ const TimePicker: FC<ITimePickerProps> = (props) => {
 
     const inputRef = useRef<HTMLInputElement>(null)
 
-    const debouncedOnChange = useDebounceCallback(
-        (hours: number, minutes: number) => {
-            if (hours !== null) {
-                if (minutes !== null) {
-                    onChange(value.set({ hour: hours, minute: minutes }))
-                }
-                onChange(value.set({ hour: hours }))
-            }
-        },
-        300,
-    )
-
     const onInputChange = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
             let hoursValid = true
             let minutesValid = true
 
-            const value = event.target.value
+            const textValue = event.target.value
 
-            const parts = value.split(':')
+            const parts = textValue.split(':')
             const hoursStr = parts.shift() ?? ''
             const minutesStr = parts.shift() ?? ''
 
@@ -48,7 +35,7 @@ const TimePicker: FC<ITimePickerProps> = (props) => {
                 minutesValid = false
             }
 
-            const [hoursNum, minutesNum] = value
+            const [hoursNum, minutesNum] = textValue
                 .split(':')
                 .map((p) => Number(p))
 
@@ -61,15 +48,15 @@ const TimePicker: FC<ITimePickerProps> = (props) => {
             }
 
             if (hoursValid && minutesValid) {
+                onChange(value.set({ hour: hoursNum, minute: minutesNum }))
                 setInvalid(false)
-                debouncedOnChange(hoursNum, minutesNum)
             }
 
             if (!hoursValid || !minutesValid) {
                 setInvalid(true)
             }
         },
-        [debouncedOnChange],
+        [onChange, value],
     )
 
     const borderColour = invalid ? 'border-red-400' : 'border-primary-200'
