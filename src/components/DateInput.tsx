@@ -23,10 +23,12 @@ const DateInput: FC<IDateInputProps> = (props) => {
     }, [value])
 
     return (
-        <div className="flex flex-col">
-            {label !== undefined && <div>{label}</div>}
+        <div className="flex flex-col gap-1">
+            {label !== undefined && (
+                <div className="pl-1 font-semibold">{label}</div>
+            )}
             <div
-                className={`flex items-center justify-between border ${border} rounded py-1 px-2`}
+                className={`flex items-center justify-between border ${border} rounded p-2`}
             >
                 <input
                     className="w-full outline-none"
@@ -55,6 +57,10 @@ const DateInput: FC<IDateInputProps> = (props) => {
                     value={_value}
                     onChange={(value) => {
                         setValue(value)
+                        if (onChange === undefined) {
+                            return
+                        }
+                        onChange(value)
                     }}
                 />
             </div>

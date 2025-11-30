@@ -1,10 +1,10 @@
 import { FC } from 'react'
-import CalendarEventModal from './CalendarEventModal'
+import CalendarEventDrawer from './CalendarEventDrawer'
 
 const AppModals: FC = () => {
     return (
         <>
-            <CalendarEventModal />
+            <CalendarEventDrawer />
         </>
     )
 }

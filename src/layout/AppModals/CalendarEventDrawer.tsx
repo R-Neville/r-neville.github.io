@@ -2,12 +2,13 @@ import BaseDrawer from '#/components/BaseDrawer'
 import Button from '#/components/Button'
 import DateInput from '#/components/DateInput'
 import TextInput from '#/components/TextInput'
+import TimePicker from '#/components/TimePicker'
 import { useAppDispatch, useAppSelector } from '#/store'
 import { setCalendarEventModalState } from '#/store/components/thunks/setCalendarEventModalState'
 import { DateTime } from 'luxon'
 import { FC, useEffect, useMemo, useState } from 'react'
 
-const CalendarEventModal: FC = () => {
+const CalendarEventDrawer: FC = () => {
     const dispatch = useAppDispatch()
 
     const { eventModalState } = useAppSelector(
@@ -40,8 +41,44 @@ const CalendarEventModal: FC = () => {
                         setTitle(value)
                     }}
                 />
-                <DateInput label="Start" value={start ?? DateTime.now()} />
-                <DateInput label="End" value={end ?? DateTime.now()} />
+                <DateInput
+                    label="Date"
+                    value={start ?? DateTime.now()}
+                    onChange={(value) => {
+                        const newStart = value.set({
+                            hour: start?.hour,
+                            minute: start?.minute,
+                        })
+                        setStart(newStart)
+                        const newEnd = value.set({
+                            hour: end?.hour,
+                            minute: end?.minute,
+                        })
+                        setStart(newEnd)
+                    }}
+                />
+                <TimePicker
+                    label="Start"
+                    value={start ?? DateTime.now()}
+                    onChange={(value) => {
+                        const newStart = start?.set({
+                            hour: value?.hour,
+                            minute: value?.minute,
+                        })
+                        setStart(newStart ?? null)
+                    }}
+                />
+                <TimePicker
+                    label="End"
+                    value={start ?? DateTime.now()}
+                    onChange={(value) => {
+                        const newEnd = end?.set({
+                            hour: value?.hour,
+                            minute: value?.minute,
+                        })
+                        setStart(newEnd ?? null)
+                    }}
+                />
             </div>
         )
     }, [end, start, title])
@@ -104,4 +141,4 @@ const CalendarEventModal: FC = () => {
     )
 }
 
-export default CalendarEventModal
+export default CalendarEventDrawer

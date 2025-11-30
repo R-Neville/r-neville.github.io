@@ -16,9 +16,11 @@ const TextInput = (props: ITextInputProps) => {
 
     return (
         <div className="flex flex-col">
-            {label !== undefined && <div>{label}</div>}
+            {label !== undefined && (
+                <div className="pl-1 font-semibold">{label}</div>
+            )}
             <div
-                className={`flex items-center justify-between border border-primary-200 rounded py-1 px-2`}
+                className={`flex items-center justify-between border border-primary-200 rounded p-2`}
             >
                 <input
                     className="outline-none w-full"

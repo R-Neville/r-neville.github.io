@@ -49,6 +49,8 @@ const Toolbar: FC<IToolbarProps> = (props) => {
                     </div>
                 </Button>
                 <DatePicker
+                    asButton
+                    theme="secondary"
                     showValue
                     value={startDate}
                     onChange={(date) => {
