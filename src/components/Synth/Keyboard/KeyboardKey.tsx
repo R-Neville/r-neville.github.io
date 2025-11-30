@@ -80,6 +80,10 @@ const KeyboardKeyComponent = ({ keyIndex, parentWidth }: KeyboardKeyProps) => {
         ],
     )
 
+    const stopTone = () => {
+        oscillator?.stopTone()
+    }
+
     const itemWidth = parentWidth / 14
 
     if (audioContext === null) {
@@ -94,7 +98,14 @@ const KeyboardKeyComponent = ({ keyIndex, parentWidth }: KeyboardKeyProps) => {
             }}
             title={noteLabel}
             onMouseDown={() => {
+                stopTone()
                 playTone(keyIndex)
+            }}
+            onMouseLeave={stopTone}
+            onMouseUp={stopTone}
+            onContextMenu={(event) => {
+                event.preventDefault()
+                oscillator?.stopTone()
             }}
         >
             {hasBlack && keyIndex !== 23 && (
@@ -107,7 +118,14 @@ const KeyboardKeyComponent = ({ keyIndex, parentWidth }: KeyboardKeyProps) => {
                     title={blackNoteLabel}
                     onMouseDown={(event) => {
                         event.stopPropagation()
+                        stopTone()
                         playTone(keyIndex + 1)
+                    }}
+                    onMouseLeave={stopTone}
+                    onMouseUp={stopTone}
+                    onContextMenu={(event) => {
+                        event.preventDefault()
+                        oscillator?.stopTone()
                     }}
                 ></div>
             )}
