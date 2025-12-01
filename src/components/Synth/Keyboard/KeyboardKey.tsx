@@ -37,6 +37,7 @@ const KeyboardKeyComponent = ({ keyIndex, parentWidth }: KeyboardKeyProps) => {
         type,
         setOscillator,
         octave,
+        gain,
     } = useSynthContext()
 
     const toneIndex = keyIndex % 12
@@ -73,6 +74,7 @@ const KeyboardKeyComponent = ({ keyIndex, parentWidth }: KeyboardKeyProps) => {
                 numberOfVoices,
                 detuneAmount,
                 panAmount,
+                gain,
             )
             oscillator.playTone(keyIndex, octave)
             setOscillator(oscillator)
@@ -80,6 +82,7 @@ const KeyboardKeyComponent = ({ keyIndex, parentWidth }: KeyboardKeyProps) => {
         [
             audioContext,
             detuneAmount,
+            gain,
             numberOfVoices,
             octave,
             panAmount,

@@ -9,8 +9,17 @@ const SynthProvider = ({ children }: { children: React.ReactNode }) => {
     const [type, setType] = useState<OscillatorType>('sine')
     const [oscillator, setOscillator] = useState<Oscillator | null>(null)
     const [octave, _setOctave] = useState<number>(4)
+    const [gain, _setGain] = useState<number>(0.5)
 
     const audioContext = useMemo(() => new AudioContext(), [])
+    const gainNode = oscillator?.mainGain
+    if (gainNode) {
+        gainNode.gain.value = gain
+    }
+
+    const setGain = useCallback((value: number) => {
+        _setGain(Math.max(Math.min(1, value), 0))
+    }, [])
 
     const setDetuneAmount = useCallback((detuneAmount: number) => {
         _setDetuneAmount(Math.max(Math.min(100, detuneAmount), 0))
@@ -42,6 +51,8 @@ const SynthProvider = ({ children }: { children: React.ReactNode }) => {
                 setType,
                 octave,
                 setOctave,
+                setGain,
+                gain,
             }}
         >
             {children}

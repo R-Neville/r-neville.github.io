@@ -1,7 +1,6 @@
 import { v4 } from 'uuid'
 import FrequencyGenerator from './FrequencyGenerator'
 import { IWaveForm } from './IWaveForm'
-import SawtoothWave from './SawtoothWave'
 
 class Oscillator {
     private id: string
@@ -13,7 +12,10 @@ class Oscillator {
     public voiceCount: number
     public detuneAmount: number
     public panAmount: number
+    public gainAmount: number
     public analyzer: AnalyserNode
+    public mainGain: GainNode
+    private merger: ChannelMergerNode
 
     constructor(
         context: AudioContext,
@@ -21,6 +23,7 @@ class Oscillator {
         voiceCount: number = 1,
         detuneAmount: number = 1 / 100,
         panAmount: number = 1 / 16,
+        gainAmount: number,
     ) {
         this.id = v4()
         this.oscillators = []
@@ -30,16 +33,22 @@ class Oscillator {
         this.voiceCount = voiceCount
         this.detuneAmount = detuneAmount
         this.panAmount = panAmount
+        this.gainAmount = gainAmount
 
-        if (type === 'sawtooth') {
-            this.waveForm = new SawtoothWave(context, 100)
-        } else {
-            this.waveForm = null
-        }
+        // if (type === 'sawtooth') {
+        //     this.waveForm = new SawtoothWave(context, 100)
+        // } else {
+        this.waveForm = null
+        // }
 
         this.analyzer = new AnalyserNode(context)
         this.analyzer.fftSize = 2048
         this.analyzer.connect(context.destination)
+
+        this.mainGain = context.createGain()
+        this.mainGain.connect(this.analyzer)
+
+        this.merger = context.createChannelMerger(2)
     }
 
     public getId() {
@@ -74,16 +83,6 @@ class Oscillator {
         return oscillator
     }
 
-    public applyPanning(oscillator: OscillatorNode, index: number) {
-        const gainNode = new GainNode(this.context)
-        gainNode.connect(this.analyzer)
-        oscillator.connect(gainNode)
-        const panNode = new StereoPannerNode(this.context)
-        gainNode.connect(panNode)
-        panNode.connect(this.context.destination)
-        panNode.pan.value = -0.8 + index * this.panAmount
-    }
-
     public applyDetune(oscillator: OscillatorNode, index: number) {
         const value = index * this.detuneAmount
         oscillator.detune.value = Math.max(1, value)
@@ -96,10 +95,15 @@ class Oscillator {
     }
 
     public getOscillators(frequency: number) {
-        return Array.from({ length: this.voiceCount }, (_, i) => {
+        const MAX_DETUNE_CENTS = 5
+        return Array.from({ length: this.voiceCount }, () => {
             const oscillator = this.getOscillator()
-            this.applyPanning(oscillator, i)
-            this.applyDetune(oscillator, i)
+            const randomDetune =
+                Math.random() * 2 * MAX_DETUNE_CENTS - MAX_DETUNE_CENTS
+            oscillator.detune.setValueAtTime(
+                randomDetune,
+                this.context.currentTime,
+            )
             oscillator.frequency.value = frequency
             return oscillator
         })
@@ -111,7 +115,7 @@ class Oscillator {
         )
         this.oscillators = this.getOscillators(frequency).map(
             (oscillator, i) => {
-                oscillator.connect(this.context.destination)
+                this.connectGainAndPan(oscillator, i)
                 oscillator.start(this.context.currentTime + i * 0.0001)
                 return oscillator
             },
@@ -124,6 +128,41 @@ class Oscillator {
             oscillator.disconnect()
         })
         this.oscillators = []
+    }
+
+    public connectGainAndPan(oscillator: OscillatorNode, index: number) {
+        const clampedMaxPan = Math.max(0, Math.min(1.0, this.panAmount))
+        const basePan = (index / (this.oscillators.length - 1)) * 2 - 1.0
+        const Pi = basePan * clampedMaxPan
+
+        const GL = Math.cos(((Math.PI / 2) * (1 - Pi)) / 2)
+        const GR = Math.sin(((Math.PI / 2) * (1 + Pi)) / 2)
+
+        const [leftGain, leftPan] = this.getGainNodeWithPanner()
+        const [rightGain, rightPan] = this.getGainNodeWithPanner()
+
+        leftPan.pan.setValueAtTime(GL, this.context.currentTime)
+        rightPan.pan.setValueAtTime(GR, this.context.currentTime)
+
+        leftGain.gain.value = this.gainAmount
+        rightGain.gain.value = this.gainAmount
+
+        oscillator.connect(leftGain)
+        oscillator.connect(rightGain)
+
+        leftGain.connect(this.merger, 0, 0)
+        rightGain.connect(this.merger, 0, 1)
+
+        this.merger.connect(this.mainGain)
+        this.mainGain.connect(this.context.destination)
+        this.mainGain.gain.value = this.gainAmount
+    }
+
+    public getGainNodeWithPanner(): [GainNode, StereoPannerNode] {
+        const gainNode = this.context.createGain()
+        const panNode = this.context.createStereoPanner()
+        panNode.connect(gainNode)
+        return [gainNode, panNode]
     }
 }
 

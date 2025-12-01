@@ -18,6 +18,8 @@ const ControlsComponent: FC = () => {
         setType,
         octave,
         setOctave,
+        setGain,
+        gain,
     } = useSynthContext()
 
     return (
@@ -46,6 +48,15 @@ const ControlsComponent: FC = () => {
                         </Button>
                     </div>
                     <Knob
+                        label="Gain"
+                        numberOfSteps={100}
+                        displayValue={`${Math.round(gain * 100)}/100`}
+                        value={Math.round(gain * 100)}
+                        onChange={(value) => {
+                            setGain(value / 100)
+                        }}
+                    />
+                    <Knob
                         label="Waveform"
                         numberOfSteps={4}
                         displayValue={type}
@@ -72,7 +83,7 @@ const ControlsComponent: FC = () => {
                             setNumberOfVoices(voices)
                         }}
                     />
-                    <Knob
+                    {/*<Knob
                         numberOfSteps={10}
                         label={`Detune`}
                         displayValue={`${detuneAmount}/10`}
@@ -81,7 +92,7 @@ const ControlsComponent: FC = () => {
                             const detune = Math.round(value)
                             setDetuneAmount(detune)
                         }}
-                    />
+                    />*/}
                     <Knob
                         numberOfSteps={100}
                         label={`Pan`}

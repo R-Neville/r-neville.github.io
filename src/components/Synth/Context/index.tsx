@@ -15,6 +15,8 @@ interface SynthContextType {
     setPanAmount: (panAmount: number) => void
     setType: (type: OscillatorType) => void
     setOctave: (octave: number) => void
+    setGain: (value: number) => void
+    gain: number
 }
 
 export const SynthContext = createContext<SynthContextType>(
