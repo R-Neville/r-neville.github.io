@@ -1,15 +1,30 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { SynthContext } from '.'
 import Oscillator from '../model/Oscillator'
 
 const SynthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [detuneAmount, setDetuneAmount] = useState<number>(0)
-    const [numberOfVoices, setNumberOfVoices] = useState<number>(1)
+    const [detuneAmount, _setDetuneAmount] = useState<number>(0)
+    const [numberOfVoices, _setNumberOfVoices] = useState<number>(1)
     const [panAmount, setPanAmount] = useState<number>(0)
     const [type, setType] = useState<OscillatorType>('sine')
     const [oscillator, setOscillator] = useState<Oscillator | null>(null)
+    const [octave, _setOctave] = useState<number>(4)
 
     const audioContext = useMemo(() => new AudioContext(), [])
+
+    const setDetuneAmount = useCallback((detuneAmount: number) => {
+        _setDetuneAmount(Math.max(Math.min(100, detuneAmount), 0))
+    }, [])
+
+    const setNumberOfVoices = useCallback((numberOfVoices: number) => {
+        _setNumberOfVoices(Math.max(Math.min(16, numberOfVoices), 1))
+    }, [])
+
+    const setOctave = useCallback((octave: number) => {
+        const rounded = Math.round(octave)
+        const newValue = Math.max(Math.min(rounded, 6), 0)
+        _setOctave(newValue)
+    }, [])
 
     return (
         <SynthContext.Provider
@@ -25,6 +40,8 @@ const SynthProvider = ({ children }: { children: React.ReactNode }) => {
                 setNumberOfVoices,
                 setPanAmount,
                 setType,
+                octave,
+                setOctave,
             }}
         >
             {children}
