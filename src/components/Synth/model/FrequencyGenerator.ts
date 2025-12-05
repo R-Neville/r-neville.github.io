@@ -1,6 +1,6 @@
 class FrequencyGenerator {
     private readonly referenceIndex = 49
-    private readonly referenceFrequency = 440
+    private readonly referenceFrequency = 432
 
     constructor() {}
 

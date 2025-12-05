@@ -74,7 +74,7 @@ const KnobComponent: FC<KnobProps> = ({
     }
 
     return (
-        <div className="flex flex-col items-center bg-primary-800 gap-2 p-2 select-none rounded border border-primary-600">
+        <div className="flex flex-col items-center bg-primary-800 gap-2 p-2 select-none rounded border border-black">
             <div className="text-primary-200">{label}</div>
             <div className="relative shadow-md flex items-center justify-center rounded-full h-12 w-12 bg-primary-500">
                 <div

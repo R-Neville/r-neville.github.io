@@ -1,21 +1,17 @@
 import { useCallback, useMemo, useState } from 'react'
 import { SynthContext } from '.'
-import Oscillator from '../model/Oscillator'
+import Synthesizer from '../model/Synthesizer'
 
 const SynthProvider = ({ children }: { children: React.ReactNode }) => {
     const [detuneAmount, _setDetuneAmount] = useState<number>(0)
     const [numberOfVoices, _setNumberOfVoices] = useState<number>(1)
     const [panAmount, setPanAmount] = useState<number>(0)
     const [type, setType] = useState<OscillatorType>('sine')
-    const [oscillator, setOscillator] = useState<Oscillator | null>(null)
+    const [synthesizer, setSynthesizer] = useState<Synthesizer | null>(null)
     const [octave, _setOctave] = useState<number>(4)
     const [gain, _setGain] = useState<number>(0.5)
 
     const audioContext = useMemo(() => new AudioContext(), [])
-    const gainNode = oscillator?.mainGain
-    if (gainNode) {
-        gainNode.gain.value = gain
-    }
 
     const setGain = useCallback((value: number) => {
         _setGain(Math.max(Math.min(1, value), 0))
@@ -39,12 +35,12 @@ const SynthProvider = ({ children }: { children: React.ReactNode }) => {
         <SynthContext.Provider
             value={{
                 audioContext,
-                oscillator,
+                synthesizer,
                 detuneAmount,
                 numberOfVoices,
                 panAmount,
                 type,
-                setOscillator,
+                setSynthesizer,
                 setDetuneAmount,
                 setNumberOfVoices,
                 setPanAmount,

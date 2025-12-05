@@ -10,7 +10,7 @@ interface OscilloscopeProps {
 const CANVAS_HEIGHT = 120
 
 const OscilloscopeComponent: FC<OscilloscopeProps> = () => {
-    const { audioContext, oscillator } = useSynthContext()
+    const { audioContext, synthesizer } = useSynthContext()
 
     const ref = useRef<HTMLDivElement>(null)
     const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -20,10 +20,10 @@ const OscilloscopeComponent: FC<OscilloscopeProps> = () => {
     const drawWaveform = useCallback(() => {
         const canvas = canvasRef.current
         const c = canvas?.getContext('2d')
-        const analyser = oscillator?.analyzer
+        const analyser = synthesizer?.analyzer
         const dataArray = new Uint8Array(analyser?.frequencyBinCount ?? 0)
 
-        if (!c || !canvas || !audioContext || !oscillator || !analyser) {
+        if (!c || !canvas || !audioContext || !synthesizer || !analyser) {
             return
         }
         analyser.getByteTimeDomainData(dataArray)
@@ -40,11 +40,11 @@ const OscilloscopeComponent: FC<OscilloscopeProps> = () => {
         c.lineTo(canvas.width + 100, canvas.height / 2)
         c.stroke()
         requestAnimationFrame(drawWaveform)
-    }, [audioContext, oscillator])
+    }, [audioContext, synthesizer])
 
     useEffect(() => {
         drawWaveform()
-    }, [audioContext, drawWaveform, oscillator])
+    }, [audioContext, drawWaveform, synthesizer])
 
     useEffect(() => {
         const canvas = canvasRef.current
@@ -60,7 +60,7 @@ const OscilloscopeComponent: FC<OscilloscopeProps> = () => {
         c.moveTo(0, canvas.height / 2)
         c.lineTo(canvas.width, canvas.height / 2)
         c.stroke()
-    }, [audioContext, oscillator])
+    }, [audioContext, synthesizer])
 
     return (
         <div ref={ref} className="w-full h-full bg-primary-800 p-2 rounded-md">

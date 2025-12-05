@@ -26,7 +26,7 @@ const ControlsComponent: FC = () => {
         <div className="flex flex-col gap-2 w-full">
             <div className="w-fit flex flex-col gap-2">
                 <div className="flex flex-row gap-2">
-                    <div className="flex flex-col items-center bg-primary-800 rounded p-2">
+                    <div className="flex flex-col items-center bg-primary-800 rounded p-2 border border-black">
                         <Button
                             theme="transparent"
                             variant="active"
@@ -83,16 +83,16 @@ const ControlsComponent: FC = () => {
                             setNumberOfVoices(voices)
                         }}
                     />
-                    {/*<Knob
-                        numberOfSteps={10}
+                    <Knob
+                        numberOfSteps={100}
                         label={`Detune`}
-                        displayValue={`${detuneAmount}/10`}
-                        value={detuneAmount}
+                        displayValue={`${Math.round(detuneAmount)}/100`}
+                        value={detuneAmount / 100}
                         onChange={(value) => {
                             const detune = Math.round(value)
                             setDetuneAmount(detune)
                         }}
-                    />*/}
+                    />
                     <Knob
                         numberOfSteps={100}
                         label={`Pan`}

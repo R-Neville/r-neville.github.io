@@ -1,7 +1,7 @@
 import useBoundingRect from '#/hooks/useBoundingRect'
 import arePropsEqual from '#/utils/arePropsEqual'
 import React, { FC, useRef } from 'react'
-import { KeyboardKey } from './KeyboardKey'
+import WhiteKey from './WhiteKey'
 
 const KeyboardComponent: FC = () => {
     const ref = useRef<HTMLDivElement>(null)
@@ -12,7 +12,7 @@ const KeyboardComponent: FC = () => {
         if ([1, 3, 6, 8, 10].includes(index % 12)) {
             return null
         }
-        return <KeyboardKey parentWidth={width} key={index} keyIndex={index} />
+        return <WhiteKey parentWidth={width} key={index} keyIndex={index} />
     })
 
     return (

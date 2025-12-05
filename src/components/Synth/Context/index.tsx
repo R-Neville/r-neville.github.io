@@ -1,15 +1,15 @@
 import { createContext, useContext } from 'react'
-import Oscillator from '../model/Oscillator'
+import Synthesizer from '../model/Synthesizer'
 
 interface SynthContextType {
     audioContext: AudioContext | null
-    oscillator: Oscillator | null
+    synthesizer: Synthesizer | null
     octave: number
     detuneAmount: number
     numberOfVoices: number
     panAmount: number
     type: OscillatorType
-    setOscillator: (oscillator: Oscillator | null) => void
+    setSynthesizer: (synth: Synthesizer | null) => void
     setDetuneAmount: (detuneAmount: number) => void
     setNumberOfVoices: (numberOfVoices: number) => void
     setPanAmount: (panAmount: number) => void
